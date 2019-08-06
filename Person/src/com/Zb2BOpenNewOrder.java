@@ -202,6 +202,7 @@ public class Zb2BOpenNewOrder implements Zb2BOpenNewOrderInterface {
 			apiInstance.getApiClient().addDefaultHeader("X-CSRF-TOKEN", getToken());
 			ASalesOrderType so = apiInstance.aSalesOrderPost(aSalesOrderType);
 			System.out.println("----so : " + so.toString());
+			System.out.println(apiInstance.getApiClient());
 		} catch (ApiException e1) {
 			e1.printStackTrace();
 		}

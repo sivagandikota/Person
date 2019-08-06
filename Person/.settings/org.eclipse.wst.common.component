@@ -9,6 +9,9 @@
         <dependent-module archiveName="com.sap.apibhub.sdk-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SALES_ORDER_SRV/API_SALES_ORDER_SRV">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="com.sap.apibhub.sdk.api_business_partner-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_BUSINESS_PARTNER/API_BUSINESS_PARTNER">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="Person"/>
         <property name="java-output-path" value="/Person/build/classes"/>
     </wb-module>
