@@ -1,0 +1,698 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Person</groupId>
+  <artifactId>Person</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <properties>
+		<cxf.version>3.2.8</cxf.version>
+		<httpclient.version>3.1</httpclient.version>
+		<jax.ws.rs>2.1.1</jax.ws.rs>
+		<springmvc>4.1.6.RELEASE</springmvc>
+		<jackson.version>2.9.1</jackson.version>
+		<version.olingo>2.0.10</version.olingo>
+		<!-- <project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> -->
+	</properties>
+	<dependencies>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-core</artifactId>
+		    <version>${springmvc}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
+		    <version>${springmvc}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-web</artifactId>
+		    <version>${springmvc}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-beans</artifactId>
+		    <version>${springmvc}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-webmvc</artifactId>
+		    <version>${springmvc}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>javax.ws.rs</groupId>
+		    <artifactId>javax.ws.rs-api</artifactId>
+		    <version>${jax.ws.rs}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.eclipse.persistence</groupId>
+		    <artifactId>javax.persistence</artifactId>
+		    <version>2.1.0</version>
+		</dependency>
+		
+		<!-- <dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.2.7</version>
+			<scope>provided</scope>
+		</dependency> -->
+		<!-- <dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+			<version>2.2.7</version>
+			<scope>compile</scope>
+		</dependency> -->
+		<dependency>
+		  <groupId>javax.faces</groupId>
+		  <artifactId>javax.faces-api</artifactId>
+		  <version>2.3</version>
+		  <scope>compile</scope>
+		</dependency>
+		<dependency>
+		  <groupId>org.glassfish</groupId>
+		  <artifactId>javax.faces</artifactId>
+		  <version>2.3.8</version>
+		  <scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>1.2</version>
+		    <scope>compile</scope>
+		</dependency>
+		
+			
+					
+		  <dependency>
+		    <groupId>com.monitorjbl</groupId>
+		    <artifactId>xlsx-streamer</artifactId>
+		    <version>1.2.0</version>
+		    <exclusions>
+		      <exclusion> 
+		        <groupId>org.slf4j</groupId>
+		        <artifactId>slf4j-api</artifactId>
+		      </exclusion>
+		            
+		    </exclusions>
+		  </dependency>
+				
+			
+			<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi</artifactId>
+			    <version>3.16</version>
+			</dependency>
+			
+			
+			<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi-ooxml</artifactId>
+			    <version>3.16</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi-ooxml-schemas</artifactId>
+			    <version>3.16</version>
+			</dependency>
+			
+			
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-collections4</artifactId>
+			    <version>4.1</version>
+			</dependency>
+
+						
+						
+					
+			
+			<dependency>
+			    <groupId>javax.servlet</groupId>
+			    <artifactId>javax.servlet-api</artifactId>
+			    <version>3.0.1</version>
+			</dependency>
+			
+			
+			<dependency>
+			    <groupId>org.apache.tomcat</groupId>
+			    <artifactId>tomcat-catalina</artifactId>
+			    <version>7.0.12</version>			
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-io</artifactId>
+			    <version>1.3.2</version>
+			</dependency>
+			
+			
+			<dependency>
+			    <groupId>org.apache.myfaces.tomahawk</groupId>
+			    <artifactId>tomahawk20</artifactId>
+			    <version>1.1.14</version>
+			</dependency>
+			
+
+						
+			
+    <dependency>
+      <groupId>org.apache.olingo</groupId>
+      <artifactId>olingo-odata2-api</artifactId>
+      <version>${version.olingo}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <artifactId>olingo-odata2-api-annotation</artifactId>
+      <groupId>org.apache.olingo</groupId>
+      <version>${version.olingo}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.olingo</groupId>
+      <artifactId>olingo-odata2-core</artifactId>
+      <version>${version.olingo}</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.olingo</groupId>
+      <artifactId>olingo-odata2-annotation-processor-api</artifactId>
+      <version>${version.olingo}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.olingo</groupId>
+      <artifactId>olingo-odata2-annotation-processor-core</artifactId>
+      <version>${version.olingo}</version>
+    </dependency>	
+    <dependency>
+	  <groupId>org.apache.olingo</groupId>
+	  <artifactId>olingo-odata2-jpa-processor-api</artifactId>
+	  <version>${version.olingo}</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.olingo</groupId>
+	  <artifactId>olingo-odata2-jpa-processor-core</artifactId>
+	  <version>${version.olingo}</version>
+	</dependency>
+	
+	
+	
+	<!-- <dependency>
+	  <groupId>org.apache.olingo</groupId>
+	  <artifactId>olingo-odata2-jpa-processor-ref</artifactId>
+	  <version>${version.olingo}</version>
+	</dependency> -->
+	
+    
+	<!-- <dependency>
+	    <groupId>org.apache.olingo</groupId>
+	    <artifactId>odata-commons-api</artifactId>
+	    <version>4.5.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.olingo</groupId>
+	    <artifactId>odata-server-api</artifactId>
+	    <version>4.5.0</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.apache.olingo</groupId>
+	    <artifactId>odata-server-core</artifactId>
+	    <version>4.5.0</version>
+	</dependency> -->
+		
+		
+	    
+    <dependency>
+	    <groupId>org.jasig.mojo.jspc</groupId>
+	    <artifactId>jspc</artifactId>
+	    <version>2.0.2</version>
+	    <type>pom</type>
+	</dependency>	    		
+		
+		<dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.6.4</version>
+        </dependency>
+        
+    	<dependency>
+		    <groupId>org.apache.derby</groupId>
+		    <artifactId>derby</artifactId>
+		    <version>10.14.2.0</version>		    
+		</dependency>
+		        
+	
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-core</artifactId>
+            <version>${cxf.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-extension-providers</artifactId>
+            <version>${cxf.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-extension-search</artifactId>
+            <version>${cxf.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+		<dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-rt-management</artifactId>
+		    <version>${cxf.version}</version>
+		</dependency>    
+	
+		<dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-local</artifactId>
+            <version>${cxf.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>	 
+        <dependency>
+		    <groupId>com.fasterxml.jackson.jaxrs</groupId>
+		    <artifactId>jackson-jaxrs-json-provider</artifactId>
+		    <version>2.9.6</version>
+		</dependency>   
+		
+
+				<dependency>
+				    <groupId>org.codehaus.jackson</groupId>
+				    <artifactId>jackson-jaxrs</artifactId>
+				    <version>1.9.13</version>
+				    <!-- <scope>provided</scope> -->
+				</dependency>
+		<dependency>
+	        <groupId>org.apache.cxf</groupId>
+	        <artifactId>cxf-rt-frontend-jaxws</artifactId>
+	        <version>${cxf.version}</version>
+	        <!--<scope>provided</scope>-->
+	    </dependency>
+
+		<dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-rt-features-logging</artifactId>
+		    <version>${cxf.version}</version>
+		    <!--<scope>provided</scope>-->
+		    <exclusions>
+			    <exclusion> 
+			        <groupId>org.slf4j</groupId>
+			        <artifactId>slf4j-api</artifactId>
+			      </exclusion>
+		      </exclusions>
+		</dependency>
+		<dependency>
+		  <groupId>org.apache.cxf</groupId>
+		  <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+		  <version>${cxf.version}</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-rt-bindings-soap</artifactId>
+		    <version>${cxf.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.codehaus.woodstox</groupId>
+		    <artifactId>stax2-api</artifactId>
+		    <version>4.1</version>
+		</dependency>
+				
+		
+		<dependency>
+		    <groupId>com.sap.cloud</groupId>
+		    <artifactId>neo-java-web-api</artifactId>
+		    <version>3.85.13</version>
+		    <exclusions>
+		      <exclusion> 
+		        <groupId>org.slf4j</groupId>
+		        <artifactId>slf4j-api</artifactId>
+		      </exclusion>
+		      <exclusion> 
+		        <groupId>org.slf4j</groupId>
+		        <artifactId>slf4j-simple</artifactId>
+		      </exclusion>
+		      <exclusion> 
+		        <groupId>org.slf4j</groupId>
+		        <artifactId>jcl-over-slf4j</artifactId>
+		      </exclusion>
+			  <exclusion>
+			  		<groupId>com.google.guava</groupId>
+				    <artifactId>guava</artifactId>
+			  </exclusion>      
+		    </exclusions>
+		    <scope>provided</scope>
+		</dependency>
+				
+		<dependency>
+  			<groupId>com.sap.cloud.s4hana.datamodel</groupId>
+  			<artifactId>odata-generator</artifactId>
+  			<version>2.7.0</version>
+  			<scope>compile</scope>
+  			<exclusions>
+		      <exclusion> 
+		        <groupId>org.slf4j</groupId>
+		        <artifactId>slf4j-api</artifactId>
+		      </exclusion>
+		      <exclusion> 
+		        <groupId>org.slf4j</groupId>
+		        <artifactId>slf4j-simple</artifactId>
+		      </exclusion>
+		      <exclusion> 
+		        <groupId>org.slf4j</groupId>
+		        <artifactId>jcl-over-slf4j</artifactId>
+		      </exclusion>
+			  <exclusion>
+			  		<groupId>com.google.guava</groupId>
+				    <artifactId>guava</artifactId>
+			  </exclusion>      
+		    </exclusions>
+  		</dependency>
+  		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>1.7.25</version>
+		    <scope>provided</scope>
+  		</dependency>
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>jcl-over-slf4j</artifactId>
+		    <version>1.7.25</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>jul-to-slf4j</artifactId>
+		    <version>1.7.25</version>
+		</dependency>
+		<dependency>    
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>log4j-over-slf4j</artifactId>
+		    <version>1.7.25</version>
+		</dependency>
+  		<dependency>
+  			<groupId>org.projectlombok</groupId>
+  			<artifactId>lombok</artifactId>
+  			<version>1.18.8</version>
+  			<scope>compile</scope>
+  		</dependency>
+  	  
+  	  <dependency>
+	    <groupId>com.sap.apibhub</groupId>
+	    <artifactId>com.sap.apibhub.sdk</artifactId>
+	    <version>1.0.0</version>
+	    <scope>compile</scope>
+	  </dependency>
+	  
+	  <dependency>
+	    <groupId>com.sap.apibhub</groupId>
+	    <artifactId>com.sap.apibhub.sdk.api_business_partner</artifactId>
+	    <version>RELEASE</version>
+	    <scope>compile</scope>
+	  </dependency>
+	  
+	  <dependency>
+		 <groupId>com.squareup.okio</groupId>
+		 <artifactId>okio</artifactId>
+		 <version>1.6.0</version>
+      </dependency>
+      
+      <dependency>
+            <groupId>com.sap.cloud.s4hana.cloudplatform</groupId>
+            <artifactId>scp-neo</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sap.cloud.s4hana</groupId>
+            <artifactId>s4hana-all</artifactId>
+            <version>2.18.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.sap.cloud.s4hana</groupId>
+            <artifactId>testutil</artifactId>
+            <version>2.7.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sap.cloud.s4hana.quality</groupId>
+            <artifactId>listeners-all</artifactId>
+            <version>1.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+		    <groupId>com.sap.cloud.s4hana</groupId>
+		    <artifactId>sdk-bom</artifactId>
+		    <version>2.17.0</version>
+		    <type>pom</type>
+		</dependency>
+
+			  
+		<dependency>
+		    <groupId>com.squareup.okhttp3</groupId>
+		    <artifactId>okhttp</artifactId>
+		    <version>3.4.2</version>
+		</dependency>
+		
+		
+		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <version>2.8.4</version>
+		</dependency>
+				
+  	
+	    
+				
+	</dependencies>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <pluginManagement>
+    <plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/alternateLocation</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- <plugin>
+        <groupId>org.apache.sling</groupId>
+        <artifactId>jspc-maven-plugin</artifactId>
+        <version>2.1.0</version>
+      </plugin> -->
+<plugin>
+	<groupId>org.apache.cxf</groupId>
+	<artifactId>cxf-java2ws-plugin</artifactId>
+	<version>${cxf.version}</version>
+	
+	<dependencies>
+<!-- 			  <dependency>
+                    <groupId>com.fasterxml.woodstox</groupId>
+                    <artifactId>woodstox-core</artifactId>
+                    <version>5.0.3</version>
+                </dependency>
+ -->                <!-- https://mvnrepository.com/artifact/org.codehaus.woodstox/stax2-api -->
+<!-- 				<dependency>
+				    <groupId>org.codehaus.woodstox</groupId>
+				    <artifactId>stax2-api</artifactId>
+				    <version>4.1</version>
+				</dependency>
+ -->
+ 
+ 			<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-jaxrs -->
+				
+				 			
+                
+                <dependency>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-core</artifactId>
+                    <version>${cxf.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+	    
+	    <!-- <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-simple</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>     -->
+	</dependencies> 
+	
+	<!-- <configuration>
+			<classifier>HelloManager</classifier>
+                <className>person.HelloService</className>
+                <classpath>HelloManager</classpath>
+                <serviceName>HelloService</serviceName>
+                <targetNameSpace>MavenTargetNameSpace</targetNameSpace>
+                <genWsdl>true</genWsdl>
+                <verbose>true</verbose>
+                <outputFile>${project.build.outputDirectory}\wsdl\HelloService.wsdl</outputFile>
+            </configuration> -->
+            <configuration>
+			<!-- <classifier>HelloManager</classifier> -->
+                <className>com.ondemand.SalesOrderImpl</className>
+                <!-- <classpath>HelloManager</classpath> -->
+                <!-- <serviceName>HelloService</serviceName> -->
+                <!-- <targetNameSpace>MavenTargetNameSpace</targetNameSpace> -->
+                <genWsdl>true</genWsdl>
+                <verbose>true</verbose>
+                <outputFile>${project.build.outputDirectory}\wsdl\SalesOrderService.wsdl</outputFile>
+            </configuration>
+	<!-- compile org.apache.cxf:cxf-java2ws-plugin:java2ws  -->
+	<executions>
+	    <execution>
+	        <id>process-classes</id>
+	        <phase>test</phase>
+	        <configuration>
+	        <classifier>process-classes</classifier>
+                <className>com.ondemand.SalesOrderImpl</className>
+                
+                <serviceName>SalesOrder</serviceName>
+                <genWsdl>true</genWsdl>
+                <verbose>true</verbose>
+            </configuration>
+            
+	        <goals>
+	            <goal>java2ws</goal>
+	        </goals>
+	    </execution>
+	</executions>
+</plugin>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <archiveClasses default-value="false"/>
+			  <attachClasses default-value="false"/>
+			  <cacheFile default-value="${project.build.directory}/war/work/webapp-cache.xml"/>
+			  <classesClassifier default-value="classes"/>
+			  <classesDirectory default-value="${project.build.outputDirectory}"/>
+			  <escapedBackslashesInFilePath default-value="false"/>
+			  <failOnMissingWebXml default-value="false"/>
+			  <filteringDeploymentDescriptors default-value="false"/>
+			  <includeEmptyDirectories default-value="false"/>
+			  <outputDirectory default-value="${project.build.outputDirectory}"/>
+			  <primaryArtifact default-value="true"/>
+			  <project default-value="${project}"/>
+			  <recompressZippedFiles default-value="true"/>
+			  <resourceEncoding default-value="${project.build.sourceEncoding}"/>
+			  <session default-value="${session}"/>
+			  <skip default-value="false">${maven.war.skip}</skip>
+			  <supportMultiLineFiltering default-value="false"/>
+			  <useCache default-value="false"/>
+			  <useDefaultDelimiters default-value="true"/>
+			  <useJvmChmod default-value="true"/>
+			  <warName default-value="${project.build.finalName}"/>
+			  <warSourceDirectory default-value="${basedir}/src/main/webapp">WebContent</warSourceDirectory>
+			  <warSourceIncludes default-value="**"/>
+			  <webappDirectory default-value="${project.build.directory}/${project.build.finalName}"/>
+			  <workDirectory default-value="${project.build.directory}/war/work"/>
+        </configuration>
+  
+      </plugin>
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+			  <artifact default-value="${project.artifact}"/>
+			  <attachedArtifacts default-value="${project.attachedArtifacts}"/>
+			  <createChecksum default-value="false">${createChecksum}</createChecksum>
+			  <localRepository>${localRepository}</localRepository>
+			  <packaging default-value="${project.packaging}"/>
+			  <pomFile default-value="${project.file}"/>
+			  <skip default-value="false">${maven.install.skip}</skip>
+			  <updateReleaseInfo default-value="false">${updateReleaseInfo}</updateReleaseInfo>
+
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <warSourceDirectory>WebContent</warSourceDirectory>
+          <!-- <outputDirectory>C:\Users\sivag\Downloads\tomcat8.0\webapps\</outputDirectory> -->
+			        
+			  <archiveClasses default-value="false"/>
+			  <attachClasses default-value="false"/>
+			  <cacheFile default-value="${project.build.directory}/war/work/webapp-cache.xml"/>
+			  <classesClassifier default-value="classes"/>
+			  <classesDirectory default-value="${project.build.outputDirectory}"/>
+			  <escapedBackslashesInFilePath default-value="false"/>
+			  <failOnMissingWebXml default-value="false"/>
+			  <filteringDeploymentDescriptors default-value="false"/>
+			  <includeEmptyDirectories default-value="false"/>
+			  <outputDirectory default-value="${project.build.directory}"/>
+			  <primaryArtifact default-value="true"/>
+			  <project default-value="${project}"/>
+			  <recompressZippedFiles default-value="true"/>
+			  <resourceEncoding default-value="${project.build.sourceEncoding}"/>
+			  <session default-value="${session}"/>
+			  <skip default-value="false">${maven.war.skip}</skip>
+			  <supportMultiLineFiltering default-value="false"/>
+			  <useCache default-value="false"/>
+			  <useDefaultDelimiters default-value="true"/>
+			  <useJvmChmod default-value="true"/>
+			  <warName default-value="${project.build.finalName}"/>
+			  <warSourceDirectory default-value="${basedir}/src/main/webapp"></warSourceDirectory>
+			  <warSourceIncludes default-value="**"/>
+			  <webappDirectory default-value="${project.build.directory}/${project.build.finalName}"/>
+			  <workDirectory default-value="${project.build.directory}/war/work"/>
+			</configuration>
+      </plugin>
+      <plugin>  
+		 <groupId>org.apache.tomcat.maven</groupId>  
+		 <artifactId>tomcat7-maven-plugin</artifactId>  
+		 <version>2.2</version>  
+		 <configuration>  
+		  <url>http://localhost:8080/manager/text</url>  
+		  <server>TomcatServer</server>    <!-- *(From maven > settings.xml)* -->
+		  <username>tomcat</username>  
+		  <password>s3cret</password>
+		  <!-- <path>/Person</path> -->   
+		 </configuration>   
+		</plugin>   
+    </plugins>
+    </pluginManagement>
+  </build>
+</project>

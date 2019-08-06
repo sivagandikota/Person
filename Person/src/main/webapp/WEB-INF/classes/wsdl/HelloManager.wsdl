@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="HelloManagerService" targetNamespace="http://localhost:8080/Person/ws/helloWS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://localhost:8080/Person/ws/helloWS" xmlns:ns1="http://localhost:8080/Person/ws/helloWS/getPersonList" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:tns="http://localhost:8080/Person/ws/helloWS" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8080/Person/ws/helloWS" version="1.0">
+
+  <xs:element name="Person" type="tns:person"/>
+
+  <xs:complexType name="person">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="firstName" type="xs:string"/>
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+      <xs:element minOccurs="0" name="lastName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="#all" name="personArray">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="item" nillable="true" type="tns:person"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xsd:schema xmlns="http://localhost:8080/Person/ws/helloWS/getPersonList" xmlns:tns="http://localhost:8080/Person/ws/helloWS" xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://localhost:8080/Person/ws/helloWS/getPersonList">
+  <xsd:import namespace="http://localhost:8080/Person/ws/helloWS"/>
+  <xsd:element name="getPersonsListResponse" nillable="true" type="tns:personArray"/>
+</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getPersonsListResponse">
+    <wsdl:part name="getPersonsListResponse" element="ns1:getPersonsListResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonsList">
+  </wsdl:message>
+  <wsdl:portType name="HelloManager">
+    <wsdl:operation name="getPersonsList">
+      <wsdl:input name="getPersonsList" message="tns:getPersonsList">
+    </wsdl:input>
+      <wsdl:output name="getPersonsListResponse" message="tns:getPersonsListResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="HelloManagerServiceSoapBinding" type="tns:HelloManager">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getPersonsList">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getPersonsList">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getPersonsListResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HelloManagerService">
+    <wsdl:port name="HelloManagerPort" binding="tns:HelloManagerServiceSoapBinding">
+      <soap:address location="http://localhost:9090/HelloManagerPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

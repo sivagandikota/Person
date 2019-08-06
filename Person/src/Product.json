@@ -1,0 +1,416 @@
+{
+  "d": {
+    "results": [
+      {
+        "Product": "string",
+        "ProductType": "string",
+        "CrossPlantStatus": "string",
+        "CrossPlantStatusValidityDate": "/Date(1492041600000)/",
+        "CreationDate": "/Date(1492041600000)/",
+        "CreatedByUser": "string",
+        "LastChangeDate": "/Date(1492041600000)/",
+        "LastChangedByUser": "string",
+        "LastChangeDateTime": "/Date(1492098664000)/",
+        "IsMarkedForDeletion": "Unknown Type: boolean,null",
+        "ProductOldID": "string",
+        "GrossWeight": "9999999999.999",
+        "PurchaseOrderQuantityUnit": "string",
+        "SourceOfSupply": "string",
+        "WeightUnit": "string",
+        "NetWeight": "9999999999.999",
+        "CountryOfOrigin": "string",
+        "CompetitorID": "string",
+        "ProductGroup": "string",
+        "BaseUnit": "string",
+        "ItemCategoryGroup": "string",
+        "ProductHierarchy": "string",
+        "Division": "string",
+        "VarblPurOrdUnitIsActive": "string",
+        "VolumeUnit": "string",
+        "MaterialVolume": "9999999999.999",
+        "ANPCode": "string",
+        "Brand": "string",
+        "ProcurementRule": "string",
+        "ValidityStartDate": "/Date(1492041600000)/",
+        "LowLevelCode": "string",
+        "ProdNoInGenProdInPrepackProd": "string",
+        "SerialIdentifierAssgmtProfile": "string",
+        "SizeOrDimensionText": "string",
+        "IndustryStandardName": "string",
+        "ProductStandardID": "string",
+        "InternationalArticleNumberCat": "string",
+        "ProductIsConfigurable": "Unknown Type: boolean,null",
+        "IsBatchManagementRequired": "Unknown Type: boolean,null",
+        "ExternalProductGroup": "string",
+        "CrossPlantConfigurableProduct": "string",
+        "SerialNoExplicitnessLevel": "string",
+        "ProductManufacturerNumber": "string",
+        "ManufacturerNumber": "string",
+        "ManufacturerPartProfile": "string",
+        "ChangeNumber": "string",
+        "MaterialRevisionLevel": "string",
+        "HandlingIndicator": "string",
+        "WarehouseProductGroup": "string",
+        "WarehouseStorageCondition": "string",
+        "StandardHandlingUnitType": "string",
+        "SerialNumberProfile": "string",
+        "AdjustmentProfile": "string",
+        "PreferredUnitOfMeasure": "string",
+        "IsPilferable": "Unknown Type: boolean,null",
+        "IsRelevantForHzdsSubstances": "Unknown Type: boolean,null",
+        "QuarantinePeriod": "999",
+        "TimeUnitForQuarantinePeriod": "string",
+        "QualityInspectionGroup": "string",
+        "AuthorizationGroup": "string",
+        "HandlingUnitType": "string",
+        "HasVariableTareWeight": "Unknown Type: boolean,null",
+        "MaximumPackagingLength": "999999999999.999",
+        "MaximumPackagingWidth": "999999999999.999",
+        "MaximumPackagingHeight": "999999999999.999",
+        "to_Description": {
+          "results": [
+            {
+              "Product": "string",
+              "Language": "string",
+              "ProductDescription": "string"
+            }
+          ]
+        },
+        "to_Plant": {
+          "results": [
+            {
+              "Product": "string",
+              "Plant": "string",
+              "PurchasingGroup": "string",
+              "CountryOfOrigin": "string",
+              "RegionOfOrigin": "string",
+              "ProductionInvtryManagedLoc": "string",
+              "ProfileCode": "string",
+              "ProfileValidityStartDate": "/Date(1492041600000)/",
+              "AvailabilityCheckType": "string",
+              "FiscalYearVariant": "string",
+              "PeriodType": "string",
+              "ProfitCenter": "string",
+              "Commodity": "string",
+              "GoodsReceiptDuration": "999",
+              "MaintenanceStatusName": "string",
+              "IsMarkedForDeletion": "Unknown Type: boolean,null",
+              "MRPType": "string",
+              "MRPResponsible": "string",
+              "ABCIndicator": "string",
+              "MinimumLotSizeQuantity": "9999999999.999",
+              "MaximumLotSizeQuantity": "9999999999.999",
+              "FixedLotSizeQuantity": "9999999999.999",
+              "ConsumptionTaxCtrlCode": "string",
+              "IsCoProduct": "Unknown Type: boolean,null",
+              "ProductIsConfigurable": "string",
+              "StockDeterminationGroup": "string",
+              "StockInTransferQuantity": "9999999999.999",
+              "StockInTransitQuantity": "9999999999.999",
+              "HasPostToInspectionStock": "Unknown Type: boolean,null",
+              "IsBatchManagementRequired": "Unknown Type: boolean,null",
+              "SerialNumberProfile": "string",
+              "IsNegativeStockAllowed": "Unknown Type: boolean,null",
+              "GoodsReceiptBlockedStockQty": "9999999999.999",
+              "HasConsignmentCtrl": "string",
+              "FiscalYearCurrentPeriod": "string",
+              "FiscalMonthCurrentPeriod": "string",
+              "ProcurementType": "string",
+              "IsInternalBatchManaged": "Unknown Type: boolean,null",
+              "ProductCFOPCategory": "string",
+              "to_PlantMRPArea": {
+                "results": [
+                  {
+                    "Product": "string",
+                    "Plant": "string",
+                    "MRPArea": "string",
+                    "MRPType": "string",
+                    "MRPResponsible": "string",
+                    "MRPGroup": "string",
+                    "ReorderThresholdQuantity": "9999999999.999",
+                    "PlanningTimeFence": "string",
+                    "LotSizingProcedure": "string",
+                    "LotSizeRoundingQuantity": "9999999999.999",
+                    "MinimumLotSizeQuantity": "9999999999.999",
+                    "MaximumLotSizeQuantity": "9999999999.999",
+                    "MaximumStockQuantity": "9999999999.999",
+                    "AssemblyScrapPercent": "999.99",
+                    "ProcurementSubType": "string",
+                    "DfltStorageLocationExtProcmt": "string",
+                    "MRPPlanningCalendar": "string",
+                    "SafetyStockQuantity": "9999999999.999",
+                    "RangeOfCvrgPrflCode": "string",
+                    "SafetyDuration": "string",
+                    "FixedLotSizeQuantity": "9999999999.999",
+                    "LotSizeIndependentCosts": "999999999.999",
+                    "IsStorageCosts": "string",
+                    "RqmtQtyRcptTaktTmeInWrkgDays": "999",
+                    "SrvcLvl": "99.9",
+                    "IsMarkedForDeletion": "Unknown Type: boolean,null",
+                    "PerdPrflForSftyTme": "string",
+                    "IsMRPDependentRqmt": "string",
+                    "IsSafetyTime": "string",
+                    "PlannedDeliveryDurationInDays": "999",
+                    "IsPlannedDeliveryTime": "Unknown Type: boolean,null"
+                  }
+                ]
+              },
+              "to_PlantQualityMgmt": {
+                "Product": "string",
+                "Plant": "string",
+                "MaximumStoragePeriod": "99999",
+                "QualityMgmtCtrlKey": "string",
+                "MatlQualityAuthorizationGroup": "string",
+                "HasPostToInspectionStock": "Unknown Type: boolean,null"
+              },
+              "to_PlantSales": {
+                "Product": "string",
+                "Plant": "string",
+                "LoadingGroup": "string"
+              },
+              "to_PlantStorage": {
+                "Product": "string",
+                "Plant": "string",
+                "InventoryForCycleCountInd": "string"
+              },
+              "to_PlantText": {
+                "Product": "string",
+                "Plant": "string",
+                "LongText": "string"
+              },
+              "to_ProdPlantInternationalTrade": {
+                "Product": "string",
+                "Plant": "string",
+                "CountryOfOrigin": "string",
+                "RegionOfOrigin": "string",
+                "ConsumptionTaxCtrlCode": "string"
+              },
+              "to_ProductPlantCosting": {
+                "Product": "string",
+                "Plant": "string",
+                "IsCoProduct": "Unknown Type: boolean,null"
+              },
+              "to_ProductPlantForecast": {
+                "Product": "string",
+                "Plant": "string",
+                "ConsumptionRefUsageEndDate": "/Date(1492041600000)/",
+                "ConsumptionQtyMultiplier": "99.99",
+                "ConsumptionReferenceProduct": "string",
+                "ConsumptionReferencePlant": "string"
+              },
+              "to_ProductPlantProcurement": {
+                "Product": "string",
+                "Plant": "string",
+                "IsAutoPurOrdCreationAllowed": "Unknown Type: boolean,null",
+                "IsSourceListRequired": "Unknown Type: boolean,null",
+                "SourceOfSupplyCategory": "string"
+              },
+              "to_ProductSupplyPlanning": {
+                "Product": "string",
+                "Plant": "string",
+                "FixedLotSizeQuantity": "9999999999.999",
+                "MaximumLotSizeQuantity": "9999999999.999",
+                "MinimumLotSizeQuantity": "9999999999.999",
+                "LotSizeRoundingQuantity": "9999999999.999",
+                "LotSizingProcedure": "string",
+                "MRPType": "string",
+                "MRPResponsible": "string",
+                "SafetyStockQuantity": "9999999999.999",
+                "MinimumSafetyStockQuantity": "9999999999.999",
+                "PlanningTimeFence": "string",
+                "ABCIndicator": "string",
+                "MaximumStockQuantity": "9999999999.999",
+                "ReorderThresholdQuantity": "9999999999.999",
+                "PlannedDeliveryDurationInDays": "999",
+                "SafetyDuration": "string",
+                "PlanningStrategyGroup": "string",
+                "TotalReplenishmentLeadTime": "999",
+                "ProcurementType": "string",
+                "ProcurementSubType": "string",
+                "AssemblyScrapPercent": "999.99",
+                "AvailabilityCheckType": "string",
+                "GoodsReceiptDuration": "999"
+              },
+              "to_ProductWorkScheduling": {
+                "Product": "string",
+                "Plant": "string",
+                "MaterialBaseQuantity": "9999999999.999",
+                "UnlimitedOverDelivIsAllowed": "Unknown Type: boolean,null",
+                "OverDelivToleranceLimit": "99.9",
+                "UnderDelivToleranceLimit": "99.9",
+                "ProductionInvtryManagedLoc": "string"
+              },
+              "to_StorageLocation": {
+                "results": [
+                  {
+                    "Product": "string",
+                    "Plant": "string",
+                    "StorageLocation": "string",
+                    "WarehouseStorageBin": "string",
+                    "MaintenanceStatus": "string",
+                    "PhysicalInventoryBlockInd": "string",
+                    "CreationDate": "/Date(1492041600000)/",
+                    "IsMarkedForDeletion": "Unknown Type: boolean,null",
+                    "DateOfLastPostedCntUnRstrcdStk": "/Date(1492041600000)/",
+                    "InventoryCorrectionFactor": 3.14,
+                    "InvtryRestrictedUseStockInd": "string",
+                    "InvtryCurrentYearStockInd": "string",
+                    "InvtryQualInspCurrentYrStkInd": "string",
+                    "InventoryBlockStockInd": "string",
+                    "InvtryRestStockPrevPeriodInd": "string",
+                    "InventoryStockPrevPeriod": "string",
+                    "InvtryStockQltyInspPrevPeriod": "string",
+                    "HasInvtryBlockStockPrevPeriod": "string",
+                    "FiscalYearCurrentPeriod": "string",
+                    "FiscalMonthCurrentPeriod": "string",
+                    "FiscalYearCurrentInvtryPeriod": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "to_ProductBasicText": {
+          "results": [
+            {
+              "Product": "string",
+              "Language": "string",
+              "LongText": "string"
+            }
+          ]
+        },
+        "to_ProductInspectionText": {
+          "results": [
+            {
+              "Product": "string",
+              "Language": "string",
+              "LongText": "string"
+            }
+          ]
+        },
+        "to_ProductProcurement": {
+          "Product": "string",
+          "PurchaseOrderQuantityUnit": "string",
+          "VarblPurOrdUnitStatus": "string",
+          "PurchasingAcknProfile": "string"
+        },
+        "to_ProductPurchaseText": {
+          "results": [
+            {
+              "Product": "string",
+              "Language": "string",
+              "LongText": "string"
+            }
+          ]
+        },
+        "to_ProductQualityMgmt": {
+          "Product": "string",
+          "QltyMgmtInProcmtIsActive": "Unknown Type: boolean,null"
+        },
+        "to_ProductSales": {
+          "Product": "string",
+          "SalesStatus": "string",
+          "SalesStatusValidityDate": "/Date(1492041600000)/",
+          "TaxClassification": "string",
+          "TransportationGroup": "string"
+        },
+        "to_ProductSalesTax": {
+          "results": [
+            {
+              "Product": "string",
+              "Country": "string",
+              "TaxCategory": "string",
+              "TaxClassification": "string"
+            }
+          ]
+        },
+        "to_ProductStorage": {
+          "Product": "string",
+          "StorageConditions": "string",
+          "TemperatureConditionInd": "string",
+          "HazardousMaterialNumber": "string",
+          "NmbrOfGROrGISlipsToPrintQty": "9999999999.999",
+          "LabelType": "string",
+          "LabelForm": "string",
+          "MinRemainingShelfLife": "9999",
+          "ExpirationDate": "string"
+        },
+        "to_ProductUnitsOfMeasure": {
+          "results": [
+            {
+              "Product": "string",
+              "AlternativeUnit": "string",
+              "QuantityNumerator": "99999",
+              "QuantityDenominator": "99999",
+              "MaterialVolume": "9999999999.999",
+              "VolumeUnit": "string",
+              "GrossWeight": "9999999999.999",
+              "WeightUnit": "string",
+              "GlobalTradeItemNumber": "string",
+              "GlobalTradeItemNumberCategory": "string",
+              "UnitSpecificProductLength": "9999999999.999",
+              "UnitSpecificProductWidth": "9999999999.999",
+              "UnitSpecificProductHeight": "9999999999.999",
+              "ProductMeasurementUnit": "string",
+              "LowerLevelPackagingUnit": "string",
+              "RemainingVolumeAfterNesting": "999",
+              "MaximumStackingFactor": "Unknown Type: integer,null",
+              "CapacityUsage": "999999999999.999",
+              "to_InternationalArticleNumber": {
+                "results": [
+                  {
+                    "Product": "string",
+                    "AlternativeUnit": "string",
+                    "ConsecutiveNumber": "string",
+                    "ProductStandardID": "string",
+                    "InternationalArticleNumberCat": "string",
+                    "IsMainGlobalTradeItemNumber": "Unknown Type: boolean,null"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "to_SalesDelivery": {
+          "results": [
+            {
+              "Product": "string",
+              "ProductSalesOrg": "string",
+              "ProductDistributionChnl": "string",
+              "MinimumOrderQuantity": "9999999999.999",
+              "SupplyingPlant": "string",
+              "PriceSpecificationProductGroup": "string",
+              "AccountDetnProductGroup": "string",
+              "DeliveryNoteProcMinDelivQty": "9999999999.999",
+              "ItemCategoryGroup": "string",
+              "DeliveryQuantityUnit": "string",
+              "DeliveryQuantity": "9999999999.999",
+              "ProductSalesStatus": "string",
+              "ProductSalesStatusValidityDate": "/Date(1492041600000)/",
+              "SalesMeasureUnit": "string",
+              "IsMarkedForDeletion": "Unknown Type: boolean,null",
+              "ProductHierarchy": "string",
+              "FirstSalesSpecProductGroup": "string",
+              "SecondSalesSpecProductGroup": "string",
+              "ThirdSalesSpecProductGroup": "string",
+              "FourthSalesSpecProductGroup": "string",
+              "FifthSalesSpecProductGroup": "string",
+              "MinimumMakeToOrderOrderQty": "9999999999.999",
+              "to_SalesText": {
+                "results": [
+                  {
+                    "Product": "string",
+                    "ProductSalesOrg": "string",
+                    "ProductDistributionChnl": "string",
+                    "Language": "string",
+                    "LongText": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,443 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Person</groupId>
+  <artifactId>Person</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <properties>
+		<cxf.version>3.1.5</cxf.version>
+		<httpclient.version>3.1</httpclient.version>
+		<jax.ws.rs>2.1</jax.ws.rs>
+		<springmvc>4.1.4.RELEASE</springmvc>
+		<jackson.version>2.9.1</jackson.version>
+		<version.olingo>2.0.0</version.olingo>
+		
+	</properties>
+	<dependencies>
+		<!-- <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${springmvc}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${springmvc}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${springmvc}</version>
+		</dependency> -->
+
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-rt-transports-http-jetty</artifactId>
+		    <version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>${jax.ws.rs}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider -->
+	<!-- 	<dependency>
+		    <groupId>com.fasterxml.jackson.jaxrs</groupId>
+		    <artifactId>jackson-jaxrs-json-provider</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
+ -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-jaxb-annotations -->
+	<!-- 	<dependency>
+		    <groupId>com.fasterxml.jackson.module</groupId>
+		    <artifactId>jackson-module-jaxb-annotations</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
+	 -->	<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-jaxrs -->
+		<dependency>
+		    <groupId>org.codehaus.jackson</groupId>
+		    <artifactId>jackson-jaxrs</artifactId>
+		    <version>1.9.11</version>
+		</dependency>
+				
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.persistence/javax.persistence -->
+
+		<dependency>
+		    <groupId>org.eclipse.persistence</groupId>
+		    <artifactId>javax.persistence</artifactId>
+		    <version>2.1.0</version>
+		</dependency>
+
+		<!-- <dependency>
+		  <groupId>org.glassfish</groupId>
+		  <artifactId>javax.faces</artifactId>
+		  <version>2.3.0</version>
+		  <scope>provided</scope>
+		</dependency> -->
+		
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.2.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+			<version>2.2.7</version>
+		</dependency>
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>1.2</version>
+		</dependency>
+		<!-- logging -->
+			
+					
+		  <dependency>
+		    <groupId>com.monitorjbl</groupId>
+		    <artifactId>xlsx-streamer</artifactId>
+		    <version>1.2.0</version>
+		  </dependency>
+				
+			<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+			<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi</artifactId>
+			    <version>3.16</version>
+			</dependency>
+			
+			<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+			<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi-ooxml</artifactId>
+			    <version>3.16</version>
+			</dependency>
+			
+			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-collections4</artifactId>
+			    <version>4.1</version>
+			</dependency>
+
+						
+						
+					
+			<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+			<dependency>
+			    <groupId>javax.servlet</groupId>
+			    <artifactId>javax.servlet-api</artifactId>
+			    <version>3.0.1</version>
+			    <scope>provided</scope>
+			</dependency>
+			
+			<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina -->
+			<dependency>
+			    <groupId>org.apache.tomcat</groupId>
+			    <artifactId>tomcat-catalina</artifactId>
+			    <version>7.0.12</version>
+			    <scope>provided</scope>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-io -->
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-io</artifactId>
+			    <version>1.3.2</version>
+			</dependency>
+			
+			<!-- https://mvnrepository.com/artifact/org.apache.myfaces.tomahawk/tomahawk20 -->
+			<dependency>
+			    <groupId>org.apache.myfaces.tomahawk</groupId>
+			    <artifactId>tomahawk20</artifactId>
+			    <version>1.1.14</version>
+			</dependency>
+						
+						
+			    <!-- Apache Olingo Library dependencies -->
+    <dependency>
+      <groupId>org.apache.olingo</groupId>
+      <artifactId>olingo-odata2-api</artifactId>
+      <version>${version.olingo}</version>
+    </dependency>
+    <dependency>
+      <artifactId>olingo-odata2-api-annotation</artifactId>
+      <groupId>org.apache.olingo</groupId>
+      <type>jar</type>
+      <version>${version.olingo}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.olingo</groupId>
+      <artifactId>olingo-odata2-core</artifactId>
+      <version>${version.olingo}</version>
+    </dependency>
+    <!-- Apache Olingo Annotation Processor Extension dependencies -->
+    <dependency>
+      <groupId>org.apache.olingo</groupId>
+      <artifactId>olingo-odata2-annotation-processor-api</artifactId>
+      <version>${version.olingo}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.olingo</groupId>
+      <artifactId>olingo-odata2-annotation-processor-core</artifactId>
+      <version>${version.olingo}</version>
+    </dependency>	
+    <!-- https://mvnrepository.com/artifact/org.jasig.mojo.jspc/jspc -->
+	<dependency>
+	    <groupId>org.jasig.mojo.jspc</groupId>
+	    <artifactId>jspc</artifactId>
+	    <version>2.0.2</version>
+	    <type>pom</type>
+	</dependency>
+	    		
+	<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+<!-- 	<dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-core</artifactId>
+	    <version>5.3.0.Final</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.hibernate.javax.persistence</groupId>
+	    <artifactId>hibernate-jpa-2.0-api</artifactId>
+	    <version>LATEST</version>
+	</dependency>
+ -->	
+		<dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.6.4</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.apache.derby/derby -->
+		<dependency>
+		    <groupId>org.apache.derby</groupId>
+		    <artifactId>derby</artifactId>
+		    <version>10.14.2.0</version>
+		    <scope>test</scope>
+		</dependency>
+		        
+		        
+
+				
+	</dependencies>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <pluginManagement>
+    <plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/alternateLocation</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- <plugin>
+        <groupId>org.apache.sling</groupId>
+        <artifactId>jspc-maven-plugin</artifactId>
+        <version>2.1.0</version>
+      </plugin> -->
+<plugin>
+	<groupId>org.apache.cxf</groupId>
+	<artifactId>cxf-java2ws-plugin</artifactId>
+	<version>${cxf.version}</version>
+	<dependencies>
+<!-- 			  <dependency>
+                    <groupId>com.fasterxml.woodstox</groupId>
+                    <artifactId>woodstox-core</artifactId>
+                    <version>5.0.3</version>
+                </dependency>
+ -->                <!-- https://mvnrepository.com/artifact/org.codehaus.woodstox/stax2-api -->
+<!-- 				<dependency>
+				    <groupId>org.codehaus.woodstox</groupId>
+				    <artifactId>stax2-api</artifactId>
+				    <version>4.1</version>
+				</dependency>
+ -->
+                
+                <dependency>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-core</artifactId>
+                    <version>${cxf.version}</version>
+                </dependency>
+	    <dependency>
+	        <groupId>org.apache.cxf</groupId>
+	        <artifactId>cxf-rt-frontend-jaxws</artifactId>
+	        <version>${cxf.version}</version>
+	    </dependency>
+	    <!-- <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-simple</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>     -->
+	</dependencies> 
+	
+	<configuration>
+			<!-- <classifier>HelloManager</classifier> -->
+                <className>person.HelloService</className>
+                <!-- <classpath>HelloManager</classpath> -->
+                <!-- <serviceName>HelloService</serviceName> -->
+                <!-- <targetNameSpace>MavenTargetNameSpace</targetNameSpace> -->
+                <genWsdl>true</genWsdl>
+                <verbose>true</verbose>
+                <outputFile>${project.build.outputDirectory}\wsdl\HelloService.wsdl</outputFile>
+            </configuration>
+	<!-- compile org.apache.cxf:cxf-java2ws-plugin:java2ws  -->
+	<executions>
+	    <execution>
+	        <id>process-classes</id>
+	        <phase>test</phase>
+	        <configuration>
+	        <classifier>process-classes</classifier>
+                <className>person.HelloService</className>
+                <serviceName>HelloService</serviceName>
+                <targetNameSpace>MavenTargetNameSpace</targetNameSpace>
+                <genWsdl>true</genWsdl>
+                <verbose>true</verbose>
+            </configuration>
+	        <goals>
+	            <goal>java2ws</goal>
+	        </goals>
+	    </execution>
+	</executions>
+</plugin>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <archiveClasses default-value="false"/>
+			  <attachClasses default-value="false"/>
+			  <cacheFile default-value="${project.build.directory}/war/work/webapp-cache.xml"/>
+			  <classesClassifier default-value="classes"/>
+			  <classesDirectory default-value="${project.build.outputDirectory}"/>
+			  <escapedBackslashesInFilePath default-value="false"/>
+			  <failOnMissingWebXml default-value="false"/>
+			  <filteringDeploymentDescriptors default-value="false"/>
+			  <includeEmptyDirectories default-value="false"/>
+			  <outputDirectory default-value="${project.build.outputDirectory}"/>
+			  <primaryArtifact default-value="true"/>
+			  <project default-value="${project}"/>
+			  <recompressZippedFiles default-value="true"/>
+			  <resourceEncoding default-value="${project.build.sourceEncoding}"/>
+			  <session default-value="${session}"/>
+			  <skip default-value="false">${maven.war.skip}</skip>
+			  <supportMultiLineFiltering default-value="false"/>
+			  <useCache default-value="false"/>
+			  <useDefaultDelimiters default-value="true"/>
+			  <useJvmChmod default-value="true"/>
+			  <warName default-value="${project.build.finalName}"/>
+			  <warSourceDirectory default-value="${basedir}/src/main/webapp">WebContent</warSourceDirectory>
+			  <warSourceIncludes default-value="**"/>
+			  <webappDirectory default-value="${project.build.directory}/${project.build.finalName}"/>
+			  <workDirectory default-value="${project.build.directory}/war/work"/>
+        </configuration>
+  
+      </plugin>
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+			  <artifact default-value="${project.artifact}"/>
+			  <attachedArtifacts default-value="${project.attachedArtifacts}"/>
+			  <createChecksum default-value="false">${createChecksum}</createChecksum>
+			  <localRepository>${localRepository}</localRepository>
+			  <packaging default-value="${project.packaging}"/>
+			  <pomFile default-value="${project.file}"/>
+			  <skip default-value="false">${maven.install.skip}</skip>
+			  <updateReleaseInfo default-value="false">${updateReleaseInfo}</updateReleaseInfo>
+
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <warSourceDirectory>WebContent</warSourceDirectory>
+          <!-- <outputDirectory>C:\Users\sivag\Downloads\tomcat8.0\webapps\</outputDirectory> -->
+			        
+			  <archiveClasses default-value="false"/>
+			  <attachClasses default-value="false"/>
+			  <cacheFile default-value="${project.build.directory}/war/work/webapp-cache.xml"/>
+			  <classesClassifier default-value="classes"/>
+			  <classesDirectory default-value="${project.build.outputDirectory}"/>
+			  <escapedBackslashesInFilePath default-value="false"/>
+			  <failOnMissingWebXml default-value="false"/>
+			  <filteringDeploymentDescriptors default-value="false"/>
+			  <includeEmptyDirectories default-value="false"/>
+			  <outputDirectory default-value="${project.build.directory}"/>
+			  <primaryArtifact default-value="true"/>
+			  <project default-value="${project}"/>
+			  <recompressZippedFiles default-value="true"/>
+			  <resourceEncoding default-value="${project.build.sourceEncoding}"/>
+			  <session default-value="${session}"/>
+			  <skip default-value="false">${maven.war.skip}</skip>
+			  <supportMultiLineFiltering default-value="false"/>
+			  <useCache default-value="false"/>
+			  <useDefaultDelimiters default-value="true"/>
+			  <useJvmChmod default-value="true"/>
+			  <warName default-value="${project.build.finalName}"/>
+			  <warSourceDirectory default-value="${basedir}/src/main/webapp"></warSourceDirectory>
+			  <warSourceIncludes default-value="**"/>
+			  <webappDirectory default-value="${project.build.directory}/${project.build.finalName}"/>
+			  <workDirectory default-value="${project.build.directory}/war/work"/>
+			</configuration>
+      </plugin>
+      <plugin>  
+		 <groupId>org.apache.tomcat.maven</groupId>  
+		 <artifactId>tomcat7-maven-plugin</artifactId>  
+		 <version>2.2</version>  
+		 <configuration>  
+		  <url>http://localhost:8080/manager/text</url>  
+		  <server>TomcatServer</server>    <!-- *(From maven > settings.xml)* -->
+		  <username>tomcat</username>  
+		  <password>s3cret</password>
+		  <!-- <path>/Person</path> -->   
+		 </configuration>   
+		</plugin>   
+    </plugins>
+    </pluginManagement>
+  </build>
+</project>

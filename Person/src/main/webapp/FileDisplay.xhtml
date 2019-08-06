@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html  lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+<head>
+<meta charset="ISO-8859-1"> </meta>
+<title>XLSX File Upload</title>
+<STYLE type="text/css">
+.order-table{   
+	border-collapse:collapse;
+}
+
+.order-table-header{
+	text-align:center;
+	background:none repeat scroll 0 0 #E5E5E5;
+	border-bottom:1px solid #BBBBBB;
+	padding:16px;
+}
+
+.order-table-odd-row{
+	text-align:center;
+	background:none repeat scroll 0 0 #FFFFFFF;
+	border-top:1px solid #BBBBBB;
+}
+
+.order-table-even-row{
+	text-align:center;
+	background:none repeat scroll 0 0 #F9F9F9;
+	border-top:1px solid #BBBBBB;
+}
+</STYLE>
+</head>
+<h:body>
+Hello World. Please use .xlsx file with only 2 columns !!!
+<pre>
+	<h:form enctype="multipart/form-data">
+        <!-- <h:inputFile id="filePath" value="#{hello.filePath}" /> -->
+        <t:inputFileUpload  id="filePathUP" value="#{hello.filePathUP}" />
+        <h:commandButton value="Post Upload" action="#{hello.upload}" />
+    </h:form> 
+</pre>
+<pre>
+
+	#{hello.fileContent}
+</pre>
+<h:dataTable value="#{hello.persons}" var="person" styleClass="order-table"
+    			headerClass="order-table-header"
+    			rowClasses="order-table-odd-row,order-table-even-row" >
+<h:column >
+				<f:facet name="header" >First Name</f:facet>
+                    #{person.firstName}
+                </h:column>
+                <h:column>
+				<f:facet name="header">Last Name</f:facet>
+                    #{person.lastName}
+                </h:column>
+</h:dataTable>
+</h:body>
+</html>

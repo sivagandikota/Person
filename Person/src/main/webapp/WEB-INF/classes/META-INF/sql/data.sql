@@ -1,0 +1,1 @@
+INSERT INTO PERSONS (FirstName,LastName) values ("Hello","World")

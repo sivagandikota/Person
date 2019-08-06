@@ -1,0 +1,97 @@
+<beans 
+xmlns="http://www.springframework.org/schema/beans" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:jaxrs="http://cxf.apache.org/jaxrs" 
+xmlns:jaxrs-client="http://cxf.apache.org/jaxrs-client" 
+xmlns:jaxws="http://cxf.apache.org/jaxws" 
+xmlns:util="http://www.springframework.org/schema/util" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans  classpath:org/springframework/beans/factory/xml/spring-beans-4.1.xsd 
+					http://www.springframework.org/schema/context classpath:org/springframework/context/config/spring-context-4.1.xsd 
+					http://cxf.apache.org/jaxws classpath:schemas/jaxws.xsd 
+					http://cxf.apache.org/jaxrs classpath:schemas/jaxrs.xsd 
+					http://cxf.apache.org/jaxrs jaxrs.xsd 
+					http://www.springframework.org/schema/util classpath:org/springframework/beans/factory/xml/spring-util-4.1.xsd
+					http://www.springframework.org/schema/tool classpath:org/springframework/beans/factory/xml/spring-tool-4.1.xsd 
+					http://cxf.apache.org/jaxrs-client http://cxf.apache.org/schemas/jaxrs-client.xsd
+					http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+    
+           
+    
+       
+    
+    
+<!-- <jaxrs:server id="helloServiceBean" address="/helloService" >
+        <jaxrs:serviceBeans>
+            <bean  class="person.HelloService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+        <jaxrs:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxrs:features>
+    </jaxrs:server>
+    <jaxrs:server id="SalesOrderServiceBean" address="/salesOrder" >
+        <jaxrs:serviceBeans >
+            <bean  class="com.ondemand.SalesOrderImpl" />
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+        <jaxrs:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxrs:features>
+    </jaxrs:server> -->
+    
+      <jaxrs:server id="sapSalesOrder" serviceClass="com.ASalesOrderApiInterface" address="/ASalesOrderApiService">
+        <jaxrs:serviceBeans>
+            <bean class="com.ASalesOrderApiExample"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+        <jaxrs:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxrs:features>
+    </jaxrs:server>
+    
+    
+    
+    <jaxws:endpoint id="sapSalesOrderWs" implementor="com.ASalesOrderApiExample"  address="/ASalesOrder"  >  <!-- xsi:schemaLocation="/Person/WEB-INF/classes/wsdl/HelloService.wsdl" -->  
+     	<jaxws:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxws:features>
+    </jaxws:endpoint>
+    <jaxws:endpoint id="sapZ_WPOP_SKU_ORIGINws" implementor="com.ZwPopSkuOrigin"  address="/Z_WPOP_SKU_ORIGIN"  >  <!-- xsi:schemaLocation="/Person/WEB-INF/classes/wsdl/HelloService.wsdl" -->  
+     	<jaxws:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxws:features>
+    </jaxws:endpoint>
+    <jaxws:endpoint id="sapZ_B2B_CUST_INQws" implementor="com.Zb2BCustInq"  address="/Z_B2B_CUST_INQ"  >    
+     	<jaxws:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxws:features>
+    </jaxws:endpoint>
+    <jaxws:endpoint id="sapZ_B2B_OPEN_NEW_ORDERws" implementor="com.Zb2BOpenNewOrder"  address="/Z_B2B_OPEN_NEW_ORDER"  >    
+     	<jaxws:features>
+     		<!-- <bean class="com.sap.cloud.sdk.s4hana.connectivity.ErpConfigContext" id="erpConfigContext"></bean> -->
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxws:features>
+    </jaxws:endpoint>
+    
+    <!-- <jaxws:endpoint id="helloWorld" implementor="#helloServiceBean"  address="/HelloManager"  >    
+     	<jaxws:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxws:features>
+    </jaxws:endpoint>
+    
+    <jaxws:endpoint id="salesOrder" implementor="com.ondemand.SalesOrderImpl"  address="/SalesOrder">  xsi:schemaLocation="/Person/WEB-INF/classes/wsdl/SalesOrder.wsdl"  
+     	<jaxws:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxws:features>
+    </jaxws:endpoint> -->
+       
+    <bean id="helloServiceBean" class="person.HelloService" />
+    <bean id="sales" class="person.SalesOrderUploadView" />
+    
+</beans>

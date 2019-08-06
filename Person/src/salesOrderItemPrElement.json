@@ -1,0 +1,296 @@
+{
+	"d": {
+		"results": [
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='44728',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='44728',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderItemPrElementType"
+				},
+				"SalesOrder": "44728",
+				"SalesOrderItem": "1",
+				"PricingProcedureStep": "10",
+				"PricingProcedureCounter": "1",
+				"ConditionType": "PCO1",
+				"PricingDateTime": "20170921000000",
+				"ConditionCalculationType": "C",
+				"ConditionBaseValue": "1.000000000",
+				"ConditionRateValue": "1000.000000000",
+				"ConditionCurrency": "EUR",
+				"ConditionQuantity": "1",
+				"ConditionQuantityUnit": "AU",
+				"ConditionCategory": "Q",
+				"ConditionIsForStatistics": false,
+				"PricingScaleType": "",
+				"IsRelevantForAccrual": false,
+				"CndnIsRelevantForInvoiceList": "",
+				"ConditionOrigin": "C",
+				"IsGroupCondition": "",
+				"ConditionRecord": "",
+				"ConditionSequentialNumber": "0",
+				"TaxCode": "",
+				"WithholdingTaxCode": "",
+				"CndnRoundingOffDiffAmount": "0.000",
+				"ConditionAmount": "1000.00",
+				"TransactionCurrency": "EUR",
+				"ConditionControl": "C",
+				"ConditionInactiveReason": "",
+				"ConditionClass": "B",
+				"PrcgProcedureCounterForHeader": "0",
+				"FactorForConditionBasisValue": "0",
+				"StructureCondition": "",
+				"PeriodFactorForCndnBasisValue": "0",
+				"PricingScaleBasis": "",
+				"ConditionScaleBasisValue": "0.000000000",
+				"ConditionScaleBasisUnit": "",
+				"ConditionScaleBasisCurrency": "",
+				"CndnIsRelevantForIntcoBilling": false,
+				"ConditionIsManuallyChanged": true,
+				"ConditionIsForConfiguration": false,
+				"VariantCondition": "",
+				"to_SalesOrder": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='44728',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')/to_SalesOrder"
+					}
+				},
+				"to_SalesOrderItem": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='44728',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')/to_SalesOrderItem"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='44729',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='44729',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderItemPrElementType"
+				},
+				"SalesOrder": "44729",
+				"SalesOrderItem": "1",
+				"PricingProcedureStep": "10",
+				"PricingProcedureCounter": "1",
+				"ConditionType": "PCO1",
+				"PricingDateTime": "20170921000000",
+				"ConditionCalculationType": "C",
+				"ConditionBaseValue": "1.000000000",
+				"ConditionRateValue": "1000.000000000",
+				"ConditionCurrency": "EUR",
+				"ConditionQuantity": "1",
+				"ConditionQuantityUnit": "AU",
+				"ConditionCategory": "Q",
+				"ConditionIsForStatistics": false,
+				"PricingScaleType": "",
+				"IsRelevantForAccrual": false,
+				"CndnIsRelevantForInvoiceList": "",
+				"ConditionOrigin": "C",
+				"IsGroupCondition": "",
+				"ConditionRecord": "",
+				"ConditionSequentialNumber": "0",
+				"TaxCode": "",
+				"WithholdingTaxCode": "",
+				"CndnRoundingOffDiffAmount": "0.000",
+				"ConditionAmount": "1000.00",
+				"TransactionCurrency": "EUR",
+				"ConditionControl": "C",
+				"ConditionInactiveReason": "",
+				"ConditionClass": "B",
+				"PrcgProcedureCounterForHeader": "0",
+				"FactorForConditionBasisValue": "0",
+				"StructureCondition": "",
+				"PeriodFactorForCndnBasisValue": "0",
+				"PricingScaleBasis": "",
+				"ConditionScaleBasisValue": "0.000000000",
+				"ConditionScaleBasisUnit": "",
+				"ConditionScaleBasisCurrency": "",
+				"CndnIsRelevantForIntcoBilling": false,
+				"ConditionIsManuallyChanged": true,
+				"ConditionIsForConfiguration": false,
+				"VariantCondition": "",
+				"to_SalesOrder": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='44729',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')/to_SalesOrder"
+					}
+				},
+				"to_SalesOrderItem": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='44729',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')/to_SalesOrderItem"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='49479',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='49479',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderItemPrElementType"
+				},
+				"SalesOrder": "49479",
+				"SalesOrderItem": "1",
+				"PricingProcedureStep": "10",
+				"PricingProcedureCounter": "1",
+				"ConditionType": "PCO1",
+				"PricingDateTime": "20171126000000",
+				"ConditionCalculationType": "C",
+				"ConditionBaseValue": "1.000000000",
+				"ConditionRateValue": "1000.000000000",
+				"ConditionCurrency": "EUR",
+				"ConditionQuantity": "1",
+				"ConditionQuantityUnit": "AU",
+				"ConditionCategory": "Q",
+				"ConditionIsForStatistics": false,
+				"PricingScaleType": "",
+				"IsRelevantForAccrual": false,
+				"CndnIsRelevantForInvoiceList": "",
+				"ConditionOrigin": "C",
+				"IsGroupCondition": "",
+				"ConditionRecord": "",
+				"ConditionSequentialNumber": "0",
+				"TaxCode": "",
+				"WithholdingTaxCode": "",
+				"CndnRoundingOffDiffAmount": "0.000",
+				"ConditionAmount": "1000.00",
+				"TransactionCurrency": "EUR",
+				"ConditionControl": "C",
+				"ConditionInactiveReason": "",
+				"ConditionClass": "B",
+				"PrcgProcedureCounterForHeader": "0",
+				"FactorForConditionBasisValue": "0",
+				"StructureCondition": "",
+				"PeriodFactorForCndnBasisValue": "0",
+				"PricingScaleBasis": "",
+				"ConditionScaleBasisValue": "0.000000000",
+				"ConditionScaleBasisUnit": "",
+				"ConditionScaleBasisCurrency": "",
+				"CndnIsRelevantForIntcoBilling": false,
+				"ConditionIsManuallyChanged": true,
+				"ConditionIsForConfiguration": false,
+				"VariantCondition": "",
+				"to_SalesOrder": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='49479',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')/to_SalesOrder"
+					}
+				},
+				"to_SalesOrderItem": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='49479',SalesOrderItem='1',PricingProcedureStep='10',PricingProcedureCounter='1')/to_SalesOrderItem"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='1',SalesOrderItem='10',PricingProcedureStep='20',PricingProcedureCounter='1')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='1',SalesOrderItem='10',PricingProcedureStep='20',PricingProcedureCounter='1')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderItemPrElementType"
+				},
+				"SalesOrder": "1",
+				"SalesOrderItem": "10",
+				"PricingProcedureStep": "20",
+				"PricingProcedureCounter": "1",
+				"ConditionType": "PPR0",
+				"PricingDateTime": "20160817000000",
+				"ConditionCalculationType": "C",
+				"ConditionBaseValue": "3.000000000",
+				"ConditionRateValue": "17.550000000",
+				"ConditionCurrency": "USD",
+				"ConditionQuantity": "1",
+				"ConditionQuantityUnit": "PC",
+				"ConditionCategory": "",
+				"ConditionIsForStatistics": false,
+				"PricingScaleType": "",
+				"IsRelevantForAccrual": false,
+				"CndnIsRelevantForInvoiceList": "",
+				"ConditionOrigin": "A",
+				"IsGroupCondition": "",
+				"ConditionRecord": "0000007502",
+				"ConditionSequentialNumber": "1",
+				"TaxCode": "",
+				"WithholdingTaxCode": "",
+				"CndnRoundingOffDiffAmount": "0.000",
+				"ConditionAmount": "52.65",
+				"TransactionCurrency": "USD",
+				"ConditionControl": "F",
+				"ConditionInactiveReason": "",
+				"ConditionClass": "B",
+				"PrcgProcedureCounterForHeader": "0",
+				"FactorForConditionBasisValue": "0",
+				"StructureCondition": "",
+				"PeriodFactorForCndnBasisValue": "0",
+				"PricingScaleBasis": "",
+				"ConditionScaleBasisValue": "0.000000000",
+				"ConditionScaleBasisUnit": "",
+				"ConditionScaleBasisCurrency": "",
+				"CndnIsRelevantForIntcoBilling": false,
+				"ConditionIsManuallyChanged": false,
+				"ConditionIsForConfiguration": false,
+				"VariantCondition": "",
+				"to_SalesOrder": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='1',SalesOrderItem='10',PricingProcedureStep='20',PricingProcedureCounter='1')/to_SalesOrder"
+					}
+				},
+				"to_SalesOrderItem": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='1',SalesOrderItem='10',PricingProcedureStep='20',PricingProcedureCounter='1')/to_SalesOrderItem"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='2',SalesOrderItem='10',PricingProcedureStep='20',PricingProcedureCounter='1')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='2',SalesOrderItem='10',PricingProcedureStep='20',PricingProcedureCounter='1')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderItemPrElementType"
+				},
+				"SalesOrder": "2",
+				"SalesOrderItem": "10",
+				"PricingProcedureStep": "20",
+				"PricingProcedureCounter": "1",
+				"ConditionType": "PPR0",
+				"PricingDateTime": "20160902000000",
+				"ConditionCalculationType": "C",
+				"ConditionBaseValue": "10.000000000",
+				"ConditionRateValue": "35.350000000",
+				"ConditionCurrency": "USD",
+				"ConditionQuantity": "1",
+				"ConditionQuantityUnit": "PC",
+				"ConditionCategory": "",
+				"ConditionIsForStatistics": false,
+				"PricingScaleType": "",
+				"IsRelevantForAccrual": false,
+				"CndnIsRelevantForInvoiceList": "",
+				"ConditionOrigin": "A",
+				"IsGroupCondition": "",
+				"ConditionRecord": "0000007659",
+				"ConditionSequentialNumber": "1",
+				"TaxCode": "",
+				"WithholdingTaxCode": "",
+				"CndnRoundingOffDiffAmount": "0.000",
+				"ConditionAmount": "353.50",
+				"TransactionCurrency": "USD",
+				"ConditionControl": "A",
+				"ConditionInactiveReason": "",
+				"ConditionClass": "B",
+				"PrcgProcedureCounterForHeader": "0",
+				"FactorForConditionBasisValue": "0",
+				"StructureCondition": "",
+				"PeriodFactorForCndnBasisValue": "0",
+				"PricingScaleBasis": "",
+				"ConditionScaleBasisValue": "0.000000000",
+				"ConditionScaleBasisUnit": "",
+				"ConditionScaleBasisCurrency": "",
+				"CndnIsRelevantForIntcoBilling": false,
+				"ConditionIsManuallyChanged": false,
+				"ConditionIsForConfiguration": false,
+				"VariantCondition": "",
+				"to_SalesOrder": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='2',SalesOrderItem='10',PricingProcedureStep='20',PricingProcedureCounter='1')/to_SalesOrder"
+					}
+				},
+				"to_SalesOrderItem": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItemPrElement(SalesOrder='2',SalesOrderItem='10',PricingProcedureStep='20',PricingProcedureCounter='1')/to_SalesOrderItem"
+					}
+				}
+			}
+		]
+	}
+}

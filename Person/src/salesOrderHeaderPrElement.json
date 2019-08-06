@@ -1,0 +1,222 @@
+{
+  "d": {
+    "results": [
+      {
+        "SalesOrder": "string",
+        "PricingProcedureStep": "string",
+        "PricingProcedureCounter": "string",
+        "ConditionType": "string",
+        "PricingDateTime": "string",
+        "ConditionCalculationType": "string",
+        "ConditionBaseValue": "Unknown Type: string,null",
+        "ConditionRateValue": "Unknown Type: string,null",
+        "ConditionCurrency": "string",
+        "ConditionQuantity": "99999",
+        "ConditionQuantityUnit": "string",
+        "ConditionCategory": "string",
+        "ConditionIsForStatistics": "Unknown Type: boolean,null",
+        "PricingScaleType": "string",
+        "ConditionOrigin": "string",
+        "IsGroupCondition": "string",
+        "ConditionRecord": "string",
+        "ConditionSequentialNumber": "string",
+        "TaxCode": "string",
+        "WithholdingTaxCode": "string",
+        "CndnRoundingOffDiffAmount": "999.999",
+        "ConditionAmount": "Unknown Type: string,null",
+        "TransactionCurrency": "string",
+        "ConditionControl": "string",
+        "ConditionInactiveReason": "string",
+        "ConditionClass": "string",
+        "PrcgProcedureCounterForHeader": "string",
+        "FactorForConditionBasisValue": 3.14,
+        "StructureCondition": "string",
+        "PeriodFactorForCndnBasisValue": 3.14,
+        "PricingScaleBasis": "string",
+        "ConditionScaleBasisValue": "Unknown Type: string,null",
+        "ConditionScaleBasisUnit": "string",
+        "ConditionScaleBasisCurrency": "string",
+        "CndnIsRelevantForIntcoBilling": "Unknown Type: boolean,null",
+        "ConditionIsManuallyChanged": "Unknown Type: boolean,null",
+        "ConditionIsForConfiguration": "Unknown Type: boolean,null",
+        "VariantCondition": "string",
+        "to_SalesOrder": {
+          "SalesOrder": "string",
+          "SalesOrderType": "string",
+          "SalesOrganization": "string",
+          "DistributionChannel": "string",
+          "OrganizationDivision": "string",
+          "SalesGroup": "string",
+          "SalesOffice": "string",
+          "SalesDistrict": "string",
+          "SoldToParty": "string",
+          "CreationDate": "/Date(1492041600000)/",
+          "CreatedByUser": "string",
+          "LastChangeDate": "/Date(1492041600000)/",
+          "LastChangeDateTime": "/Date(1492098664000)/",
+          "PurchaseOrderByCustomer": "string",
+          "CustomerPurchaseOrderType": "string",
+          "CustomerPurchaseOrderDate": "/Date(1492041600000)/",
+          "SalesOrderDate": "/Date(1492041600000)/",
+          "TotalNetAmount": "Unknown Type: string,null",
+          "TransactionCurrency": "string",
+          "SDDocumentReason": "string",
+          "PricingDate": "/Date(1492041600000)/",
+          "RequestedDeliveryDate": "/Date(1492041600000)/",
+          "ShippingCondition": "string",
+          "CompleteDeliveryIsDefined": "Unknown Type: boolean,null",
+          "ShippingType": "string",
+          "HeaderBillingBlockReason": "string",
+          "DeliveryBlockReason": "string",
+          "IncotermsClassification": "string",
+          "IncotermsTransferLocation": "string",
+          "IncotermsLocation1": "string",
+          "IncotermsLocation2": "string",
+          "IncotermsVersion": "string",
+          "CustomerPaymentTerms": "string",
+          "PaymentMethod": "string",
+          "AssignmentReference": "string",
+          "OverallSDProcessStatus": "string",
+          "TotalCreditCheckStatus": "string",
+          "OverallTotalDeliveryStatus": "string",
+          "OverallSDDocumentRejectionSts": "string",
+          "to_Item": {
+            "results": [
+              {
+                "SalesOrder": "string",
+                "SalesOrderItem": "string",
+                "HigherLevelItem": "string",
+                "SalesOrderItemCategory": "string",
+                "SalesOrderItemText": "string",
+                "PurchaseOrderByCustomer": "string",
+                "Material": "string",
+                "MaterialByCustomer": "string",
+                "PricingDate": "/Date(1492041600000)/",
+                "RequestedQuantity": "999999999999.999",
+                "RequestedQuantityUnit": "string",
+                "ItemGrossWeight": "999999999999.999",
+                "ItemNetWeight": "999999999999.999",
+                "ItemWeightUnit": "string",
+                "ItemVolume": "999999999999.999",
+                "ItemVolumeUnit": "string",
+                "TransactionCurrency": "string",
+                "NetAmount": "Unknown Type: string,null",
+                "MaterialGroup": "string",
+                "MaterialPricingGroup": "string",
+                "Batch": "string",
+                "ProductionPlant": "string",
+                "StorageLocation": "string",
+                "DeliveryGroup": "string",
+                "ShippingPoint": "string",
+                "ShippingType": "string",
+                "DeliveryPriority": "string",
+                "IncotermsClassification": "string",
+                "IncotermsTransferLocation": "string",
+                "IncotermsLocation1": "string",
+                "IncotermsLocation2": "string",
+                "CustomerPaymentTerms": "string",
+                "SalesDocumentRjcnReason": "string",
+                "ItemBillingBlockReason": "string",
+                "WBSElement": "string",
+                "SDProcessStatus": "string",
+                "DeliveryStatus": "string",
+                "OrderRelatedBillingStatus": "string",
+                "to_Partner": {
+                  "results": [
+                    {
+                      "SalesOrder": "string",
+                      "SalesOrderItem": "string",
+                      "PartnerFunction": "string",
+                      "Customer": "string",
+                      "Supplier": "string",
+                      "Personnel": "string",
+                      "ContactPerson": "string"
+                    }
+                  ]
+                },
+                "to_PricingElement": {
+                  "results": [
+                    {
+                      "SalesOrder": "string",
+                      "SalesOrderItem": "string",
+                      "PricingProcedureStep": "string",
+                      "PricingProcedureCounter": "string",
+                      "ConditionType": "string",
+                      "PricingDateTime": "string",
+                      "ConditionCalculationType": "string",
+                      "ConditionBaseValue": "Unknown Type: string,null",
+                      "ConditionRateValue": "Unknown Type: string,null",
+                      "ConditionCurrency": "string",
+                      "ConditionQuantity": "99999",
+                      "ConditionQuantityUnit": "string",
+                      "ConditionCategory": "string",
+                      "ConditionIsForStatistics": "Unknown Type: boolean,null",
+                      "PricingScaleType": "string",
+                      "IsRelevantForAccrual": "Unknown Type: boolean,null",
+                      "CndnIsRelevantForInvoiceList": "string",
+                      "ConditionOrigin": "string",
+                      "IsGroupCondition": "string",
+                      "ConditionRecord": "string",
+                      "ConditionSequentialNumber": "string",
+                      "TaxCode": "string",
+                      "WithholdingTaxCode": "string",
+                      "CndnRoundingOffDiffAmount": "999.999",
+                      "ConditionAmount": "Unknown Type: string,null",
+                      "TransactionCurrency": "string",
+                      "ConditionControl": "string",
+                      "ConditionInactiveReason": "string",
+                      "ConditionClass": "string",
+                      "PrcgProcedureCounterForHeader": "string",
+                      "FactorForConditionBasisValue": 3.14,
+                      "StructureCondition": "string",
+                      "PeriodFactorForCndnBasisValue": 3.14,
+                      "PricingScaleBasis": "string",
+                      "ConditionScaleBasisValue": "Unknown Type: string,null",
+                      "ConditionScaleBasisUnit": "string",
+                      "ConditionScaleBasisCurrency": "string",
+                      "CndnIsRelevantForIntcoBilling": "Unknown Type: boolean,null",
+                      "ConditionIsManuallyChanged": "Unknown Type: boolean,null",
+                      "ConditionIsForConfiguration": "Unknown Type: boolean,null",
+                      "VariantCondition": "string"
+                    }
+                  ]
+                },
+                "to_ScheduleLine": {
+                  "results": [
+                    {
+                      "SalesOrder": "string",
+                      "SalesOrderItem": "string",
+                      "ScheduleLine": "string",
+                      "OrderQuantityUnit": "string",
+                      "ConfdOrderQtyByMatlAvailCheck": "9999999999.999",
+                      "DeliveredQtyInOrderQtyUnit": "9999999999.999",
+                      "OpenConfdDelivQtyInOrdQtyUnit": "9999999999.999",
+                      "DelivBlockReasonForSchedLine": "string"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "to_Partner": {
+            "results": [
+              {
+                "SalesOrder": "string",
+                "PartnerFunction": "string",
+                "Customer": "string",
+                "Supplier": "string",
+                "Personnel": "string",
+                "ContactPerson": "string"
+              }
+            ]
+          },
+          "to_PricingElement": {
+            "results": [
+              null
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

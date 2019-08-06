@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+      <persistence-unit name="PERSONS" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<non-jta-data-source>jdbc/DefaultDB</non-jta-data-source>
+		<!-- <non-jta-data-source>jdbc:derby:memory:DefaultDB</non-jta-data-source> -->
+		<class>model.Person</class>
+		<class>model.SalesOrder</class>
+		<class>model.SalesOrderItem</class>
+		<class>model.BusinessPartner</class>
+		<class>model.PricingElement</class>
+				
+		<properties>
+			<!-- <property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:DefaultDB;create=true"/> -->
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:jdbc/DefaultDB;create=true"/>
+			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
+			
+			
+						
+			
+			<!-- EclipseLink should create the database schema automatically -->
+			  <property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+			  <property name="eclipselink.ddl-generation.output-mode" value="database" />
+			  <property name="javax.persistence.sql-load-script-source" value="META-INF/sql/data.sql"/>
+        </properties>    
+			
+
+	</persistence-unit>
+</persistence>

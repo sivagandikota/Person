@@ -1,0 +1,287 @@
+
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="SalesOrderImplService" targetNamespace="http://service/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://service/" elementFormDefault="unqualified" targetNamespace="http://service/" version="1.0">
+
+  <xs:element name="businessPartner" type="tns:businessPartner"/>
+
+  <xs:element name="create" type="tns:create"/>
+
+  <xs:element name="createResponse" type="tns:createResponse"/>
+
+  <xs:element name="delete" type="tns:delete"/>
+
+  <xs:element name="deleteResponse" type="tns:deleteResponse"/>
+
+  <xs:element name="pricingElement" type="tns:pricingElement"/>
+
+  <xs:element name="read" type="tns:read"/>
+
+  <xs:element name="readAll" type="tns:readAll"/>
+
+  <xs:element name="readAllResponse" type="tns:readAllResponse"/>
+
+  <xs:element name="readResponse" type="tns:readResponse"/>
+
+  <xs:element name="salesOrder" type="tns:salesOrder"/>
+
+  <xs:element name="salesOrderItem" type="tns:salesOrderItem"/>
+
+  <xs:element name="update" type="tns:update"/>
+
+  <xs:element name="updateResponse" type="tns:updateResponse"/>
+
+  <xs:complexType name="readAll">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="readAllResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:salesOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="salesOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="assignmentReference" type="xs:string"/>
+      <xs:element name="completeDeliveryIsDefined" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="createdByUser" type="xs:string"/>
+      <xs:element minOccurs="0" name="creationDate" type="tns:timestamp"/>
+      <xs:element minOccurs="0" name="customerPaymentTerms" type="xs:string"/>
+      <xs:element minOccurs="0" name="customerPurchaseOrderDate" type="tns:timestamp"/>
+      <xs:element minOccurs="0" name="customerPurchaseOrderType" type="xs:string"/>
+      <xs:element minOccurs="0" name="deliveryBlockReason" type="xs:string"/>
+      <xs:element minOccurs="0" name="distributionChannel" type="xs:string"/>
+      <xs:element minOccurs="0" name="headerBillingBlockReason" type="xs:string"/>
+      <xs:element minOccurs="0" name="incotermsClassification" type="xs:string"/>
+      <xs:element minOccurs="0" name="incotermsLocation1" type="xs:string"/>
+      <xs:element minOccurs="0" name="incotermsLocation2" type="xs:string"/>
+      <xs:element minOccurs="0" name="incotermsTransferLocation" type="xs:string"/>
+      <xs:element minOccurs="0" name="incotermsVersion" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="item" nillable="true" type="tns:salesOrderItem"/>
+      <xs:element minOccurs="0" name="lastChangeDate" type="tns:timestamp"/>
+      <xs:element minOccurs="0" name="lastChangeDateTime" type="tns:timestamp"/>
+      <xs:element minOccurs="0" name="organizationDivision" type="xs:string"/>
+      <xs:element minOccurs="0" name="overallSDDocumentRejectionSts" type="xs:string"/>
+      <xs:element minOccurs="0" name="overallSDProcessStatus" type="xs:string"/>
+      <xs:element minOccurs="0" name="overallTotalDeliveryStatus" type="xs:string"/>
+      <xs:element minOccurs="0" name="partner" type="tns:businessPartner"/>
+      <xs:element minOccurs="0" name="paymentMethod" type="xs:string"/>
+      <xs:element minOccurs="0" name="pricingDate" type="tns:timestamp"/>
+      <xs:element minOccurs="0" name="pricingElement" type="tns:pricingElement"/>
+      <xs:element minOccurs="0" name="purchaseOrderByCustomer" type="xs:string"/>
+      <xs:element minOccurs="0" name="requestedDeliveryDate" type="tns:timestamp"/>
+      <xs:element minOccurs="0" name="SDDocumentReason" type="xs:string"/>
+      <xs:element minOccurs="0" name="salesDistrict" type="xs:string"/>
+      <xs:element minOccurs="0" name="salesGroup" type="xs:string"/>
+      <xs:element minOccurs="0" name="salesOffice" type="xs:string"/>
+      <xs:element minOccurs="0" name="salesOrder" type="xs:long"/>
+      <xs:element minOccurs="0" name="salesOrderDate" type="tns:timestamp"/>
+      <xs:element minOccurs="0" name="salesOrderType" type="xs:string"/>
+      <xs:element minOccurs="0" name="salesOrganization" type="xs:string"/>
+      <xs:element minOccurs="0" name="shippingCondition" type="xs:string"/>
+      <xs:element minOccurs="0" name="shippingType" type="xs:string"/>
+      <xs:element minOccurs="0" name="soldToParty" type="xs:string"/>
+      <xs:element minOccurs="0" name="totalCreditCheckStatus" type="xs:string"/>
+      <xs:element minOccurs="0" name="totalNetAmount" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="transactionCurrency" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="timestamp">
+    <xs:sequence>
+      <xs:element name="nanos" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="salesOrderItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="salesOrder" type="tns:salesOrder"/>
+      <xs:element minOccurs="0" name="salesOrderItem" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="businessPartner">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="businessPartner" type="xs:long"/>
+      <xs:element minOccurs="0" name="salesOrder" type="tns:salesOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="pricingElement">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="pricingElement" type="xs:long"/>
+      <xs:element minOccurs="0" name="salesOrder" type="tns:salesOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="delete">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deleteResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="read">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="readResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:salesOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="create">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:salesOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="update">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:salesOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part element="tns:deleteResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="read">
+    <wsdl:part element="tns:read" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="readAllResponse">
+    <wsdl:part element="tns:readAllResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part element="tns:readResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="readAll">
+    <wsdl:part element="tns:readAll" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateResponse">
+    <wsdl:part element="tns:updateResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="delete">
+    <wsdl:part element="tns:delete" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="create">
+    <wsdl:part element="tns:create" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part element="tns:createResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="update">
+    <wsdl:part element="tns:update" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="SalesOrder">
+    <wsdl:operation name="readAll">
+      <wsdl:input message="tns:readAll" name="readAll">
+    </wsdl:input>
+      <wsdl:output message="tns:readAllResponse" name="readAllResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input message="tns:delete" name="delete">
+    </wsdl:input>
+      <wsdl:output message="tns:deleteResponse" name="deleteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input message="tns:read" name="read">
+    </wsdl:input>
+      <wsdl:output message="tns:readResponse" name="readResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input message="tns:create" name="create">
+    </wsdl:input>
+      <wsdl:output message="tns:createResponse" name="createResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="update">
+      <wsdl:input message="tns:update" name="update">
+    </wsdl:input>
+      <wsdl:output message="tns:updateResponse" name="updateResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SalesOrderImplServiceSoapBinding" type="tns:SalesOrder">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="readAll">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="readAll">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="readAllResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="delete">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="read">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="create">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="update">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="update">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SalesOrderImplService">
+    <wsdl:port binding="tns:SalesOrderImplServiceSoapBinding" name="SalesOrderPort">
+      <soap:address location="http://localhost:8080/Person/ws/SalesOrder"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

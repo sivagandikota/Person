@@ -1,0 +1,96 @@
+{
+	"d": {
+		"results": [
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='1',PartnerFunction='SP')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='1',PartnerFunction='SP')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderHeaderPartnerType"
+				},
+				"SalesOrder": "1",
+				"PartnerFunction": "SP",
+				"Customer": "17100001",
+				"Supplier": "",
+				"Personnel": "0",
+				"ContactPerson": "0",
+				"to_SalesOrder": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='1',PartnerFunction='SP')/to_SalesOrder"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='2',PartnerFunction='SP')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='2',PartnerFunction='SP')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderHeaderPartnerType"
+				},
+				"SalesOrder": "2",
+				"PartnerFunction": "SP",
+				"Customer": "17100001",
+				"Supplier": "",
+				"Personnel": "0",
+				"ContactPerson": "0",
+				"to_SalesOrder": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='2',PartnerFunction='SP')/to_SalesOrder"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='3',PartnerFunction='SP')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='3',PartnerFunction='SP')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderHeaderPartnerType"
+				},
+				"SalesOrder": "3",
+				"PartnerFunction": "SP",
+				"Customer": "17100001",
+				"Supplier": "",
+				"Personnel": "0",
+				"ContactPerson": "0",
+				"to_SalesOrder": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='3',PartnerFunction='SP')/to_SalesOrder"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='4',PartnerFunction='SP')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='4',PartnerFunction='SP')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderHeaderPartnerType"
+				},
+				"SalesOrder": "4",
+				"PartnerFunction": "SP",
+				"Customer": "17100001",
+				"Supplier": "",
+				"Personnel": "0",
+				"ContactPerson": "0",
+				"to_SalesOrder": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='4',PartnerFunction='SP')/to_SalesOrder"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='5',PartnerFunction='SP')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='5',PartnerFunction='SP')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderHeaderPartnerType"
+				},
+				"SalesOrder": "5",
+				"PartnerFunction": "SP",
+				"Customer": "17100001",
+				"Supplier": "",
+				"Personnel": "0",
+				"ContactPerson": "0",
+				"to_SalesOrder": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner(SalesOrder='5',PartnerFunction='SP')/to_SalesOrder"
+					}
+				}
+			}
+		]
+	}
+}

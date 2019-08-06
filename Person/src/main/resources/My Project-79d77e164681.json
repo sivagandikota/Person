@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "valid-logic-223907",
+  "private_key_id": "79d77e1646814595b8b61ed0025a6f6e3a5ca03c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDtDyL9x5F2n2GZ\nppsZxI4tlZhoBYz5p/wCZTs2T8nFDhgyCWfRpdgfpD03FnjUqY+e6dAK7q82fXDd\n7HSnZr84BnwhCw18oddsfWYnpWa5EpBZBbEIiTevxmLq9oFnaktcIwXqOUd1/ERK\njg/k5yk9Kg95/Tr2oLqDPn57WrQjhZ9Gw26SObPPBuVEIhfsKQQRHd5Cw8nAR1sT\nPui72ZBbrCfRa2AzMy2VISfutSYOHB4pZaRMo8ZzqfVulbsLTn7DE1Z2cmz6Upp3\nNfnRHZ/5BPxuCX3E9v867z3WhIXUkcdFQEepegHZ1pgKagqOqjCwkrg57AFxu4F8\nYjCTUbgBAgMBAAECgf9IjUybeJ8ZO8fjMdpf4iHUuBp5u5+QL2YxiLBWlWGeenHT\nq1oOD9o71OHnU9L0D/ELJQQT7hKYQRjW0uEUJ54RlFDpMmv7Eo01gJHpqfWGYhtL\nif8xXZptcYoheNA7lllgf/EpF966SjrPlpFgVsWITEpWsenmqv2deilVSq1XMTdH\nxCZMGGlqSyRdmVybbmqHd/2UAqfGjRZDu3BDye8F3fy47AhHnxXkVfJajIb89L+j\nRDMX7fB8x/1M+5eiUVTu6/oHXN7DtRcR+oaBJZ3rDdLIEmCX4RiHaTsZ5Zo2501D\nbk2O0HLFbxshYr2lxWd7m7Y1qj7XD7vBFzCAV0ECgYEA+47/SaO8J9305Qt4i+8H\ninT9vDYaqtWJqUFh8P8Y8HSjNeHoRj63hiq8Kq7cGGXticmw3MQAgZe8uESPsQgG\ndmCDUbK0akAXC0rY7A6jebeKaAW/dPDKjMd7eVA4FO3OUUk52BhSNiim43nWRg5h\nRlfPPHvIG4qDo6ZOzKXxLBECgYEA8T6atsbO4ArdiRhYGXJKE/Wzl1vkUHa6OQnW\nGJWeKJq9G8rjJbY6F8UolGaUqeFqapJNPpkLEIaUmtV9KIIF+tJ1hSvX05aHLy9o\nA4XLRjoPHDb3qteVM9qEEpNHCcc2vx5jqpSHrF9lXXES9owCK65959W9xoUCsdam\nm1X/fPECgYBUetRe7Z7NoKuSlASasd5NcDaaE21nO6ksbymuHm1Iq1L4UHKJzJwj\ncYyZpPmDNA/Ouy4rJaOp4cRd+aBr6m8JKCZRtHsER5u1jiBFPjFGOg5AGtYONqM/\nHerodbkvxiEIiVfkq15Ik+Rf9lWwVznxvqF5BXTRUvYcakiCT6QrkQKBgQDc4nt6\nOxIUJR6udjHEKtcU63UicyrbWbosm4sCO4vylavtFJliYDVUqlr7delMmm57YbWE\nSVDOMstB8ZOFUXf0LlsYMgqNW1gvpfJQt2JlzKclKFcgf//G2J7w+xSiKVtBJqwO\n9aw78aS4J947C/q40C3L5fK7H/JVrrohpF4noQKBgQDBFzVupekbk5JRx80gUgxC\nbqxMYRF3C6R31ejyT1va5GCCqRzOktXK9fAtKCVvj36QlwiuugIHpf26ce276NB6\n1bDixVlZBtsAyyTq8gOYfuBmgy16b/mvvM2mIh9DKxrJUzwoKPsCOV7uEKjsn67r\nCB349rFXBtEKn2h2qTXjsA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "brewster@valid-logic-223907.iam.gserviceaccount.com",
+  "client_id": "102806396769453912755",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/brewster%40valid-logic-223907.iam.gserviceaccount.com"
+}

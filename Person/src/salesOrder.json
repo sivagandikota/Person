@@ -1,0 +1,316 @@
+{
+	"d": {
+		"results": [
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('1')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('1')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderType",
+					"etag": "W/\"datetimeoffset'2016-09-02T06%3A15%3A47.1257050Z'\""
+				},
+				"SalesOrder": "1",
+				"SalesOrderType": "OR",
+				"SalesOrganization": "1710",
+				"DistributionChannel": "10",
+				"OrganizationDivision": "00",
+				"SalesGroup": "",
+				"SalesOffice": "",
+				"SalesDistrict": "",
+				"SoldToParty": "17100001",
+				"CreationDate": "\/Date(1471392000000)\/",
+				"CreatedByUser": "CB9980000027",
+				"LastChangeDate": "\/Date(1472774400000)\/",
+				"LastChangeDateTime": "\/Date(1472796947125+0000)\/",
+				"PurchaseOrderByCustomer": "gfh",
+				"CustomerPurchaseOrderType": "",
+				"CustomerPurchaseOrderDate": null,
+				"SalesOrderDate": "\/Date(1471392000000)\/",
+				"TotalNetAmount": "52.65",
+				"TransactionCurrency": "USD",
+				"SDDocumentReason": "",
+				"PricingDate": "\/Date(1471392000000)\/",
+				"RequestedDeliveryDate": "\/Date(1471392000000)\/",
+				"ShippingCondition": "01",
+				"CompleteDeliveryIsDefined": false,
+				"ShippingType": "",
+				"HeaderBillingBlockReason": "",
+				"DeliveryBlockReason": "",
+				"IncotermsClassification": "EXW",
+				"IncotermsTransferLocation": "Palo Alto",
+				"IncotermsLocation1": "Palo Alto",
+				"IncotermsLocation2": "",
+				"IncotermsVersion": "",
+				"CustomerPaymentTerms": "0004",
+				"PaymentMethod": "",
+				"AssignmentReference": "",
+				"OverallSDProcessStatus": "C",
+				"TotalCreditCheckStatus": "",
+				"OverallTotalDeliveryStatus": "C",
+				"OverallSDDocumentRejectionSts": "A",
+				"to_Item": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('1')/to_Item"
+					}
+				},
+				"to_Partner": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('1')/to_Partner"
+					}
+				},
+				"to_PricingElement": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('1')/to_PricingElement"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('2')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('2')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderType",
+					"etag": "W/\"datetimeoffset'2016-09-02T06%3A12%3A15.5198080Z'\""
+				},
+				"SalesOrder": "2",
+				"SalesOrderType": "OR",
+				"SalesOrganization": "1710",
+				"DistributionChannel": "10",
+				"OrganizationDivision": "00",
+				"SalesGroup": "",
+				"SalesOffice": "",
+				"SalesDistrict": "",
+				"SoldToParty": "17100001",
+				"CreationDate": "\/Date(1472774400000)\/",
+				"CreatedByUser": "CB9980000027",
+				"LastChangeDate": null,
+				"LastChangeDateTime": "\/Date(1472796735519+0000)\/",
+				"PurchaseOrderByCustomer": "gunjan",
+				"CustomerPurchaseOrderType": "",
+				"CustomerPurchaseOrderDate": null,
+				"SalesOrderDate": "\/Date(1472774400000)\/",
+				"TotalNetAmount": "353.50",
+				"TransactionCurrency": "USD",
+				"SDDocumentReason": "",
+				"PricingDate": "\/Date(1472774400000)\/",
+				"RequestedDeliveryDate": "\/Date(1472774400000)\/",
+				"ShippingCondition": "01",
+				"CompleteDeliveryIsDefined": false,
+				"ShippingType": "",
+				"HeaderBillingBlockReason": "",
+				"DeliveryBlockReason": "",
+				"IncotermsClassification": "EXW",
+				"IncotermsTransferLocation": "Palo Alto",
+				"IncotermsLocation1": "Palo Alto",
+				"IncotermsLocation2": "",
+				"IncotermsVersion": "",
+				"CustomerPaymentTerms": "0004",
+				"PaymentMethod": "",
+				"AssignmentReference": "",
+				"OverallSDProcessStatus": "B",
+				"TotalCreditCheckStatus": "",
+				"OverallTotalDeliveryStatus": "B",
+				"OverallSDDocumentRejectionSts": "A",
+				"to_Item": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('2')/to_Item"
+					}
+				},
+				"to_Partner": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('2')/to_Partner"
+					}
+				},
+				"to_PricingElement": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('2')/to_PricingElement"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('3')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('3')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderType",
+					"etag": "W/\"datetimeoffset'2016-09-06T04%3A31%3A00.3246240Z'\""
+				},
+				"SalesOrder": "3",
+				"SalesOrderType": "OR",
+				"SalesOrganization": "1710",
+				"DistributionChannel": "10",
+				"OrganizationDivision": "00",
+				"SalesGroup": "",
+				"SalesOffice": "",
+				"SalesDistrict": "",
+				"SoldToParty": "17100001",
+				"CreationDate": "\/Date(1473120000000)\/",
+				"CreatedByUser": "CB9980000065",
+				"LastChangeDate": "\/Date(1473120000000)\/",
+				"LastChangeDateTime": "\/Date(1473136260324+0000)\/",
+				"PurchaseOrderByCustomer": "MKC99",
+				"CustomerPurchaseOrderType": "",
+				"CustomerPurchaseOrderDate": null,
+				"SalesOrderDate": "\/Date(1473120000000)\/",
+				"TotalNetAmount": "52.65",
+				"TransactionCurrency": "USD",
+				"SDDocumentReason": "",
+				"PricingDate": "\/Date(1473120000000)\/",
+				"RequestedDeliveryDate": "\/Date(1473120000000)\/",
+				"ShippingCondition": "01",
+				"CompleteDeliveryIsDefined": false,
+				"ShippingType": "",
+				"HeaderBillingBlockReason": "",
+				"DeliveryBlockReason": "",
+				"IncotermsClassification": "EXW",
+				"IncotermsTransferLocation": "Palo Alto",
+				"IncotermsLocation1": "Palo Alto",
+				"IncotermsLocation2": "",
+				"IncotermsVersion": "",
+				"CustomerPaymentTerms": "0004",
+				"PaymentMethod": "",
+				"AssignmentReference": "",
+				"OverallSDProcessStatus": "C",
+				"TotalCreditCheckStatus": "",
+				"OverallTotalDeliveryStatus": "C",
+				"OverallSDDocumentRejectionSts": "A",
+				"to_Item": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('3')/to_Item"
+					}
+				},
+				"to_Partner": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('3')/to_Partner"
+					}
+				},
+				"to_PricingElement": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('3')/to_PricingElement"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('4')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('4')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderType",
+					"etag": "W/\"datetimeoffset'2016-09-06T04%3A48%3A04.1813040Z'\""
+				},
+				"SalesOrder": "4",
+				"SalesOrderType": "OR",
+				"SalesOrganization": "1710",
+				"DistributionChannel": "10",
+				"OrganizationDivision": "00",
+				"SalesGroup": "",
+				"SalesOffice": "",
+				"SalesDistrict": "",
+				"SoldToParty": "17100001",
+				"CreationDate": "\/Date(1473120000000)\/",
+				"CreatedByUser": "CB9980000065",
+				"LastChangeDate": "\/Date(1473120000000)\/",
+				"LastChangeDateTime": "\/Date(1473137284181+0000)\/",
+				"PurchaseOrderByCustomer": "MRINAL99",
+				"CustomerPurchaseOrderType": "",
+				"CustomerPurchaseOrderDate": null,
+				"SalesOrderDate": "\/Date(1473120000000)\/",
+				"TotalNetAmount": "35.10",
+				"TransactionCurrency": "USD",
+				"SDDocumentReason": "",
+				"PricingDate": "\/Date(1473120000000)\/",
+				"RequestedDeliveryDate": "\/Date(1473120000000)\/",
+				"ShippingCondition": "01",
+				"CompleteDeliveryIsDefined": false,
+				"ShippingType": "",
+				"HeaderBillingBlockReason": "04",
+				"DeliveryBlockReason": "",
+				"IncotermsClassification": "EXW",
+				"IncotermsTransferLocation": "Palo Alto",
+				"IncotermsLocation1": "Palo Alto",
+				"IncotermsLocation2": "",
+				"IncotermsVersion": "",
+				"CustomerPaymentTerms": "0004",
+				"PaymentMethod": "",
+				"AssignmentReference": "",
+				"OverallSDProcessStatus": "C",
+				"TotalCreditCheckStatus": "",
+				"OverallTotalDeliveryStatus": "C",
+				"OverallSDDocumentRejectionSts": "A",
+				"to_Item": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('4')/to_Item"
+					}
+				},
+				"to_Partner": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('4')/to_Partner"
+					}
+				},
+				"to_PricingElement": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('4')/to_PricingElement"
+					}
+				}
+			},
+			{
+				"__metadata": {
+					"id": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('5')",
+					"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('5')",
+					"type": "API_SALES_ORDER_SRV.A_SalesOrderType",
+					"etag": "W/\"datetimeoffset'2016-09-06T04%3A35%3A34.6328160Z'\""
+				},
+				"SalesOrder": "5",
+				"SalesOrderType": "OR",
+				"SalesOrganization": "1710",
+				"DistributionChannel": "10",
+				"OrganizationDivision": "00",
+				"SalesGroup": "",
+				"SalesOffice": "",
+				"SalesDistrict": "",
+				"SoldToParty": "17100001",
+				"CreationDate": "\/Date(1473120000000)\/",
+				"CreatedByUser": "CB9980000065",
+				"LastChangeDate": null,
+				"LastChangeDateTime": "\/Date(1473136534632+0000)\/",
+				"PurchaseOrderByCustomer": "MRINAL99",
+				"CustomerPurchaseOrderType": "",
+				"CustomerPurchaseOrderDate": null,
+				"SalesOrderDate": "\/Date(1473120000000)\/",
+				"TotalNetAmount": "87.75",
+				"TransactionCurrency": "USD",
+				"SDDocumentReason": "",
+				"PricingDate": "\/Date(1473120000000)\/",
+				"RequestedDeliveryDate": "\/Date(1473120000000)\/",
+				"ShippingCondition": "01",
+				"CompleteDeliveryIsDefined": false,
+				"ShippingType": "",
+				"HeaderBillingBlockReason": "04",
+				"DeliveryBlockReason": "50",
+				"IncotermsClassification": "EXW",
+				"IncotermsTransferLocation": "Palo Alto",
+				"IncotermsLocation1": "Palo Alto",
+				"IncotermsLocation2": "",
+				"IncotermsVersion": "",
+				"CustomerPaymentTerms": "0004",
+				"PaymentMethod": "",
+				"AssignmentReference": "",
+				"OverallSDProcessStatus": "A",
+				"TotalCreditCheckStatus": "",
+				"OverallTotalDeliveryStatus": "A",
+				"OverallSDDocumentRejectionSts": "A",
+				"to_Item": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('5')/to_Item"
+					}
+				},
+				"to_Partner": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('5')/to_Partner"
+					}
+				},
+				"to_PricingElement": {
+					"__deferred": {
+						"uri": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('5')/to_PricingElement"
+					}
+				}
+			}
+		]
+	}
+}
