@@ -130,7 +130,7 @@ public class Zb2BCustInq implements Zb2BCustInqInterface{
 				  			      .addHeader("X-CSRF-TOKEN", "FETCH")
 				  			      .addHeader("Authorization", authoriz)
 				  			      .get()
-				  			      .build();	
+				  			      .build();
 				    		client = new OkHttpClient();
 				    		call = client.newCall(request);
 				    		response = call.execute();
@@ -141,7 +141,9 @@ public class Zb2BCustInq implements Zb2BCustInqInterface{
 				    		y=gson.fromJson(responseBody, Yy1ShippingConditionsWrapper.class);
 				    		//z.setStatus("000");
 				    		System.out.println("--Shipping : " + y.getD().getResults().get(0).getVTEXT());
-				    		z.setShipping(y.getD().getResults().get(0).getVTEXT());
+				    		Shipping shipping = z.getShipping();
+				    		shipping.setShipping(z.getD().getResults().get(0).getShippingCondition());
+				    		shipping.setShippingText(y.getD().getResults().get(0).getVTEXT());
 				    	//}
 			    	}}
 			    	
@@ -181,6 +183,8 @@ public class Zb2BCustInq implements Zb2BCustInqInterface{
 					    	z.setAddress((APIBUSINESSPARTNERABusinessPartnerAddressType)w.getD().getResults().get(0));
 					    }
 					    }catch(Exception e) {e.printStackTrace();}
+					    
+				logger.debug("----Wrapper Customer Inq : " + z.toString());
 		return z;
 	}
 	

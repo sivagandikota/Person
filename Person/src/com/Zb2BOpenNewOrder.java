@@ -196,13 +196,14 @@ public class Zb2BOpenNewOrder implements Zb2BOpenNewOrderInterface {
 		aSalesOrderType.setDistributionChannel("10");
 		aSalesOrderType.setOrganizationDivision("00");
 		aSalesOrderType.setSoldToParty("SIVA G.");
+		aSalesOrderType.setPurchaseOrderByCustomer("Test Data");
 		//com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.salesorder.SalesOrder.SalesOrderBuilder builder = SalesOrder.builder();
 		//builder.
 		try {
 			apiInstance.getApiClient().addDefaultHeader("X-CSRF-TOKEN", getToken());
 			ASalesOrderType so = apiInstance.aSalesOrderPost(aSalesOrderType);
 			System.out.println("----so : " + so.toString());
-			System.out.println(apiInstance.getApiClient());
+			System.out.println(apiInstance.getApiClient().getHttpClient());
 		} catch (ApiException e1) {
 			e1.printStackTrace();
 		}

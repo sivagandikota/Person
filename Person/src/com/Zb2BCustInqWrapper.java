@@ -1,5 +1,8 @@
 package com;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gson.annotations.SerializedName;
 import com.sap.apibhub.sdk.api_business_partner.model.APIBUSINESSPARTNERABusinessPartnerAddressType;
 
@@ -10,7 +13,7 @@ public class Zb2BCustInqWrapper {
 	@SerializedName("status")
 	private String status = null;
 	@SerializedName("shipping")
-	private String shipping = null;
+	private Shipping shipping = new Shipping();
 	
 	@SerializedName("address")
 	private APIBUSINESSPARTNERABusinessPartnerAddressType address = null;
@@ -41,11 +44,11 @@ public class Zb2BCustInqWrapper {
 	
 	
 
-	public String getShipping() {
+	public Shipping getShipping() {
 		return shipping;
 	}
 
-	public void setShipping(String shipping) {
+	public void setShipping(Shipping shipping) {
 		this.shipping = shipping;
 	}
 	
@@ -61,7 +64,7 @@ public class Zb2BCustInqWrapper {
 
 	@Override
 	public String toString() {
-		return "Zb2BCustInqWrapper [d=" + d + ",\n status=" + status + ", shipping=" + shipping + ",\n address=" + address
+		return "Zb2BCustInqWrapper [d=" + d + ",\n status=" + status + ", shipping=" + shipping.toString() + ",\n address=" + address
 				+ "]";
 	}
 
