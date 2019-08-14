@@ -14,6 +14,12 @@
 		<!-- <project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> -->
 	</properties>
+	<repositories>
+    <repository>
+      <id>my-internal-site</id>
+      <url>file://C:/Users/sivag/.m2/repository</url>
+    </repository>
+  </repositories>
 	<dependencies>
 		<dependency>
 		    <groupId>javax.xml.ws</groupId>
@@ -298,6 +304,11 @@
             <artifactId>cxf-rt-transports-local</artifactId>
             <version>${cxf.version}</version>
             <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency> 
+        	<groupId>org.apache.cxf</groupId> 
+        	<artifactId>cxf-rt-transports-http-hc</artifactId> 
+        	<version>${cxf.version}</version> 
         </dependency>	 
         <dependency>
 		    <groupId>com.fasterxml.jackson.jaxrs</groupId>
@@ -336,6 +347,22 @@
 		  <artifactId>cxf-rt-frontend-jaxrs</artifactId>
 		  <version>${cxf.version}</version>
 		</dependency>
+		
+		<dependency>
+	        <groupId>org.apache.cxf</groupId>
+	        <artifactId>cxf-rt-ws-security</artifactId>
+	        <version>${cxf.version}</version>
+	    </dependency>
+	    <!-- <dependency>
+	        <groupId>org.apache.cxf</groupId>
+	        <artifactId>cxf-rt-ws-policy</artifactId>
+	        <version>${cxf.version}</version>
+	    </dependency> -->
+	    <dependency>
+	        <groupId>org.apache.cxf</groupId>
+	        <artifactId>cxf-rt-rs-service-description</artifactId>
+	        <version>${cxf.version}</version>
+	    </dependency>
 
 		<dependency>
 		    <groupId>org.apache.cxf</groupId>
@@ -427,22 +454,15 @@
   			<scope>compile</scope>
   		</dependency>
   	  
-  	  <dependency>
-	    <groupId>com.sap.apibhub</groupId>
-	    <artifactId>com.sap.apibhub.sdk</artifactId>
-	    <version>1.0.0</version>
-	    <scope>system</scope>
-    <systemPath>${project.basedir}/WebContent/WEB-INF/lib/com.sap.apibhub.sdk-1.0.0.jar</systemPath>
-	  </dependency>
 	  
 	  <dependency>
-	    <groupId>com.sap.apibhub</groupId>
-	    <artifactId>com.sap.apibhub.sdk.api_business_partner</artifactId>
-	    <version>RELEASE</version>
-	    <scope>system</scope>
-    <systemPath>${project.basedir}/WebContent/WEB-INF/lib/com.sap.apibhub.sdk.api_business_partner-1.0.0.jar</systemPath>
-	  </dependency>
-	  
+	    <groupId>com_sap_apibhub</groupId>
+	    <artifactId>API_MATERIAL_STOCK_SRV</artifactId>
+	    <version>1.0.0</version>
+	    <type>jar</type>
+	    <scope>compile</scope>
+	   </dependency>
+	   
 	  <dependency>
 		 <groupId>com.squareup.okio</groupId>
 		 <artifactId>okio</artifactId>
@@ -494,15 +514,47 @@
 		    <artifactId>gson</artifactId>
 		    <version>2.8.4</version>
 		</dependency>
-				
-  	
-	    
-				
+
+
+
+
+
+		<dependency>
+			<groupId>com_sap_apibhub</groupId>
+			<artifactId>API_SALES_ORDER_SRV</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com_sap_apibhub</groupId>
+			<artifactId>API_RESERVATION_DOCUMENT_SRV</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com_sap_apibhub</groupId>
+			<artifactId>API_BUSINESS_PARTNER</artifactId>
+			<!-- <systemPath>C:/Users/sivag/git/API_BUSINESS_PARTNER/target/API_BUSINESS_PARTNER-1.0.0.jar</systemPath> -->
+			<version>1.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-surefire-plugin</artifactId>
+	        <version>2.19.1</version>
+		</dependency>
 	</dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <pluginManagement>
     <plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19.1</version>
+        <configuration>
+	        <testFailureIgnore>true</testFailureIgnore>
+	    </configuration>
+      </plugin>
+    
     <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -519,6 +571,10 @@
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>false</overWriteSnapshots>
               <overWriteIfNewer>true</overWriteIfNewer>
+              <artifactItems>
+            
+              
+          </artifactItems>
             </configuration>
           </execution>
         </executions>
@@ -633,7 +689,7 @@
 			  <useDefaultDelimiters default-value="true"/>
 			  <useJvmChmod default-value="true"/>
 			  <warName default-value="${project.build.finalName}"/>
-			  <warSourceDirectory default-value="${basedir}/src/main/webapp">WebContent</warSourceDirectory>
+			  <warSourceDirectory default-value="${basedir}/src/main/webapp"></warSourceDirectory>
 			  <warSourceIncludes default-value="**"/>
 			  <webappDirectory default-value="${project.build.directory}/${project.build.finalName}"/>
 			  <workDirectory default-value="${project.build.directory}/war/work"/>

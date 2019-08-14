@@ -42,15 +42,19 @@
       <param-name>contextConfigLocation</param-name>
       <param-value>WEB-INF/sun-jaxws.xml</param-value>
    </context-param> -->
- 
-   <!-- <listener>
+   <context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>classpath:META-INF/spring/context-provider.xml</param-value>
+   </context-param>
+   <listener>
       <listener-class>
          org.springframework.web.context.ContextLoaderListener
       </listener-class>
-   </listener> -->
+   </listener>
+   
    <context-param>
 	<param-name>contextConfigLocation</param-name>
-	<param-value>/WEB-INF/cxf-beans.xml,/WEB-INF/cfx-servlet.xml</param-value>
+	<param-value>WEB-INF/cxf-beans.xml</param-value>
    </context-param>
   <servlet>
     <servlet-name>FacesServlet</servlet-name>
@@ -81,10 +85,10 @@
       <param-name>jaxrs.providers</param-name>
       <param-value>com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider</param-value>
     </init-param>
-    <!-- <init-param>
+    <init-param>
 			<param-name>jaxrs.address</param-name>
-			<param-value>/</param-value>
-		</init-param> -->
+			<param-value>/rs</param-value>
+		</init-param>
     <load-on-startup>4</load-on-startup>
   </servlet>
   <servlet-mapping>
@@ -121,12 +125,12 @@
         <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
         <init-param>
 	      <param-name>contextConfigLocation</param-name>
-	      <param-value>/WEB-INF/cxf-servlet.xml</param-value>
+	      <param-value>classpath:META-INF/spring/cxf-provider.xml</param-value>
 	   </init-param>
-	   <init-param>
+	   <!-- <init-param>
 	      <param-name>contextConfigLocation</param-name>
-	      <param-value>/WEB-INF/cxf-beans.xml</param-value>
-	   </init-param>
+	      <param-value>classpath:cxf-beans.xml</param-value>
+	   </init-param> -->
     </servlet>
     <servlet-mapping>
         <servlet-name>cxf</servlet-name>

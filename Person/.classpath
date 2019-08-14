@@ -19,7 +19,6 @@
 	</classpathentry>
 	<classpathentry kind="var" path="JAVA_HOME"/>
 	<classpathentry exported="true" kind="lib" path="D:/Download/neo-java-web-Tomcat8-sdk-3.83.3/api/neo-sdk-core-api-3.83.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/com.sap.apibhub.sdk-1.0.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JPA">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
@@ -42,12 +41,15 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+	<classpathentry kind="lib" path="C:/Users/sivag/git/API_BUSINESS_PARTNER/target/API_BUSINESS_PARTNER-1.0.0.jar"/>
+	<classpathentry kind="src" path="/API_RESERVATION_DOCUMENT_SRV"/>
+	<classpathentry kind="src" path="/API_MATERIAL_STOCK_SRV"/>
+	<classpathentry kind="src" path="/API_SALES_ORDER_SRV"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/com.sap.apibhub.sdk.api_business_partner-1.0.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

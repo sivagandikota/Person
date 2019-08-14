@@ -201,8 +201,6 @@ public class Zb2BCustInq implements Zb2BCustInqInterface{
 			ApiClient defaultClient = Configuration.getDefaultApiClient();
 			defaultClient.setBasePath("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER");
 			Map<String, Authentication> authentications = defaultClient.getAuthentications();
-			//authentications.put(key, value)
-			//HttpBasicAuth basicAuthentication = (HttpBasicAuth) defaultClient.getAuthentication("basicAuthentication");
 			HttpBasicAuth basicAuthentication = new HttpBasicAuth();
 			basicAuthentication.setUsername("BHF_COMM");
 			basicAuthentication.setPassword("nBhLsiwWXmfwqmX)FDLRUA6SwdCitAXUswwZwLqX");
@@ -214,26 +212,11 @@ public class Zb2BCustInq implements Zb2BCustInqInterface{
 			try {
 				Wrapper9 w9 = apiInstance.aBusinessPartnerAddressGet(null, null, null, null, null, null, null); //top, skip, filter, inlinecount, orderby, select, expand
 				System.out.println("----w9 : " + w9.toString());
+				
 			} catch (ApiException e1) {
 				e1.printStackTrace();
 			}    
-			
-			
-	    ApiClient api = new ApiClient();
-	    api.setBasePath(BASE_URL);
-	    api.setUsername("BHF_COMM");
-	    api.setPassword("nBhLsiwWXmfwqmX)FDLRUA6SwdCitAXUswwZwLqX");
-	    
-	    try {
-			ApiResponse body = api.execute(api.getHttpClient().newCall(request));
-			System.out.println("ApiResponse ---- "+body.getClass());
-			System.out.println("ApiResponse ---- "+body.getData());
-			System.out.println("ApiResponse ---- "+body.getData().toString());
-			System.out.println("ApiResponse ---- "+body.toString());
-		} catch (ApiException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 
 }

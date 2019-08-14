@@ -78,6 +78,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans  classpath:org/s
              <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
          </jaxws:features>
     </jaxws:endpoint>
+    <jaxws:endpoint id="sapZ_B2B_ADD_ORDER_ITEMws" implementor="com.Zb2BAddOrderItem"  address="/Z_B2B_ADD_ORDER_ITEM"  >    
+     	<jaxws:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxws:features>
+    </jaxws:endpoint>
     
     <!-- <jaxws:endpoint id="helloWorld" implementor="#helloServiceBean"  address="/HelloManager"  >    
      	<jaxws:features>
@@ -91,7 +96,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans  classpath:org/s
          </jaxws:features>
     </jaxws:endpoint> -->
        
-    <bean id="helloServiceBean" class="person.HelloService" />
-    <bean id="sales" class="person.SalesOrderUploadView" />
-    
+    <!-- <bean id="helloServiceBean" class="person.HelloService" /> -->
+    <!-- <bean id="sales" class="person.SalesOrderUploadView" /> -->
+    <import resource="classpath:META-INF/spring/cxf-provider.xml" />
 </beans>
