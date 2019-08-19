@@ -123,7 +123,20 @@ public class Zb2BCustInq implements Zb2BCustInqInterface{
 			    		if(  z.getD().getResults().get(0).getShippingCondition().length()>0) {if(z.getD().getResults().get(0).getShippingCondition().matches("00")){z.setStatus("001");}else {
 				    	//else {
 				    		// https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json
-				    		BASE_URL="https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$filter=VSBED eq '"+z.getD().getResults().get(0).getShippingCondition()+"'";
+				    		//BASE_URL="https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$filter=VSBED eq '"+z.getD().getResults().get(0).getShippingCondition()+"'";
+//00- UPS/FEDEX - load all the below:
+//01- UPS - 01-27
+			    			//https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json&$orderby=ShippingCondition asc&$filter=ShippingCondition  eq '01' or ShippingCondition  eq '02' or ShippingCondition  eq '03' or ShippingCondition  eq '04' or ShippingCondition  eq '05' or ShippingCondition  eq '06' or ShippingCondition  eq '07' or ShippingCondition  eq '08' or ShippingCondition  eq '09' or ShippingCondition  eq '10' or ShippingCondition  eq '11' or ShippingCondition  eq '12' or ShippingCondition  eq '13' or ShippingCondition  eq '14' or ShippingCondition  eq '15' or ShippingCondition  eq '16' or ShippingCondition  eq '17' or ShippingCondition  eq '18' or ShippingCondition  eq '19' or ShippingCondition  eq '20' or ShippingCondition  eq '21' or ShippingCondition  eq '22' or ShippingCondition  eq '23' or ShippingCondition  eq '24' or ShippingCondition  eq '25' or ShippingCondition  eq '26' or ShippingCondition  eq '27' 
+//41- FEDEX - 41-49
+			    			//https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json&$orderby=ShippingCondition asc&$filter=ShippingCondition  eq '41' or ShippingCondition  eq '42' or ShippingCondition  eq '43' or ShippingCondition  eq '44' or ShippingCondition  eq '44' or ShippingCondition  eq '45' or ShippingCondition  eq '46' or ShippingCondition  eq '47' or ShippingCondition  eq '47' or ShippingCondition  eq '48' or ShippingCondition  eq '49'
+//75- USPS - 75-76
+			    			//https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json&$orderby=ShippingCondition asc&$filter=ShippingCondition  eq '75' or ShippingCondition  eq '76'
+//80- DHL - 80
+//L1- Loomis - L1
+//P1- Purolator - P1-P4
+//WC- WillCall/Pickup			    			
+			    			
+			    			BASE_URL="https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json";//&filter=ShippingCondition eq '"+z.getD().getResults().get(0).getShippingCondition()+"'";
 				    		request = new Request.Builder()
 				  			      .url(BASE_URL )
 				  			      .addHeader("Content-Type", "application/json")
@@ -137,13 +150,15 @@ public class Zb2BCustInq implements Zb2BCustInqInterface{
 				    		responseBody = response.body().string();
 				    		System.out.println("---YY1_SHIPPING_CONDITIONS : " + responseBody);
 				    		gson = new Gson();
-				    		com.Yy1ShippingConditionsWrapper y = new com.Yy1ShippingConditionsWrapper();
-				    		y=gson.fromJson(responseBody, Yy1ShippingConditionsWrapper.class);
+				    		com.ShippingConditionsWrapper y = new com.ShippingConditionsWrapper();
+				    		y=gson.fromJson(responseBody, ShippingConditionsWrapper.class);
 				    		//z.setStatus("000");
-				    		System.out.println("--Shipping : " + y.getD().getResults().get(0).getVTEXT());
-				    		Shipping shipping = z.getShipping();
+				    		System.out.println("--Shipping : " + gson.toJson(y));
+				    		/*Shipping shipping = z.getShipping();
 				    		shipping.setShipping(z.getD().getResults().get(0).getShippingCondition());
-				    		shipping.setShippingText(y.getD().getResults().get(0).getVTEXT());
+				    		shipping.setShippingText(y.getD().getResults().get(0).getShippingConditionName());*/
+				    		z.setShippingList(y.getD().getResults());
+				    		System.out.println("response : "+gson.toJson(response));
 				    	//}
 			    	}}
 			    	
@@ -188,7 +203,7 @@ public class Zb2BCustInq implements Zb2BCustInqInterface{
 		return z;
 	}
 	
-	public static void main(String[] args) {
+	public static void main1(String[] args) {
 		String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=BusinessPartner eq 'SIVA G'";
 		Request request = new Request.Builder()
 			      .url(BASE_URL )
@@ -217,6 +232,34 @@ public class Zb2BCustInq implements Zb2BCustInqInterface{
 				e1.printStackTrace();
 			}    
 		
+	}
+	
+	public static void main(String[] args) {
+		String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json";
+		Request request = new Request.Builder()
+			      .url(BASE_URL )
+			      .addHeader("Content-Type", "application/json")
+			      .addHeader("X-CSRF-TOKEN", "FETCH")
+			      .addHeader("Authorization", "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==")
+			      .get()
+			      .build();	//"Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA=="
+		OkHttpClient client = new OkHttpClient();
+		Call call = client.newCall(request);
+		Response response;
+		String responseBody= null ;
+		try {
+			response = call.execute();
+			responseBody= response.body().string();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("---YY1_SHIPPING_CONDITIONS : " + responseBody);
+		Gson gson = new Gson();
+		com.ShippingConditionsWrapper y = new com.ShippingConditionsWrapper();
+		y=gson.fromJson(responseBody, ShippingConditionsWrapper.class);
+		System.out.println("ShippingConditionsWrapper.class : "+gson.toJson(y));
 	}
 
 }

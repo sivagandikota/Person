@@ -6,7 +6,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/.apt_generated"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources/WEB-INF/classes/META-INF"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
-        <property name="context-root" value="Person"/>
         <property name="java-output-path" value="/Person/build/classes"/>
+        <property name="context-root" value="Person"/>
     </wb-module>
 </project-modules>

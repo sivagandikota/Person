@@ -5,8 +5,10 @@ import com.google.gson.annotations.SerializedName;
 public class Shipping {
 	@SerializedName("ShippingCondition")
 	private String shipping;
-	@SerializedName("ShippingConditionText")
+	@SerializedName("ShippingConditionName")
 	private String shippingText;
+	@SerializedName("Language")
+	private String lang;
 	public String getShipping() {
 		return shipping;
 	}
@@ -19,10 +21,18 @@ public class Shipping {
 	public void setShippingText(String shippingText) {
 		this.shippingText = shippingText;
 	}
+	public String getLang() {
+		return lang;
+	}
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
 	@Override
 	public String toString() {
-		return "Shipping [shipping=" + shipping + ", shippingText=" + shippingText + "]";
+		return "Shipping [shipping=" + shipping + ", shippingText=" + shippingText + ", lang=" + lang + "]";
 	}
+	
+	
 	
 	
 

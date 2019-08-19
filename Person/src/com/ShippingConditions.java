@@ -2,7 +2,7 @@ package com;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Yy1ShippingConditions {
+public class ShippingConditions {
 	@SerializedName("__metadata")
 	private MetaData metadata = null;
 	@SerializedName("SAP_UUID")
@@ -17,6 +17,13 @@ public class Yy1ShippingConditions {
 	private String VTEXT = null;
 	@SerializedName("SRVCTEXT")
 	private String SRVCTEXT = null;
+	@SerializedName("ShippingCondition")
+	private String shippingCondition = null;
+	@SerializedName("Language")
+	private String language = null;
+	@SerializedName("ShippingConditionName")
+	private String shippingConditionName = null;
+	
 	
 	public MetaData getMetadata() {
 		return metadata;
@@ -60,6 +67,27 @@ public class Yy1ShippingConditions {
 	public void setSRVCTEXT(String sRVCTEXT) {
 		SRVCTEXT = sRVCTEXT;
 	}
+	
+	public String getShippingCondition() {
+		return shippingCondition;
+	}
+	public void setShippingCondition(String shippingCondition) {
+		this.shippingCondition = shippingCondition;
+	}
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+	public String getShippingConditionName() {
+		return shippingConditionName;
+	}
+	public void setShippingConditionName(String shippingConditionName) {
+		this.shippingConditionName = shippingConditionName;
+	}
+	
+	
 	
 	
 

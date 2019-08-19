@@ -21,9 +21,12 @@ import com.sap.apibhub.sdk.api_reservation_document_srv.api.AReservationDocument
 import com.sap.apibhub.sdk.api_reservation_document_srv.model.APIRESERVATIONDOCUMENTSRVAReservationDocumentHeaderType;
 import com.sap.apibhub.sdk.api_reservation_document_srv.model.AReservationDocumentHeaderType;
 import com.sap.apibhub.sdk.api_reservation_document_srv.model.Wrapper;
+import com.sap.apibhub.sdk.api_sales_order_srv.api.ASalesOrderApi;
 import com.sap.apibhub.sdk.api_sales_order_srv.model.APISALESORDERSRVASalesOrderItemType;
+import com.sap.apibhub.sdk.api_sales_order_srv.model.APISALESORDERSRVASalesOrderItemTypeCreate;
 import com.sap.apibhub.sdk.api_sales_order_srv.model.APISALESORDERSRVASalesOrderType;
 import com.sap.apibhub.sdk.api_sales_order_srv.model.APISALESORDERSRVASalesOrderTypeCreate;
+import com.sap.apibhub.sdk.api_sales_order_srv.model.APISALESORDERSRVASalesOrderTypecreateToItem;
 import com.sap.apibhub.sdk.api_sales_order_srv.model.CollectionOfASalesOrderItemType;
 import com.sap.apibhub.sdk.api_sales_order_srv.model.CollectionOfASalesOrderType;
 import com.sap.apibhub.sdk.client.ApiClient;
@@ -35,12 +38,14 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 
 public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 	static Logger logger = CloudLoggerFactory.getLogger(Zb2BAddOrderItem.class);
 	@Resource
 	WebServiceContext wsctx;
 	String csrf;
+	Gson gson = new Gson();
 
 	@Override
 	public Object addOrderItem(String customerNo, String reservationId,String salesOrderId, String orderMaterial, String qty, String batch,
@@ -197,7 +202,7 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 				resultsItem.setSalesOrder(salesOrderId);
 				wrapperSo.getD().getResults().iterator().next().getToItem().addResultsItem(resultsItem);
 				BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json";
-				wrapperSo = (com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper) this.postData(BASE_URL, authoriz, csrf, wrapperSo,"patch");
+				wrapperSo = (com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper) this.postData(BASE_URL, authoriz, Zb2BOpenNewOrder.getToken(), wrapperSo,"patch");
 				ordNres.setSalesOrder(wrapperSo);
 			}
 		
@@ -212,25 +217,64 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 				com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper soWrap = new com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper();
 				CollectionOfASalesOrderType soColl = new CollectionOfASalesOrderType();
 				CollectionOfASalesOrderItemType soItemColl =new CollectionOfASalesOrderItemType();  
- 				APISALESORDERSRVASalesOrderType resultOrder = new APISALESORDERSRVASalesOrderType();
-				APISALESORDERSRVASalesOrderItemType resultsItem = new APISALESORDERSRVASalesOrderItemType();
+				APISALESORDERSRVASalesOrderTypeCreate resultOrder = new APISALESORDERSRVASalesOrderTypeCreate();
+				APISALESORDERSRVASalesOrderTypecreateToItem resultsToItem = new APISALESORDERSRVASalesOrderTypecreateToItem();
+				APISALESORDERSRVASalesOrderItemTypeCreate resItem = new APISALESORDERSRVASalesOrderItemTypeCreate();
+				resultOrder.setSalesOrderType("OR");
 				resultOrder.setSalesOrganization("1000");
 				resultOrder.setDistributionChannel("10");
 				resultOrder.setOrganizationDivision("00");
 				resultOrder.setSoldToParty(customerNo);
-				resultsItem.setMaterial(orderMaterial);
-				resultsItem.setRequestedQuantity(qty);
-				resultsItem.setProductionPlant(plant);
-				resultsItem.setBatch(batche);
-				soItemColl.addResultsItem(resultsItem);
-				resultOrder.setToItem(soItemColl);
-				soColl.addResultsItem(resultOrder);
+				
+				resItem.setMaterial(orderMaterial);
+				resItem.setRequestedQuantity(qty);
+				resItem.setProductionPlant(plant);
+				resItem.setBatch(batche);
+				//soItemColl.addResultsItem(resultsItem);
+				resultsToItem.addResultsItem(resItem);
+				resultOrder.setToItem(resultsToItem);
+				//soColl.addResultsItem(resultOrder);
 				soWrap.d(soColl);
-				logger.debug("salesOrderId.length()==0  1 :" + soWrap.toString());
-				BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json";
-				soWrap = (com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper) this.postData(BASE_URL, authoriz, csrf, soWrap,"post");
-				logger.debug("salesOrderId.length()==0  2 :" + soWrap.toString());
-				ordNres.setSalesOrder(wrapperSo);
+				BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$top=1";
+				wrapperSo = (com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper) this.retreiveData(BASE_URL, authoriz, "FETCH", wrapperSo);
+				logger.debug("salesOrderId.length()==0  1 :" + gson.toJson(soWrap));
+				BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder";
+				
+				logger.debug("csrf : "+csrf);
+				//soWrap = (com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper) this.postData(BASE_URL, authoriz, csrf, resultOrder,"post");
+				MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+				String json = gson.toJson(resultOrder);
+				System.out.println("json : "+json);
+				RequestBody body = RequestBody.create(JSON, json);
+				Request request = new Request.Builder()
+					      .url(BASE_URL )
+					      .addHeader("Accept", "application/json")
+					      .addHeader("Content-Type", "application/json")
+					      .addHeader("X-CSRF-TOKEN", csrf)
+					      .addHeader("Authorization", authoriz)
+					      .post(body)
+					      .build();	
+				System.out.println("--Request : " +request.urlString());
+				System.out.println(Arrays.toString(request.headers().names().toArray()));
+				System.out.println(request.headers().toString());
+				logger.debug(" postData : " + request.toString());
+				logger.debug(" postData : " + gson.toJson(request));
+				OkHttpClient client = new OkHttpClient();
+				Call call = client.newCall(request);
+				    try{Response response = call.execute();
+				    String responseBody = response.body().string();
+				    this.csrf = response.header("X-CSRF-TOKEN");
+			    	logger.debug("---ResponseBody X-CSRF-TOKEN : "+ csrf);
+			    	System.out.println("---ResponseBody : "+responseBody);
+			    	    if(response.code() == (200)) {
+					    	System.out.println("---200--ok");
+					    	soWrap = gson.fromJson(responseBody, soWrap.getClass());
+					    }
+				    }catch(Exception e) {e.printStackTrace();}
+				
+				    logger.debug(soWrap.toString());
+				logger.debug("salesOrderId.length()==0  2 :" + gson.toJson(soWrap));
+				ordNres.setSalesOrder(soWrap);
 			}
 			
 		
@@ -401,6 +445,10 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 			
 			    logger.debug(wrapper.toString());
 			    return responseCode;
+	}
+	public static void main(String[] args) {
+		Zb2BAddOrderItem zB2b = new Zb2BAddOrderItem();
+		ASalesOrderApi api = new ASalesOrderApi();
 	}
 	
 

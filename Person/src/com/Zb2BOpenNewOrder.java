@@ -177,7 +177,11 @@ public class Zb2BOpenNewOrder implements Zb2BOpenNewOrderInterface {
 		basicAuthentication.setPassword("nBhLsiwWXmfwqmX)FDLRUA6SwdCitAXUswwZwLqX");
 		authentications.put("basicAuthentication", basicAuthentication);
 		defaultClient.addDefaultHeader("APIKey","SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
-		defaultClient.addDefaultHeader("X-CSRF-TOKEN",getToken());
+		String stok = getToken();
+		System.out.println("stok : "+stok);
+		defaultClient.addDefaultHeader("X-CSRF-TOKEN",stok);
+		defaultClient.addDefaultHeader("Accept","application/json");
+		defaultClient.addDefaultHeader("Content-Type","application/json");
 		authentications.put("APIBHUB_SANDBOX_APIKEY", new ApiKeyAuth("header", "APIKey"));
 		ASalesOrderApi apiInstance = new ASalesOrderApi();
 		apiInstance.setApiClient(defaultClient);
@@ -197,10 +201,14 @@ public class Zb2BOpenNewOrder implements Zb2BOpenNewOrderInterface {
 		aSalesOrderType.setOrganizationDivision("00");
 		aSalesOrderType.setSoldToParty("SIVA G.");
 		aSalesOrderType.setPurchaseOrderByCustomer("Test Data");
+		Gson gson = new Gson();
+		System.out.println("aSalesOrderType : "+gson.toJson(aSalesOrderType));
 		//com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.salesorder.SalesOrder.SalesOrderBuilder builder = SalesOrder.builder();
 		//builder.
 		try {
-			apiInstance.getApiClient().addDefaultHeader("X-CSRF-TOKEN", getToken());
+			String tok = getToken();
+			System.out.println(tok);
+			apiInstance.getApiClient().addDefaultHeader("X-CSRF-TOKEN", tok);
 			ASalesOrderType so = apiInstance.aSalesOrderPost(aSalesOrderType);
 			System.out.println("----so : " + so.toString());
 			System.out.println(apiInstance.getApiClient().getHttpClient());
@@ -210,7 +218,7 @@ public class Zb2BOpenNewOrder implements Zb2BOpenNewOrderInterface {
 	}
 	
 	public static String getToken() {
-		  String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/API_SALES_ORDER_SRV?$format=json&$top=1";
+		  String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV?$format=json&$top=1";
 			Response response;
 			String responseBody = "";
 			String csrf = null;
@@ -221,22 +229,23 @@ public class Zb2BOpenNewOrder implements Zb2BOpenNewOrderInterface {
 				      .addHeader("Authorization", "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==")
 				      .get()
 				      .build();	//"Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA=="
+			
 				System.out.println("--Request : " +request.urlString());
 				 OkHttpClient client = new OkHttpClient();
 				 
 				    Call call = client.newCall(request);
 				    
 				    try{response = call.execute();
-				 
+				    responseBody = response.body().string();
+			    	csrf = response.header("X-CSRF-TOKEN");
+			    	//System.debug("---ResponseBody X-CSRF-TOKEN : "+ csrf);
+			    	System.out.println("---ResponseBody X-CSRF-TOKEN : "+ csrf);
+			    	System.out.println("---ResponseBody : "+responseBody);
 				    if(response.code() == (200)) {
 				    	System.out.println("---200--ok");
 				    	Gson gson = new Gson();
 				    	//response.header("")
-				    	responseBody = response.body().string();
-				    	csrf = response.header("X-CSRF-TOKEN");
-				    	logger.debug("---ResponseBody X-CSRF-TOKEN : "+ csrf);
-				    	System.out.println("---ResponseBody X-CSRF-TOKEN : "+ csrf);
-				    	System.out.println("---ResponseBody : "+responseBody);
+				    	
 				    	//z = gson.fromJson(responseBody, Zb2BCustInqWrapper.class);
 				    }
 				    }catch(Exception e) {e.printStackTrace();}
