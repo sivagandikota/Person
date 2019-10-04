@@ -20,16 +20,16 @@ import javax.xml.ws.ResponseWrapper;
 @XmlSeeAlso(model.SalesOrder.class)
 //@XmlSeeAlso(service.impl.SalesOrder.class)
 public interface SalesOrder {
-	@WebMethod(operationName="create")
+/*	@WebMethod(operationName="create")
 	public Long create( model.SalesOrder salesOrder);
 	
 	@WebMethod(operationName="get")
 	@ResponseWrapper(className="javax.ws.rs.core.GenericEntity<model.SalesOrder>")
 	public model.SalesOrder get( long id) ;
 	
-	/*@WebMethod(operationName="readAllw")
+	@WebMethod(operationName="readAllw")
 	@ResponseWrapper(className="javax.ws.rs.core.GenericEntity<model.SalesOrder[]>")
-	public model.SalesOrder[] readAllw();*/
+	public model.SalesOrder[] readAllw();
 	
 	@WebMethod(operationName="all")
 	//@ResponseWrapper(partName="SalesOrder",className="javax.ws.rs.core.GenericEntity<List<model.SalesOrder>>")
@@ -42,6 +42,6 @@ public interface SalesOrder {
 	public void update( model.SalesOrder salesOrder) ;
 	
 	@WebMethod(operationName="delete")
-	public void delete( long id);
+	public void delete( long id);*/
 
 }

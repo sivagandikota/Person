@@ -56,7 +56,7 @@ import person.Hello;
 @XmlSeeAlso(model.SalesOrder.class)
 @WebService(endpointInterface="service.SalesOrder" )
 
-public class SalesOrderImpl implements service.SalesOrder{
+public class SalesOrderImpl {
 	private static final Logger log = LoggerFactory.getLogger(SalesOrderImpl.class);
 	private UploadedFile uploadedFile;
 

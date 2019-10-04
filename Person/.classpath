@@ -51,5 +51,10 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="/BrewsterWeb"/>
+	<classpathentry kind="lib" path="D:/Download/connectivity-2.21.0.jar"/>
+	<classpathentry kind="lib" path="D:/Download/connectivity-scp-neo-2.21.0.jar"/>
+	<classpathentry kind="lib" path="D:/Download/connectivity-2.7.0.jar"/>
+	<classpathentry kind="lib" path="D:/Download/core-2.7.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

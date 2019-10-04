@@ -1,0 +1,259 @@
+package com;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.naming.AuthenticationException;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.WebServiceRef;
+import javax.xml.ws.handler.MessageContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+
+import com.google.gson.Gson;
+import com.sap.apibhub.sdk.api_business_partner.api.ABusinessPartnerAddressApi;
+import com.sap.apibhub.sdk.api_business_partner.model.Wrapper9;
+import com.sap.apibhub.sdk.api_sales_order_srv.api.ASalesOrderApi;
+import com.sap.apibhub.sdk.api_sales_order_srv.model.APISALESORDERSRVASalesOrderTypeCreate;
+import com.sap.apibhub.sdk.api_sales_order_srv.model.ASalesOrderType;
+import com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper;
+import com.sap.apibhub.sdk.client.ApiClient;
+import com.sap.apibhub.sdk.client.ApiException;
+import com.sap.apibhub.sdk.client.Configuration;
+import com.sap.apibhub.sdk.client.auth.ApiKeyAuth;
+import com.sap.apibhub.sdk.client.auth.Authentication;
+import com.sap.apibhub.sdk.client.auth.HttpBasicAuth;
+//import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
+//import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
+//import com.sap.cloud.sdk.cloudplatform.logging.CloudLoggerFactory;
+//import com.sap.cloud.sdk.s4hana.connectivity.ErpConfigContext;
+//import com.sap.cloud.sdk.s4hana.connectivity.exception.QueryExecutionException;
+//import com.sap.cloud.sdk.s4hana.connectivity.exception.QuerySerializationException;
+//import com.sap.cloud.sdk.s4hana.connectivity.rfc.BapiQuery;
+//import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.salesorder.SalesOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+
+public class Zb2BOpenNewOrder implements Zb2BOpenNewOrderInterface {
+	static Logger logger = LoggerFactory.getLogger(Zb2BOpenNewOrder.class);
+	@Resource
+	WebServiceContext wsctx;
+	@WebServiceRef(wsdlLocation="https://person0hb65b1d56.us3.hana.ondemand.com/Person-0.0.1-SNAPSHOT/ws/Z_B2B_CUST_INQ?wsdl")
+    //static Zb2BCustInqService service;
+
+	/*public Zb2bOpenNewOrder() {
+		configContext = erpConfigContext();
+	}
+	 @Bean
+	 public ErpConfigContext erpConfigContext() {
+	     return new ErpConfigContext("SCP_DEV");
+	 }*/
+	@Override
+	public String openNewSalesOrder(String customer) throws Exception {
+		//Select sales org, distribution channel based on customerId
+		//check whether customer is blocked from ordering
+		//create reservation document header
+		MessageContext mctx = wsctx.getMessageContext();
+		Map http_headers = (Map) mctx.get(MessageContext.HTTP_REQUEST_HEADERS);
+        System.out.println(Arrays.toString(http_headers.keySet().toArray()));
+        System.out.println(Arrays.toString(http_headers.values().toArray()));
+        List userList = (List) http_headers.get("Username");
+        List passList = (List) http_headers.get("Password");
+        ArrayList authList = (ArrayList) http_headers.get("Authorization");
+        String username = "";
+        String password = "";
+        String authoriz = "";
+        String csrf = "";
+		//Zb2bCustInq inq = service.;
+        //Zb2bCustInq inq = (Zb2bCustInq)service.getZb2BCustInqPort();
+		//inq.wsctx = wsctx;
+
+        if(userList!=null){
+        	//get username
+        	username = userList.get(0).toString();
+        }
+        	
+        if(passList!=null){
+        	//get password
+        	password = passList.get(0).toString();
+        }
+        if(authList!=null){
+        	//get password
+        	authoriz = authList.get(0).toString();
+        }
+        if (authList==null) {
+        	throw new AuthenticationException("No Authorization Header ");
+        }
+		
+        Zb2BCustInqWrapper z = new Zb2BCustInqWrapper();
+		//String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea(Customer='"+customer+"',SalesOrganization='"+salesOrganization+"',DistributionChannel='"+distributionChannel+"',Division='"+division+"')?$format=json&$select=Customer,SalesOrganization,DistributionChannel,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer";
+	        String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter=Customer eq '"+customer+"'";
+		Response response;
+		String responseBody = "";
+		Request request = new Request.Builder()
+			      .url(BASE_URL )
+			      .addHeader("Content-Type", "application/json")
+			      .addHeader("X-CSRF-TOKEN", "FETCH")
+			      .addHeader("Authorization", authoriz)
+			      .get()
+			      .build();	//"Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA=="
+			System.out.println("--Request : " +request.urlString());
+			 OkHttpClient client = new OkHttpClient();
+			 
+			    Call call = client.newCall(request);
+			    
+			    try{response = call.execute();
+			 
+			    if(response.code() == (200)) {
+			    	System.out.println("---200--ok");
+			    	Gson gson = new Gson();
+			    	//response.header("")
+			    	responseBody = response.body().string();
+			    	csrf = response.header("X-CSRF-TOKEN");
+			    	logger.debug("---ResponseBody X-CSRF-TOKEN : "+ csrf);
+			    	System.out.println("---ResponseBody : "+responseBody);
+			    	z = gson.fromJson(responseBody, Zb2BCustInqWrapper.class);
+			    }
+			    }catch(Exception e) {e.printStackTrace();}
+			
+			logger.debug("--CustomerInq : " + z.toString());
+			String status = "000";
+			logger.debug("  --deletionIndicator : " + z.getD().getResults().get(0).getDeletionIndicator() + "    --orderIsBlockedForCustomer : " + z.getD().getResults().get(0).getOrderIsBlockedForCustomer());
+			
+			if(z.getD().getResults().get(0).getDeletionIndicator()=="true" || z.getD().getResults().get(0).getOrderIsBlockedForCustomer().length()>0) {
+				status = "001";
+			}else {
+				BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_RESERVATION_DOCUMENT_SRV/A_ReservationDocumentHeader";
+				responseBody = "";
+				 MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+				    RequestBody body = RequestBody.create(JSON, "{\"GoodsMovementType\": \"261\",\"Customer\": \""+customer+"\"}");
+				Request requestRes = new Request.Builder()
+					      .url(BASE_URL )
+					      .addHeader("Content-Type", "application/json")
+					      .addHeader("X-CSRF-TOKEN", csrf)
+					      .addHeader("Authorization", authoriz)
+					      .put(body)
+					      .build();	//"Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA=="
+					System.out.println("--Request : " +requestRes.urlString());
+					  client = new OkHttpClient();
+					 
+					     call = client.newCall(requestRes);
+					    
+					    try{response = call.execute();
+					 logger.debug(response.toString());
+					 logger.debug(response.body().toString());
+					    if(response.code() == (200)) {
+					    	System.out.println("---200--ok");
+					    	Gson gson = new Gson();
+					    	//response.header("")
+					    	responseBody = response.body().string();
+					    	System.out.println("---ResponseBody : "+responseBody);
+					    	//z = gson.fromJson(responseBody, Zb2BCustInqWrapper.class);
+					    }
+					    }catch(Exception e) {e.printStackTrace();}
+			}
+		
+			return status;
+	}
+	
+	public static void main(String[] args) {
+		ApiClient defaultClient = Configuration.getDefaultApiClient();
+		defaultClient.setBasePath("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV");
+		Map<String, Authentication> authentications = defaultClient.getAuthentications();
+		//authentications.put(key, value)
+		//HttpBasicAuth basicAuthentication = (HttpBasicAuth) defaultClient.getAuthentication("basicAuthentication");
+		HttpBasicAuth basicAuthentication = new HttpBasicAuth();
+		basicAuthentication.setUsername("BHF_COMM");
+		basicAuthentication.setPassword("nBhLsiwWXmfwqmX)FDLRUA6SwdCitAXUswwZwLqX");
+		authentications.put("basicAuthentication", basicAuthentication);
+		defaultClient.addDefaultHeader("APIKey","SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
+		String stok = getToken();
+		System.out.println("stok : "+stok);
+		defaultClient.addDefaultHeader("X-CSRF-TOKEN",stok);
+		defaultClient.addDefaultHeader("Accept","application/json");
+		defaultClient.addDefaultHeader("Content-Type","application/json");
+		authentications.put("APIBHUB_SANDBOX_APIKEY", new ApiKeyAuth("header", "APIKey"));
+		ASalesOrderApi apiInstance = new ASalesOrderApi();
+		apiInstance.setApiClient(defaultClient);
+		try {
+			Wrapper w = apiInstance.aSalesOrderGet(1, null, null, null, null, null, null);
+			System.out.println("---" + apiInstance.getApiClient());
+			System.out.println("---SalesOrders : " + w.toString());
+		} catch (ApiException e) {
+			
+			e.printStackTrace();
+		}
+		
+		APISALESORDERSRVASalesOrderTypeCreate aSalesOrderType = new APISALESORDERSRVASalesOrderTypeCreate();
+		aSalesOrderType.setSalesOrderType("OR");
+		aSalesOrderType.setSalesOrganization("1000");
+		aSalesOrderType.setDistributionChannel("10");
+		aSalesOrderType.setOrganizationDivision("00");
+		aSalesOrderType.setSoldToParty("SIVA G.");
+		aSalesOrderType.setPurchaseOrderByCustomer("Test Data");
+		Gson gson = new Gson();
+		System.out.println("aSalesOrderType : "+gson.toJson(aSalesOrderType));
+		//com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.salesorder.SalesOrder.SalesOrderBuilder builder = SalesOrder.builder();
+		//builder.
+		try {
+			String tok = getToken();
+			System.out.println(tok);
+			apiInstance.getApiClient().addDefaultHeader("X-CSRF-TOKEN", tok);
+			ASalesOrderType so = apiInstance.aSalesOrderPost(aSalesOrderType);
+			System.out.println("----so : " + so.toString());
+			System.out.println(apiInstance.getApiClient().getHttpClient());
+		} catch (ApiException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public static String getToken() {
+		  String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV?$format=json&$top=1";
+			Response response;
+			String responseBody = "";
+			String csrf = null;
+			Request request = new Request.Builder()
+				      .url(BASE_URL )
+				      .addHeader("Content-Type", "application/json")
+				      .addHeader("X-CSRF-TOKEN", "FETCH")
+				      .addHeader("Authorization", "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==")
+				      .get()
+				      .build();	//"Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA=="
+			
+				System.out.println("--Request : " +request.urlString());
+				 OkHttpClient client = new OkHttpClient();
+				 
+				    Call call = client.newCall(request);
+				    
+				    try{response = call.execute();
+				    responseBody = response.body().string();
+			    	csrf = response.header("X-CSRF-TOKEN");
+			    	//System.debug("---ResponseBody X-CSRF-TOKEN : "+ csrf);
+			    	System.out.println("---ResponseBody X-CSRF-TOKEN : "+ csrf);
+			    	System.out.println("---ResponseBody : "+responseBody);
+				    if(response.code() == (200)) {
+				    	System.out.println("---200--ok");
+				    	Gson gson = new Gson();
+				    	//response.header("")
+				    	
+				    	//z = gson.fromJson(responseBody, Zb2BCustInqWrapper.class);
+				    }
+				    }catch(Exception e) {e.printStackTrace();}
+				    return csrf;
+	}
+	 
+	
+
+}

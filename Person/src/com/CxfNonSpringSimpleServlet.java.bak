@@ -1,0 +1,23 @@
+package com;
+
+import javax.servlet.ServletConfig;
+import javax.xml.ws.Endpoint;
+
+import org.apache.cxf.Bus;
+import org.apache.cxf.BusFactory;
+import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
+
+public class CxfNonSpringSimpleServlet extends CXFNonSpringServlet {
+	 private static final long serialVersionUID = 1L;
+
+	  @Override
+	  public void loadBus(ServletConfig servletConfig) {
+	    super.loadBus(servletConfig);
+	    Bus bus = getBus();
+	    BusFactory.setDefaultBus(bus);
+	    Endpoint.publish("/B2B", new com.B2B());
+	 //   Endpoint.publish("/CUST_ENQ", new com.Zb2BCustInq());
+	    /*Endpoint.publish("/Z_B2B_ADD_ORDER_ITEM", new com.Zb2BAddOrderItem());
+	    Endpoint.publish("/Z_B2B_OPEN_NEW_ORDER", new com.Zb2BOpenNewOrder());*/
+	  }
+}

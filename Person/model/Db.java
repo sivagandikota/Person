@@ -17,7 +17,7 @@ import org.eclipse.persistence.sessions.factories.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import person.Hello;
+
 
 @ManagedBean(name = "db")
 public class Db{
