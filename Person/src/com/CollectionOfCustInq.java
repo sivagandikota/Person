@@ -3,7 +3,7 @@ package com;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
-import com.sap.apibhub.sdk.api_sales_order_srv.model.APISALESORDERSRVASalesOrderType;
+//import com.sap.apibhub.sdk.api_sales_order_srv.model.APISALESORDERSRVASalesOrderType;
 
 public class CollectionOfCustInq {
 	@SerializedName("results")

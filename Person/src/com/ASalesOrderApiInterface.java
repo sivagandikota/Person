@@ -12,7 +12,7 @@ import com.sap.apibhub.sdk.api_sales_order_srv.model.ASalesOrderType;
 import com.sap.apibhub.sdk.api_sales_order_srv.model.ModifiedASalesOrderType;
 import com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper;
 import com.sap.apibhub.sdk.client.ApiResponse;
-import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.salesorder.SalesOrder;
+
 
 
 

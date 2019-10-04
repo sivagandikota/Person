@@ -1,5 +1,11 @@
 package com;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -12,6 +18,13 @@ import javax.naming.AuthenticationException;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 
 import com.google.gson.Gson;
@@ -31,17 +44,13 @@ import com.sap.apibhub.sdk.api_sales_order_srv.model.CollectionOfASalesOrderItem
 import com.sap.apibhub.sdk.api_sales_order_srv.model.CollectionOfASalesOrderType;
 import com.sap.apibhub.sdk.client.ApiClient;
 import com.sap.apibhub.sdk.client.Configuration;
-import com.sap.cloud.sdk.cloudplatform.logging.CloudLoggerFactory;
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
+//import com.sap.cloud.sdk.cloudplatform.logging.CloudLoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
-	static Logger logger = CloudLoggerFactory.getLogger(Zb2BAddOrderItem.class);
+	final Logger logger = LoggerFactory.getLogger(Zb2BAddOrderItem.class);
 	@Resource
 	WebServiceContext wsctx;
 	String csrf;
@@ -101,14 +110,14 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 		
 		OrderAndReservation ordNres = new OrderAndReservation();
 //Retrieve Reservation Data if any
-			logger.debug("reservationId : " + reservationId);
+			/*logger.debug("reservationId : " + reservationId);
 			if(null !=reservationId) {
 			BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_RESERVATION_DOCUMENT_SRV/A_ReservationDocumentHeader?$format=json&$expand=to_ReservationDocumentItem&$filter=Reservation eq '"+reservationId+"'";
 			com.sap.apibhub.sdk.api_reservation_document_srv.model.Wrapper res = new com.sap.apibhub.sdk.api_reservation_document_srv.model.Wrapper();
 			res=(Wrapper) this.retreiveData(BASE_URL, authoriz, csrf, res);
 			ordNres.setReservation(res);
 			
-			}
+			}*/
 		
 		
 		
@@ -200,9 +209,11 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 				resultsItem.setMaterial(orderMaterial);
 				resultsItem.setRequestedQuantity(qty);
 				resultsItem.setSalesOrder(salesOrderId);
+				APISALESORDERSRVASalesOrderType orderType = null; 
 				wrapperSo.getD().getResults().iterator().next().getToItem().addResultsItem(resultsItem);
+				orderType =wrapperSo.getD().getResults().iterator().next(); 
 				BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json";
-				wrapperSo = (com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper) this.postData(BASE_URL, authoriz, Zb2BOpenNewOrder.getToken(), wrapperSo,"patch");
+				wrapperSo = (com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper) this.salesOrderPatch(BASE_URL, authoriz, csrf, orderType);
 				ordNres.setSalesOrder(wrapperSo);
 			}
 		
@@ -242,39 +253,15 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 				
 				logger.debug("csrf : "+csrf);
 				//soWrap = (com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper) this.postData(BASE_URL, authoriz, csrf, resultOrder,"post");
-				MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-				String json = gson.toJson(resultOrder);
-				System.out.println("json : "+json);
-				RequestBody body = RequestBody.create(JSON, json);
-				Request request = new Request.Builder()
-					      .url(BASE_URL )
-					      .addHeader("Accept", "application/json")
-					      .addHeader("Content-Type", "application/json")
-					      .addHeader("X-CSRF-TOKEN", csrf)
-					      .addHeader("Authorization", authoriz)
-					      .post(body)
-					      .build();	
-				System.out.println("--Request : " +request.urlString());
-				System.out.println(Arrays.toString(request.headers().names().toArray()));
-				System.out.println(request.headers().toString());
-				logger.debug(" postData : " + request.toString());
-				logger.debug(" postData : " + gson.toJson(request));
-				OkHttpClient client = new OkHttpClient();
-				Call call = client.newCall(request);
-				    try{Response response = call.execute();
-				    String responseBody = response.body().string();
-				    this.csrf = response.header("X-CSRF-TOKEN");
-			    	logger.debug("---ResponseBody X-CSRF-TOKEN : "+ csrf);
-			    	System.out.println("---ResponseBody : "+responseBody);
-			    	    if(response.code() == (200)) {
-					    	System.out.println("---200--ok");
-					    	soWrap = gson.fromJson(responseBody, soWrap.getClass());
-					    }
-				    }catch(Exception e) {e.printStackTrace();}
+// before using api.sap.com sample code for post sales order
 				
-				    logger.debug(soWrap.toString());
-				logger.debug("salesOrderId.length()==0  2 :" + gson.toJson(soWrap));
-				ordNres.setSalesOrder(soWrap);
+				wrapperSo = (com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper) this.salesOrderPost(BASE_URL, authoriz, csrf, resultOrder);
+				
+				logger.debug("salesOrderId.length()==0  2 :" + gson.toJson(wrapperSo));
+
+//after api.sap.com for post sales order
+				
+				ordNres.setSalesOrder(wrapperSo);
 			}
 			
 		
@@ -284,12 +271,12 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 		
 		
 //Delete reservation if exists
-			logger.debug("reservationId : " + reservationId);
+			/*logger.debug("reservationId : " + reservationId);
 			if( reservationId.length()>0) {
 				BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_RESERVATION_DOCUMENT_SRV/A_ReservationDocumentHeader('" + reservationId + "')?$format=json";
 				com.sap.apibhub.sdk.api_reservation_document_srv.model.Wrapper delRes = new com.sap.apibhub.sdk.api_reservation_document_srv.model.Wrapper();
 				this.deleteData(BASE_URL, authoriz, csrf, delRes);
-			}
+			}*/
 		
 
 			
@@ -301,12 +288,13 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 		 *				{ "Product": "FD44420", "Plant": "1000", "ResvnItmRequiredQtyInEntryUnit": "5" } ] }
 		 */
 		
-			com.sap.apibhub.sdk.api_reservation_document_srv.model.Wrapper crRes = new com.sap.apibhub.sdk.api_reservation_document_srv.model.Wrapper();
+/*			com.sap.apibhub.sdk.api_reservation_document_srv.model.Wrapper crRes = new com.sap.apibhub.sdk.api_reservation_document_srv.model.Wrapper();
 			com.sap.apibhub.sdk.api_reservation_document_srv.model.CollectionOfAReservationDocumentHeaderType crHeadColl = new com.sap.apibhub.sdk.api_reservation_document_srv.model.CollectionOfAReservationDocumentHeaderType();
 			com.sap.apibhub.sdk.api_reservation_document_srv.model.CollectionOfAReservationDocumentItemType crItemColl = new com.sap.apibhub.sdk.api_reservation_document_srv.model.CollectionOfAReservationDocumentItemType(); 
 			com.sap.apibhub.sdk.api_reservation_document_srv.model.APIRESERVATIONDOCUMENTSRVAReservationDocumentHeaderType crHead = new com.sap.apibhub.sdk.api_reservation_document_srv.model.APIRESERVATIONDOCUMENTSRVAReservationDocumentHeaderType();
 			com.sap.apibhub.sdk.api_reservation_document_srv.model.APIRESERVATIONDOCUMENTSRVAReservationDocumentItemType crItem = new com.sap.apibhub.sdk.api_reservation_document_srv.model.APIRESERVATIONDOCUMENTSRVAReservationDocumentItemType();
 			logger.debug("260 APIRESERVATIONDOCUMENTSRVAReservationDocumentHeaderType : "+crHead.toString());
+			logger.debug("310 ordNres : " + gson.toJson(ordNres));			
 			logger.debug("Methods APIRESERVATIONDOCUMENTSRVAReservationDocumentHeaderType : "+Arrays.toString(APIRESERVATIONDOCUMENTSRVAReservationDocumentHeaderType.class.getDeclaredMethods()));
 			crHead.setCustomer(customerNo);
 			crHead.setGoodsMovementType("201");
@@ -330,44 +318,70 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 			crRes = (com.sap.apibhub.sdk.api_reservation_document_srv.model.Wrapper) this.postData(BASE_URL, authoriz, csrf, crRes, "post");
 			logger.debug(crRes.toString());
 			ordNres.setReservation(crRes);
-		
+*/		
 		
 		return ordNres;
 	}
 	
-	private Object retreiveData(String url,String authoriz,String csrf,Object wrapper) {
+	private Object retreiveData(String url,String authoriz,String csrf,Object wrapper) throws Exception {
 		String BASE_URL = url;
 		String responseBody = "";
-		
-		Request request = new Request.Builder()
-			      .url(BASE_URL )
-			      .addHeader("Accept", "application/json")
-			      .addHeader("Content-Type", "application/json")
-			      .addHeader("X-CSRF-TOKEN", "FETCH")
-			      .addHeader("Authorization", authoriz)
-			      .get()
-			      .build();	
-			System.out.println("--Request : " +request.urlString());
-			OkHttpClient client = new OkHttpClient();
-			Call call = client.newCall(request);
-			    try{Response response = call.execute();
-				    if(response.code() == (200)) {
-				    	System.out.println("---200--ok");
-				    	Gson gson = new Gson();
-				    	responseBody = response.body().string();
-				    	this.csrf = response.header("X-CSRF-TOKEN");
-				    	logger.debug("---ResponseBody X-CSRF-TOKEN : "+ csrf);
-				    	System.out.println("---ResponseBody : "+responseBody);
-				    	wrapper = gson.fromJson(responseBody, wrapper.getClass());
-				    	
-				    }
-			    }catch(Exception e) {e.printStackTrace();}
+		InputStreamReader in = null;
+		DataOutputStream dataOut = null;
+		try {
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpGet request = new HttpGet(url);
+
+		// add request header
+		request.addHeader("User-Agent", "Java");
+		request.addHeader("Content-Type","application/json");
+		request.addHeader("Accept","application/json");
+		request.addHeader("APIKey","SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
+		request.addHeader("Authorization",authoriz);
+		request.addHeader("X-CSRF-TOKEN","FETCH");
+		HttpResponse respons = client.execute(request);
+	  
+	  
+	  System.out.println("csrf:"+csrf);
+	  System.out.println("List all headers:");
+	  csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
+	  StringBuffer result = new StringBuffer();
+	    if(200==respons.getStatusLine().getStatusCode()) {
+	    	BufferedReader rd = new BufferedReader(
+	    	        new InputStreamReader(respons.getEntity().getContent()));
+	    	
+	    	String line = "";
+	    	while ((line = rd.readLine()) != null) {
+	    		result.append(line);
+	    	}
+	    	System.out.println("result : "+result);
+	    	wrapper = gson.fromJson(result.toString(), wrapper.getClass());
+	    }
+		} catch (Exception e) {
+			  //do something with exception
+			  e.printStackTrace();
+			} finally {
+			  try {
+			    if(dataOut != null) {
+			      dataOut.close();
+			    }
+			    if(in != null) {
+			      in.close();
+			    }
+
+			  } catch (IOException e) {
+			    //do something with exception
+			    e.printStackTrace();
+			  }
+			}
+				    
+			    
 			
 			    logger.debug(wrapper.toString());
 			    return wrapper;
 	}
 	
-	private Object postData(String url,String authoriz,String csrf,Object wrapper,String method) {
+	/*private Object postData(String url,String authoriz,String csrf,Object wrapper,String method) {
 		String BASE_URL = url;
 		Gson gson = new Gson();
 		String responseBody = "";
@@ -412,9 +426,9 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 			
 			    logger.debug(wrapper.toString());
 			    return wrapper;
-	}
+	}*/
 	
-	private Object deleteData(String url,String authoriz,String csrf,Object wrapper) {
+	/*private Object deleteData(String url,String authoriz,String csrf,Object wrapper) {
 		String BASE_URL = url;
 		String responseBody = "";
 		Integer responseCode=null;
@@ -445,11 +459,173 @@ public class Zb2BAddOrderItem implements Zb2BAddOrderItemInterface {
 			
 			    logger.debug(wrapper.toString());
 			    return responseCode;
-	}
+	}*/
+	
 	public static void main(String[] args) {
 		Zb2BAddOrderItem zB2b = new Zb2BAddOrderItem();
 		ASalesOrderApi api = new ASalesOrderApi();
 	}
 	
+	public Object salesOrderPost(String url,String authoriz,String csrf,Object wrapper) {
+		DataOutputStream dataOut = null;
+		BufferedReader br =null;
+		InputStreamReader in = null;
+		Gson gson = new Gson();
+		com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper wrap = new com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper();
+		String data = "";
+		try {
+
+		  URL urlObj = new URL(url);
+		  HttpClient client = HttpClientBuilder.create().build();
+			HttpGet request = new HttpGet(url);
+
+			// add request header
+			request.addHeader("User-Agent", "Java");
+			request.addHeader("Content-Type","application/json");
+			request.addHeader("Accept","application/json");
+			request.addHeader("APIKey","SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
+			request.addHeader("Authorization",authoriz);
+			request.addHeader("X-CSRF-TOKEN","FETCH");
+			HttpResponse respons = client.execute(request);
+		  
+		  
+		  System.out.println("csrf:"+csrf);
+		  System.out.println("List all headers:");
+		  csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
+		    Header[] map = respons.getAllHeaders();
+
+		    /*for (int i=0;i<map.length;i++) {
+		    	Header h = map[i];
+			System.out.println(h.getName() + ": " + h.getValue());
+		    }*/
+		    System.out.println(csrf);
+		    data = gson.toJson(wrapper );
+		    HttpPost pReq = new HttpPost(url);
+		    pReq.addHeader("User-Agent", "Java");
+		    pReq.addHeader("Content-Type","application/json");
+		    pReq.addHeader("Accept","application/json");
+		    pReq.addHeader("APIKey","SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
+		    pReq.addHeader("Authorization",authoriz);
+		    pReq.addHeader("X-CSRF-TOKEN",csrf);
+		    pReq.setEntity(new StringEntity(data));
+		    respons = client.execute(pReq);
+		    System.out.println("response : "+respons.getStatusLine().getStatusCode());
+		    respons.getEntity().writeTo(System.out);
+		    csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
+		    StringBuffer result = new StringBuffer();
+		    if(200==respons.getStatusLine().getStatusCode()) {
+		    	in = new InputStreamReader(respons.getEntity().getContent());
+		    	BufferedReader rd = new BufferedReader(in);		    	
+		    	String line = "";
+		    	while ((line = rd.readLine()) != null) {
+		    		result.append(line);
+		    	}
+		    	System.out.println("result : "+result);
+		    	wrap = gson.fromJson(result.toString(), wrap.getClass());
+		    }
+		    	wrap.setStatus(""+respons.getStatusLine().getStatusCode());
+		    	wrap.setResponse(result.toString());
+		    
+		  //setting request method
+		  		} catch (Exception e) {
+		  //do something with exception
+		  e.printStackTrace();
+		} finally {
+		  try {
+		    if(dataOut != null) {
+		      dataOut.close();
+		    }
+		    if(in != null) {
+		      in.close();
+		    }
+
+		  } catch (IOException e) {
+		    //do something with exception
+		    e.printStackTrace();
+		  }
+		}
+		return wrap;
+	}
+
+	public com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper salesOrderPatch(String url,String authoriz,String csrf,Object requestWrapper) {
+		DataOutputStream dataOut = null;
+		BufferedReader br =null;
+		InputStreamReader in = null;
+		Gson gson = new Gson();
+		com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper wrap = new com.sap.apibhub.sdk.api_sales_order_srv.model.Wrapper();
+		String data = "";
+		try {
+
+		  URL urlObj = new URL(url);
+		  HttpClient client = HttpClientBuilder.create().build();
+			HttpGet request = new HttpGet(url);
+
+			// add request header
+			request.addHeader("User-Agent", "Java");
+			request.addHeader("Content-Type","application/json");
+			request.addHeader("Accept","application/json");
+			request.addHeader("APIKey","SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
+			request.addHeader("Authorization",authoriz);
+			request.addHeader("X-CSRF-TOKEN","FETCH");
+			HttpResponse respons = client.execute(request);
+		  
+		  
+		  System.out.println("csrf:"+csrf);
+		  System.out.println("List all headers:");
+		  csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
+		    Header[] map = respons.getAllHeaders();
+
+		    /*for (int i=0;i<map.length;i++) {
+		    	Header h = map[i];
+			System.out.println(h.getName() + ": " + h.getValue());
+		    }*/
+		    System.out.println(csrf);
+		    data = gson.toJson(requestWrapper );
+		    HttpPost pReq = new HttpPost(url);
+		    pReq.addHeader("User-Agent", "Java");
+		    pReq.addHeader("Content-Type","application/json");
+		    pReq.addHeader("Accept","application/json");
+		    pReq.addHeader("APIKey","SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
+		    pReq.addHeader("Authorization",authoriz);
+		    pReq.addHeader("X-CSRF-TOKEN",csrf);
+		    pReq.setEntity(new StringEntity(data));
+		    respons = client.execute(pReq);
+		    System.out.println("response : "+respons.getStatusLine().getStatusCode());
+		    respons.getEntity().writeTo(System.out);
+		    csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
+		    StringBuffer result = new StringBuffer();
+		    if(200==respons.getStatusLine().getStatusCode()) {
+		    	in = new InputStreamReader(respons.getEntity().getContent());
+		    	BufferedReader rd = new BufferedReader(in);		    	
+		    	String line = "";
+		    	while ((line = rd.readLine()) != null) {
+		    		result.append(line);
+		    	}
+		    	System.out.println("result : "+result);
+		    	wrap = gson.fromJson(result.toString(), wrap.getClass());
+		    }
+		    	wrap.setStatus(""+respons.getStatusLine().getStatusCode());
+		    	wrap.setResponse(result.toString());
+		    
+		  //setting request method
+		  		} catch (Exception e) {
+		  //do something with exception
+		  e.printStackTrace();
+		} finally {
+		  try {
+		    if(dataOut != null) {
+		      dataOut.close();
+		    }
+		    if(in != null) {
+		      in.close();
+		    }
+
+		  } catch (IOException e) {
+		    //do something with exception
+		    e.printStackTrace();
+		  }
+		}
+		return wrap;
+	}
 
 }

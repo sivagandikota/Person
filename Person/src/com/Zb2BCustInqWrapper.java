@@ -12,12 +12,13 @@ import com.sap.apibhub.sdk.api_business_partner.model.APIBUSINESSPARTNERABusines
 public class Zb2BCustInqWrapper {
 	@SerializedName("d")
 	  private CollectionOfCustInq d = null;
-	@SerializedName("status")
+	//@SerializedName("status")
 	private String status = null;
-	@SerializedName("shipping")
-	private Shipping shipping = new Shipping();
-	@SerializedName("shippingList")
-	private List shippingList = new ArrayList(); 
+	//@SerializedName("shipping")
+	private ShippingConditions shipping = new ShippingConditions();
+	
+	//@SerializedName("shippingTable")
+	private HashMap shippingTable = new HashMap();
 	
 	@SerializedName("address")
 	private APIBUSINESSPARTNERABusinessPartnerAddressType address = null;
@@ -48,11 +49,11 @@ public class Zb2BCustInqWrapper {
 	
 	
 
-	public Shipping getShipping() {
+	public ShippingConditions getShipping() {
 		return shipping;
 	}
 
-	public void setShipping(Shipping shipping) {
+	public void setShipping(ShippingConditions shipping) {
 		this.shipping = shipping;
 	}
 	
@@ -68,18 +69,18 @@ public class Zb2BCustInqWrapper {
 	
 	
 
-	public List getShippingList() {
-		return shippingList;
+	public HashMap getShippingTable() {
+		return shippingTable;
 	}
 
-	public void setShippingList(List shippingList) {
-		this.shippingList = shippingList;
+	public void setShippingTable(HashMap shippingList) {
+		this.shippingTable = shippingList;
 	}
 
 	@Override
 	public String toString() {
 		return "Zb2BCustInqWrapper [d=" + d + ", status=" + status + ", shipping=" + shipping + ", shippingList="
-				+ shippingList + ", address=" + address + "]";
+				+ shippingTable + ", address=" + address + "]";
 	}
 
 	

@@ -56,7 +56,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans  classpath:org/s
     </jaxrs:server>
     
     
-    
+    <jaxws:endpoint id="Hello" implementor="rajendar.Test"  address="/TEST"  >    
+     	<jaxws:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxws:features>
+    </jaxws:endpoint>
     <jaxws:endpoint id="sapSalesOrderWs" implementor="com.ASalesOrderApiExample"  address="/ASalesOrder"  >  <!-- xsi:schemaLocation="/Person/WEB-INF/classes/wsdl/HelloService.wsdl" -->  
      	<jaxws:features>
              <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
@@ -72,6 +76,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans  classpath:org/s
              <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
          </jaxws:features>
     </jaxws:endpoint>
+    
     <jaxws:endpoint id="sapZ_B2B_OPEN_NEW_ORDERws" implementor="com.Zb2BOpenNewOrder"  address="/Z_B2B_OPEN_NEW_ORDER"  >    
      	<jaxws:features>
      		<!-- <bean class="com.sap.cloud.sdk.s4hana.connectivity.ErpConfigContext" id="erpConfigContext"></bean> -->

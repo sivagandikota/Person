@@ -56,7 +56,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans  classpath:org/s
     </jaxrs:server>
     
     
-    
+    <jaxws:endpoint id="Hello" implementor="rajendar.Test"  address="/TEST"  >    
+     	<jaxws:features>
+             <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
+         </jaxws:features>
+    </jaxws:endpoint>
     <jaxws:endpoint id="sapSalesOrderWs" implementor="com.ASalesOrderApiExample"  address="/ASalesOrder"  >  <!-- xsi:schemaLocation="/Person/WEB-INF/classes/wsdl/HelloService.wsdl" -->  
      	<jaxws:features>
              <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>

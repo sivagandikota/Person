@@ -8,15 +8,19 @@ import javax.annotation.Resource;
 import javax.jws.WebParam;
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBContext;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.LinkedHashMap;
+
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sap.apibhub.sdk.api_business_partner.api.ABusinessPartnerAddressApi;
 import com.sap.apibhub.sdk.api_business_partner.model.APIBUSINESSPARTNERABusinessPartnerAddressType;
 import com.sap.apibhub.sdk.api_business_partner.model.Wrapper9;
@@ -27,239 +31,264 @@ import com.sap.apibhub.sdk.client.Configuration;
 import com.sap.apibhub.sdk.client.auth.ApiKeyAuth;
 import com.sap.apibhub.sdk.client.auth.Authentication;
 import com.sap.apibhub.sdk.client.auth.HttpBasicAuth;
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.ShippingConditionsWrapper;
+import com.CollectionOfShippingConditions;
+import com.ShippingConditions;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.URLEncoder;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 @Service
-public class Zb2BCustInq implements Zb2BCustInqInterface{
-	@Resource
-	public WebServiceContext wsctx;
-	Logger logger = LoggerFactory.getLogger(Zb2BCustInq.class);
+@SuppressWarnings(value = { "java.io.IOException" })
+public class Zb2BCustInq implements Zb2BCustInqInterface {
 
-	@Override
-	public Zb2BCustInqWrapper getCustomerValidation(String customer) throws Exception {
-		MessageContext mctx = wsctx.getMessageContext();
-		//HttpServletRequest sRequest = (HttpServletRequest)wsctx.getMessageContext().get(MessageContext.SERVLET_REQUEST);
-		//logger.error("----Server Name : " + sRequest.getServerName());
-		//get detail from request headers
-	        Map http_headers = (Map) mctx.get(MessageContext.HTTP_REQUEST_HEADERS);
-	        System.out.println(Arrays.toString(http_headers.keySet().toArray()));
-	        System.out.println(Arrays.toString(http_headers.values().toArray()));
-	        //System.out.println(http_headers.get("Authorization").getClass().getName());
-	        //System.out.println(http_headers.get("Authorization").toString());
-	        List userList = (List) http_headers.get("Username");
-	        List passList = (List) http_headers.get("Password");
-	        ArrayList authList = (ArrayList) http_headers.get("Authorization");
-	        
-	        String username = "";
-	        String password = "";
-	        String authoriz = "";
-	        
-	        if(userList!=null){
-	        	//get username
-	        	username = userList.get(0).toString();
-	        }
-	        	
-	        if(passList!=null){
-	        	//get password
-	        	password = passList.get(0).toString();
-	        }
-	        if(authList!=null){
-	        	//get password
-	        	authoriz = authList.get(0).toString();
-	        }
-	        if (authList==null) {
-	        	throw new AuthenticationException("No Authorization Header ");
-	        }
-	        //System.out.println("User : " + username);
-	        //System.out.println("Pass : " + password);
-	        //System.out.println("Auth : " + authoriz);
-	        //System.out.println("Basic " + Base64.getEncoder().encodeToString((username + ":" +password).getBytes()));
-	        //https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=BusinessPartner eq 'SIVA G'
-	        
-	        Zb2BCustInqWrapper z = new Zb2BCustInqWrapper();
-		//String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea(Customer='"+customer+"',SalesOrganization='"+salesOrganization+"',DistributionChannel='"+distributionChannel+"',Division='"+division+"')?$format=json&$select=Customer,SalesOrganization,DistributionChannel,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer";
-	        String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter=Customer eq '"+customer+"'";
-		Response response;
-		String responseBody = "";
-		Request request = new Request.Builder()
-			      .url(BASE_URL )
-			      .addHeader("Content-Type", "application/json")
-			      .addHeader("X-CSRF-TOKEN", "FETCH")
-			      .addHeader("Authorization", authoriz)
-			      .get()
-			      .build();	//"Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA=="
-			System.out.println("--Request : " +request.urlString());
-			 OkHttpClient client = new OkHttpClient();
-			 
-			    Call call = client.newCall(request);
-			    
-			    try{response = call.execute();
-			 
-			    if(response.code() == (200)) {
-			    	System.out.println("---200--ok");
-			    	Gson gson = new Gson();
-			    	//response.header("")
-			    	responseBody = response.body().string();
-			    	System.out.println("---ResponseBody : "+responseBody);
-			    	z = gson.fromJson(responseBody, Zb2BCustInqWrapper.class);
-			    	z.setStatus("000");
-			    	System.out.println("-- Shipping Condition : " + z.getD().getResults().get(0).getShippingCondition());
-			    	System.out.println("-- z : " + z.toString());
-			    	if(z.getD().getResults().get(0).getDeliveryIsBlockedForCustomer().length()>0 ) {    //|| z.getD().getOrderIsBlockedForCustomer().length()>0
-			    		if(Integer.parseInt(z.getD().getResults().get(0).getDeliveryIsBlockedForCustomer()) == 54)
-			    		z.setStatus("002");
-			    	}
-			    	/*if(  z.getD().getShippingCondition().length() == 0) {
-			    		//if(Integer.parseInt(z.getD().getShippingCondition()) == 0)
-			    		z.setStatus("001");
-			    	}
-			    	else*/
-			    		if(  z.getD().getResults().get(0).getShippingCondition().length()>0) {if(z.getD().getResults().get(0).getShippingCondition().matches("00")){z.setStatus("001");}else {
-				    	//else {
-				    		// https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json
-				    		//BASE_URL="https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$filter=VSBED eq '"+z.getD().getResults().get(0).getShippingCondition()+"'";
-//00- UPS/FEDEX - load all the below:
-//01- UPS - 01-27
-			    			//https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json&$orderby=ShippingCondition asc&$filter=ShippingCondition  eq '01' or ShippingCondition  eq '02' or ShippingCondition  eq '03' or ShippingCondition  eq '04' or ShippingCondition  eq '05' or ShippingCondition  eq '06' or ShippingCondition  eq '07' or ShippingCondition  eq '08' or ShippingCondition  eq '09' or ShippingCondition  eq '10' or ShippingCondition  eq '11' or ShippingCondition  eq '12' or ShippingCondition  eq '13' or ShippingCondition  eq '14' or ShippingCondition  eq '15' or ShippingCondition  eq '16' or ShippingCondition  eq '17' or ShippingCondition  eq '18' or ShippingCondition  eq '19' or ShippingCondition  eq '20' or ShippingCondition  eq '21' or ShippingCondition  eq '22' or ShippingCondition  eq '23' or ShippingCondition  eq '24' or ShippingCondition  eq '25' or ShippingCondition  eq '26' or ShippingCondition  eq '27' 
-//41- FEDEX - 41-49
-			    			//https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json&$orderby=ShippingCondition asc&$filter=ShippingCondition  eq '41' or ShippingCondition  eq '42' or ShippingCondition  eq '43' or ShippingCondition  eq '44' or ShippingCondition  eq '44' or ShippingCondition  eq '45' or ShippingCondition  eq '46' or ShippingCondition  eq '47' or ShippingCondition  eq '47' or ShippingCondition  eq '48' or ShippingCondition  eq '49'
-//75- USPS - 75-76
-			    			//https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json&$orderby=ShippingCondition asc&$filter=ShippingCondition  eq '75' or ShippingCondition  eq '76'
-//80- DHL - 80
-//L1- Loomis - L1
-//P1- Purolator - P1-P4
-//WC- WillCall/Pickup			    			
-			    			
-			    			BASE_URL="https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json";//&filter=ShippingCondition eq '"+z.getD().getResults().get(0).getShippingCondition()+"'";
-				    		request = new Request.Builder()
-				  			      .url(BASE_URL )
-				  			      .addHeader("Content-Type", "application/json")
-				  			      .addHeader("X-CSRF-TOKEN", "FETCH")
-				  			      .addHeader("Authorization", authoriz)
-				  			      .get()
-				  			      .build();
-				    		client = new OkHttpClient();
-				    		call = client.newCall(request);
-				    		response = call.execute();
-				    		responseBody = response.body().string();
-				    		System.out.println("---YY1_SHIPPING_CONDITIONS : " + responseBody);
-				    		gson = new Gson();
-				    		com.ShippingConditionsWrapper y = new com.ShippingConditionsWrapper();
-				    		y=gson.fromJson(responseBody, ShippingConditionsWrapper.class);
-				    		//z.setStatus("000");
-				    		System.out.println("--Shipping : " + gson.toJson(y));
-				    		/*Shipping shipping = z.getShipping();
-				    		shipping.setShipping(z.getD().getResults().get(0).getShippingCondition());
-				    		shipping.setShippingText(y.getD().getResults().get(0).getShippingConditionName());*/
-				    		z.setShippingList(y.getD().getResults());
-				    		System.out.println("response : "+gson.toJson(response));
-				    	//}
-			    	}}
-			    	
-			    }else {z.setStatus("001");System.out.println("---ResponseBody : "+response.body().string());}
-			    System.out.println("Message : " + response.message());
-			    //
-			    
-			    }catch(Exception e) {e.printStackTrace(); throw e;}
-			    logger.debug("---Address----------------------------------------------------------------------------------------------------------------------");
-			    //https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=BusinessPartner eq 'SIVA G'
-			    
-			    BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=BusinessPartner eq '"+customer+"'";
-			    ApiClient api = new ApiClient();
-			    api.setBasePath(BASE_URL);
-			    com.sap.apibhub.sdk.api_business_partner.model.Wrapper9 w= new com.sap.apibhub.sdk.api_business_partner.model.Wrapper9();
-				responseBody = "";
-				request = new Request.Builder()
-					      .url(BASE_URL )
-					      .addHeader("Content-Type", "application/json")
-					      .addHeader("X-CSRF-TOKEN", "FETCH")
-					      .addHeader("Authorization", authoriz)
-					      .get()
-					      .build();	//"Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA=="
-					System.out.println("--Request : " +request.urlString());
-					  client = new OkHttpClient();					 
-					     call = client.newCall(request);					    
-					    try{response = call.execute();
-					 
-					    if(response.code() == (200)) {
-					    	System.out.println("---200--ok");
-					    	Gson gson = new Gson();
-					    	//response.header("")
-					    	responseBody = response.body().string();
-					    	System.out.println("---ResponseBody : "+responseBody);
-					    	w = gson.fromJson(responseBody, com.sap.apibhub.sdk.api_business_partner.model.Wrapper9.class);
-					    	logger.debug("---Address : " + w.toString());
-					    	z.setAddress((APIBUSINESSPARTNERABusinessPartnerAddressType)w.getD().getResults().get(0));
-					    }
-					    }catch(Exception e) {e.printStackTrace();}
-					    
-				logger.debug("----Wrapper Customer Inq : " + z.toString());
-		return z;
-	}
-	
-	public static void main1(String[] args) {
-		String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=BusinessPartner eq 'SIVA G'";
-		Request request = new Request.Builder()
-			      .url(BASE_URL )
-			      .addHeader("Content-Type", "application/json")
-			      .addHeader("X-CSRF-TOKEN", "FETCH")
-			      .addHeader("Authorization", "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==")
-			      .get()
-			      .build();	//"Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA=="
-			System.out.println("--Request : " +request.urlString());
-			ApiClient defaultClient = Configuration.getDefaultApiClient();
-			defaultClient.setBasePath("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER");
-			Map<String, Authentication> authentications = defaultClient.getAuthentications();
-			HttpBasicAuth basicAuthentication = new HttpBasicAuth();
-			basicAuthentication.setUsername("BHF_COMM");
-			basicAuthentication.setPassword("nBhLsiwWXmfwqmX)FDLRUA6SwdCitAXUswwZwLqX");
-			authentications.put("basicAuthentication", basicAuthentication);
-			defaultClient.addDefaultHeader("APIKey","SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm"); 		
-			authentications.put("APIBHUB_SANDBOX_APIKEY", new ApiKeyAuth("header", "APIKey"));
-			ABusinessPartnerAddressApi apiInstance = new ABusinessPartnerAddressApi();
-			apiInstance.setApiClient(defaultClient);
-			try {
-				Wrapper9 w9 = apiInstance.aBusinessPartnerAddressGet(null, null, null, null, null, null, null); //top, skip, filter, inlinecount, orderby, select, expand
-				System.out.println("----w9 : " + w9.toString());
-				
-			} catch (ApiException e1) {
-				e1.printStackTrace();
-			}    
-		
-	}
-	
-	public static void main(String[] args) {
-		String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json";
-		Request request = new Request.Builder()
-			      .url(BASE_URL )
-			      .addHeader("Content-Type", "application/json")
-			      .addHeader("X-CSRF-TOKEN", "FETCH")
-			      .addHeader("Authorization", "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==")
-			      .get()
-			      .build();	//"Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA=="
-		OkHttpClient client = new OkHttpClient();
-		Call call = client.newCall(request);
-		Response response;
-		String responseBody= null ;
-		try {
-			response = call.execute();
-			responseBody= response.body().string();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		System.out.println("---YY1_SHIPPING_CONDITIONS : " + responseBody);
-		Gson gson = new Gson();
-		com.ShippingConditionsWrapper y = new com.ShippingConditionsWrapper();
-		y=gson.fromJson(responseBody, ShippingConditionsWrapper.class);
-		System.out.println("ShippingConditionsWrapper.class : "+gson.toJson(y));
-	}
+    @Resource
+    public WebServiceContext wsctx;
+    Logger logger = LoggerFactory.getLogger(Zb2BCustInq.class);
+
+    @Override
+    public Zb2BCustInqWrapper getCustomerValidation(String customer) throws AuthenticationException, Exception {
+        MessageContext mctx = wsctx.getMessageContext();
+        //HttpServletRequest sRequest = (HttpServletRequest)wsctx.getMessageContext().get(MessageContext.SERVLET_REQUEST);
+        //logger.error("----Server Name : " + sRequest.getServerName());
+        //get detail from request headers
+        Map http_headers = (Map) mctx.get(MessageContext.HTTP_REQUEST_HEADERS);
+        System.out.println(Arrays.toString(http_headers.keySet().toArray()));
+        System.out.println(Arrays.toString(http_headers.values().toArray()));
+        //System.out.println(http_headers.get("Authorization").getClass().getName());
+        //System.out.println(http_headers.get("Authorization").toString());
+        List userList = (List) http_headers.get("Username");
+        List passList = (List) http_headers.get("Password");
+        ArrayList authList = (ArrayList) http_headers.get("Authorization");
+        String csrf = null;
+        String username = "";
+        String password = "";
+        String authoriz = "";
+
+        if (userList != null) {
+            //get username
+            username = userList.get(0).toString();
+        }
+
+        if (passList != null) {
+            //get password
+            password = passList.get(0).toString();
+        }
+        if (authList != null) {
+            //get password
+            authoriz = authList.get(0).toString();
+        }
+        if (authList == null) {
+            throw new AuthenticationException("No Authorization Header ");
+        }
+        //System.out.println("User : " + username);
+        //System.out.println("Pass : " + password);
+        //System.out.println("Auth : " + authoriz);
+        //System.out.println("Basic " + Base64.getEncoder().encodeToString((username + ":" +password).getBytes()));
+        //https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=BusinessPartner eq 'SIVA G'
+
+        Zb2BCustInqWrapper z = new Zb2BCustInqWrapper();
+        DataOutputStream dataOut = null;
+        BufferedReader br = null;
+        InputStreamReader in = null;
+        Gson gson = new Gson();
+        //String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea(Customer='"+customer+"',SalesOrganization='"+salesOrganization+"',DistributionChannel='"+distributionChannel+"',Division='"+division+"')?$format=json&$select=Customer,SalesOrganization,DistributionChannel,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer";
+        String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
+        //String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter=Customer eq '" + customer + "'";
+        System.out.println(BASE_URL);
+        //Response response;
+        String responseBody = "";
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpGet request = new HttpGet(BASE_URL);
+            // add request header
+            request.addHeader("User-Agent", "Java");
+            request.addHeader("Content-Type", "application/json");
+            request.addHeader("Accept", "application/json");
+            request.addHeader("APIKey", "SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
+            request.addHeader("Authorization", authoriz);
+            request.addHeader("X-CSRF-TOKEN", "FETCH");
+            HttpResponse respons = client.execute(request);
+
+            System.out.println("response : " + respons.getStatusLine().getStatusCode());
+            System.out.println("response : " + respons.getStatusLine().getReasonPhrase());
+            //respons.getEntity().writeTo(System.out);
+            csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
+            StringBuffer result = new StringBuffer();
+            if (200 == respons.getStatusLine().getStatusCode()) {
+                in = new InputStreamReader(respons.getEntity().getContent());
+                BufferedReader rd = new BufferedReader(in);
+                String line = "";
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                System.out.println("result : " + result);
+                z = gson.fromJson(result.toString(), Zb2BCustInqWrapper.class);
+            }
+            z.setStatus("000");
+            System.out.println("-- Shipping Condition : " + z.getD().getResults().get(0).getShippingCondition());
+            System.out.println("-- z : " + z.toString());
+            String url = "";
+            if (z.getD().getResults().get(0).getShippingCondition().length() == 0) {
+
+				url = (String) getData(
+						"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+								+ URLEncoder.encode(
+										"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
+										"UTF-8"),
+						authoriz);
+				System.out.println("440----Url" + url);
+			}
+            if (z.getD().getResults().get(0).getDeliveryIsBlockedForCustomer().length() > 0) {    //|| z.getD().getOrderIsBlockedForCustomer().length()>0
+                if (Integer.parseInt(z.getD().getResults().get(0).getDeliveryIsBlockedForCustomer()) == 54) {
+                    z.setStatus("002");
+                }
+            }
+            
+            
+            if (z.getD().getResults().get(0).getShippingCondition().length() > 0) {
+                if (z.getD().getResults().get(0).getShippingCondition().matches("00")) {
+                    z.setStatus("001");
+                    //retreive XREFRESULT and set the value in z.getD().getResults().get(0).getShippingCondition()
+                    url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_XREF_CDS/YY1_XREF?$format=json&$select=XREFRESULT&$filter=" + URLEncoder.encode("XREFCODE eq 'DEF_SHIP' and XREFKEY eq 'UPS_FEDEX'","UTF-8"),authoriz);
+                    com.ShippingConditionsWrapper sh = gson.fromJson(url, com.ShippingConditionsWrapper.class);
+					z.getD().getResults().get(0)
+							.setShippingCondition(sh.getD().getResults().get(0).getShippingCondition());
+                } 
+                
+                
+                switch (z.getD().getResults().get(0).getSalesOrganization()) {
+                    case "1000":
+                        switch(z.getD().getResults().get(0).getCustomerPaymentTerms()){
+                            case "COD": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("VSBED eq '01'","UTF-8"),authoriz);
+                                    break;
+                            case "CASH": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("VSBED eq '01'","UTF-8"),authoriz);
+                            default:
+                                switch (z.getD().getResults().get(0).getShippingCondition()) {
+                                    case "WC": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')","UTF-8"),authoriz);
+                                    break;
+                                    case "01": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')","UTF-8"),authoriz);
+                                    break;
+                                    case "41": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'FEDEX' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')","UTF-8"),authoriz);
+                                    break;
+                                }
+                        }
+                        //if 75 delete all and add 75
+                        break;
+                        case "2000": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'CA_SHPCOND' and XREFRESULT eq 'X')","UTF-8"),authoriz);
+                }
+                System.out.println("177 - URL - data:"+url);
+                com.ShippingConditionsWrapper sh =gson.fromJson(url, com.ShippingConditionsWrapper.class);
+                java.util.HashMap table = new java.util.HashMap();
+                java.util.LinkedHashMap lTable = new java.util.LinkedHashMap();
+                com.ShippingConditions con = null;
+                java.util.Iterator iter = sh.getD().getResults().iterator();
+                boolean f75 = false;
+                while(iter.hasNext()){
+                    con = (ShippingConditions)iter.next();
+                    table.put(con.getVSBED(), con.getVTEXT());
+                    if(con.getVSBED().equals("75"))
+                        f75=true;
+                }
+                /*if(z.getD().getResults().get(0).getSalesOrganization().equals("1000") && f75){
+                    lTable.put("75",table.get("75"));
+                    while(iter.hasNext()){
+                        con = (ShippingConditions)iter.next();
+                        if(!con.getVSBED().equals("75"))
+                        lTable.put(con.getVSBED(), con.getVTEXT());
+                    }
+                }*/
+                lTable=new LinkedHashMap(table);
+                z.setShippingTable(lTable);
+            //} else {
+                z.setStatus("001");
+                System.out.println("---ResponseBody : " + respons.toString());
+            
+            System.out.println("Message : " + respons.getStatusLine().getReasonPhrase());
+            //
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+        logger.debug("---Address----------------------------------------------------------------------------------------------------------------------");
+        //https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=BusinessPartner eq 'SIVA G'
+
+        BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=" + URLEncoder.encode("BusinessPartner eq '" + customer + "'", "UTF-8");
+        System.out.println("220 :" + BASE_URL);
+        com.sap.apibhub.sdk.api_business_partner.model.Wrapper9 w = new com.sap.apibhub.sdk.api_business_partner.model.Wrapper9();
+        responseBody = "";
+        HttpGet request = new HttpGet(BASE_URL);
+        HttpClient client = HttpClientBuilder.create().build();
+        // add request header
+        try {
+            request.addHeader("User-Agent", "Java");
+            request.addHeader("Content-Type", "application/json");
+            request.addHeader("Accept", "application/json");
+            request.addHeader("APIKey", "SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
+            request.addHeader("Authorization", authoriz);
+            request.addHeader("X-CSRF-TOKEN", "FETCH");
+            HttpResponse respons = client.execute(request);
+            //respons.getEntity().writeTo(System.out);
+            csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
+            StringBuffer result = new StringBuffer();
+            if (200 == respons.getStatusLine().getStatusCode()) {
+                in = new InputStreamReader(respons.getEntity().getContent());
+                BufferedReader rd = new BufferedReader(in);
+                String line = "";
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                System.out.println("243-result : " + result);
+                w = gson.fromJson(result.toString(), com.sap.apibhub.sdk.api_business_partner.model.Wrapper9.class);
+                z.setAddress((APIBUSINESSPARTNERABusinessPartnerAddressType) w.getD().getResults().get(0));
+            }
+        } catch (Exception e) {
+            System.out.println("--247--");
+            e.printStackTrace();
+        }
+        System.out.println("----Wrapper Customer Inq : " + z.toString());
+        logger.debug("----Wrapper Customer Inq : " + z.toString());
+        return z;
+    }
+    
+
+    
+    public Object getData(String url,String authoriz) throws ClientProtocolException, IOException{
+        System.out.println("235 - "+url+"   -authoriz:"+authoriz);
+        HttpGet request = new HttpGet(url);
+
+                    // add request header
+                    request.addHeader("User-Agent", "Java");
+                    request.addHeader("Content-Type", "application/json");
+                    request.addHeader("Accept", "application/json");
+                    //request.addHeader("APIKey", "SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
+                    request.addHeader("Authorization", authoriz);
+                    request.addHeader("X-CSRF-TOKEN", "FETCH");
+                    HttpClient client = HttpClientBuilder.create().build();
+                    HttpResponse respons = client.execute(request);
+                    //respons.getEntity().writeTo(System.out);
+                    String csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
+                    StringBuffer result = new StringBuffer();
+                    if (200 == respons.getStatusLine().getStatusCode()) {
+                        InputStreamReader in = new InputStreamReader(respons.getEntity().getContent());
+                        BufferedReader rd = new BufferedReader(in);
+                        String line = "";
+                        while ((line = rd.readLine()) != null) {
+                            result.append(line);
+                        }
+                        System.out.println("257 result : " + result);
+                    }
+                    return result.toString();
+    }
 
 }

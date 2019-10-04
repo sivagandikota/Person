@@ -1,8 +1,10 @@
 package com;
 
+import java.io.Serializable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class ShippingConditions {
+public class ShippingConditions implements Serializable {
 	@SerializedName("__metadata")
 	private MetaData metadata = null;
 	@SerializedName("SAP_UUID")
@@ -17,6 +19,7 @@ public class ShippingConditions {
 	private String VTEXT = null;
 	@SerializedName("SRVCTEXT")
 	private String SRVCTEXT = null;
+	
 	@SerializedName("ShippingCondition")
 	private String shippingCondition = null;
 	@SerializedName("Language")

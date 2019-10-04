@@ -9,107 +9,42 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <resource-ref>
-    <res-ref-name>jdbc/DefaultDB</res-ref-name>
-    <res-type>javax.sql.DataSource</res-type>
-    <res-auth>Container</res-auth>
-  </resource-ref>
-  <resource-ref>
-    <res-ref-name>SCP_DEV_CLONING</res-ref-name>
-    <res-type>com.sap.core.connectivity.api.http.HttpDestination</res-type>
-  </resource-ref>
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:META-INF/spring/context-provider.xml</param-value>
-  </context-param>
-  <listener>
-    <listener-class>
-         org.springframework.web.context.ContextLoaderListener
-      </listener-class>
-  </listener>
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>WEB-INF/cxf-beans.xml</param-value>
-  </context-param>
   <servlet>
-    <servlet-name>FacesServlet</servlet-name>
-    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-    <init-param>
-      <param-name>javax.faces.CONFIG_FILES</param-name>
-      <param-value>/WEB-INF/faces-config.xml</param-value>
-    </init-param>
-    <init-param>
-      <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-      <param-value>server</param-value>
-    </init-param>
+    <servlet-name>CXFNonSpringSimpleServlet</servlet-name>
+    <servlet-class>com.CxfNonSpringSimpleServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>FacesServlet</servlet-name>
-    <url-pattern>/faces/*</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>ServiceServletHello</servlet-name>
-    <servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
-    <init-param>
-      <param-name>jaxrs.serviceClasses</param-name>
-      <param-value>person.HelloService,com.ondemand.SalesOrderImpl</param-value>
-    </init-param>
-    <init-param>
-      <param-name>jaxrs.providers</param-name>
-      <param-value>com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider</param-value>
-    </init-param>
-    <init-param>
-      <param-name>jaxrs.address</param-name>
-      <param-value>/rs</param-value>
-    </init-param>
-    <load-on-startup>4</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ServiceServletHello</servlet-name>
-    <url-pattern>/rs/*</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description>Apache CXF Endpoint</description>
-    <display-name>cxf</display-name>
-    <servlet-name>cxf</servlet-name>
-    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:META-INF/spring/cxf-provider.xml</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>cxf</servlet-name>
+    <servlet-name>CXFNonSpringSimpleServlet</servlet-name>
     <url-pattern>/ws/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>ServiceServletOdata</servlet-name>
-    <servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
-    <init-param>
-      <param-name>javax.ws.rs.Application</param-name>
-      <param-value>org.apache.olingo.odata2.core.rest.app.ODataApplication</param-value>
-    </init-param>
-    <init-param>
-      <param-name>org.apache.olingo.odata2.service.factory</param-name>
-      <param-value>AnnotationSampleServiceFactory</param-value>
-    </init-param>
+    <servlet-name>DestinationConnection</servlet-name>
+    <servlet-class>com.DestinationConnection</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ServiceServletOdata</servlet-name>
-    <url-pattern>/odata2.svc/*</url-pattern>
+    <servlet-name>DestinationConnection</servlet-name>
+    <url-pattern>/DestinationConnection</url-pattern>
   </servlet-mapping>
   <resource-ref>
     <res-ref-name>connectivityConfiguration</res-ref-name>
     <res-type>com.sap.core.connectivity.api.configuration.ConnectivityConfiguration</res-type>
   </resource-ref>
+  <resource-ref>
+    <res-ref-name>ConnectivityConfiguration</res-ref-name>
+    <res-type>com.sap.core.connectivity.api.configuration.ConnectivityConfiguration</res-type>
+  </resource-ref>
+  <resource-ref>
+    <res-ref-name>AuthenticationHeaderProvider</res-ref-name>
+    <res-type>com.sap.core.connectivity.api.authentication.AuthenticationHeaderProvider</res-type>
+</resource-ref>
   <filter>
-    <filter-name>MyFacesExtensionsFilter</filter-name>
-    <filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>MyFacesExtensionsFilter</filter-name>
-    <servlet-name>FacesServlet</servlet-name>
-  </filter-mapping>
+   <filter-name>RequestContextServletFilter</filter-name>
+   <filter-class>com.sap.cloud.sdk.cloudplatform.servlet.RequestContextServletFilter</filter-class>
+</filter>
+<filter-mapping>
+   <filter-name>RequestContextServletFilter</filter-name>
+   <url-pattern>/*</url-pattern>
+</filter-mapping>
   <filter>
     <filter-name>CorsFilter</filter-name>
     <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>

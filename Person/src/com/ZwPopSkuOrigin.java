@@ -15,6 +15,7 @@ import java.util.Base64;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -25,8 +26,7 @@ public class ZwPopSkuOrigin implements ZwPopSkuOriginInterface{
 	@Resource
 	WebServiceContext wsctx;
 
-	@Override
-	public ZwPopSkuOriginWrapper getCountryOfOrigin(String product) throws Exception {
+	public com.ZwPopSkuOriginWrapper getCountryOfOrigin(String product) throws Exception {
 		
 		MessageContext mctx = wsctx.getMessageContext();
 		
@@ -65,7 +65,7 @@ public class ZwPopSkuOrigin implements ZwPopSkuOriginInterface{
 	        //System.out.println("Auth : " + authoriz);
 	        //System.out.println("Basic " + Base64.getEncoder().encodeToString((username + ":" +password).getBytes()));
 	        
-		ZwPopSkuOriginWrapper z = new ZwPopSkuOriginWrapper();
+		com.ZwPopSkuOriginWrapper z = new ZwPopSkuOriginWrapper();
 		String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductPlant(Product='" + product + "',Plant='1000')?$select=CountryOfOrigin&$format=json";
 		Response response;
 		Request request = new Request.Builder()
@@ -96,5 +96,7 @@ public class ZwPopSkuOrigin implements ZwPopSkuOriginInterface{
 			    System.out.println("-------------------------------------------------------------------------------------------------------------------------");
 		return z;
 	}
+        
+        
 	
 }
