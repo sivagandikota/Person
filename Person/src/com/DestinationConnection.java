@@ -24,6 +24,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationAccessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationFacade;
 import com.sap.cloud.sdk.s4hana.connectivity.ErpConfigContext;
 import com.sap.core.connectivity.api.configuration.ConnectivityConfiguration;
+import com.sap.core.connectivity.api.authentication.AuthenticationHeaderProvider;
 
 
 /**
@@ -32,29 +33,51 @@ import com.sap.core.connectivity.api.configuration.ConnectivityConfiguration;
 @WebServlet("/DestinationConnection")
 public class DestinationConnection extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	public static String destination = "SCP_DEV" ;
+	public static String host="https://my302314.s4hana.ondemand.com";
 	Logger logger = LoggerFactory.getLogger(DestinationConnection.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
     public DestinationConnection() {
         super();
-        // TODO Auto-generated constructor stub
+        try{String dest=System.getProperty("destination");
+        	logger.info("dest:"+dest);
+        	System.out.println("dest:"+dest);
+        	DestinationConnection.destination=dest;
+        }catch(Exception e) {e.printStackTrace();}
+        try{
+        	Context ctx = new InitialContext();
+        	ConnectivityConfiguration config = (ConnectivityConfiguration) ctx.lookup("java:comp/env/ConnectivityConfiguration");
+        	DestinationConnection.host=config.getConfiguration(DestinationConnection.destination).getProperty("URL");
+        	logger.info("destination:"+DestinationConnection.destination);
+        	logger.info("URL:"+DestinationConnection.host);
+        }catch(Exception e) {e.printStackTrace();}
+        logger.info("Const - destination:"+DestinationConnection.destination);
+        logger.info("Const - host:"+DestinationConnection.host);
+        System.out.println("Const - destination:"+DestinationConnection.destination);
+        System.out.println("Const - host:"+DestinationConnection.host);
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		logger.info("Const - destination:"+DestinationConnection.destination);
+        logger.info("Const - host:"+DestinationConnection.host);
+        System.out.println("Const - destination:"+DestinationConnection.destination);
+        System.out.println("Const - host:"+DestinationConnection.host);
 		//RequestContext ctx = request.
+		
 		try {logger.info("Environment Variable destination = " + System.getenv("destination"));}catch(Exception e) {e.printStackTrace();}
 		try {logger.info("Environment Variable destination = " + System.getProperty("destination"));}catch(Exception e) {e.printStackTrace();}
 		try {logger.info("Environment Variable destination = " + System.getProperties().toString());}catch(Exception e) {e.printStackTrace();}
 		try{ErpConfigContext ectx = new ErpConfigContext("SCP_DEV");
 		logger.info("ctx:"+ectx.toString() );
-		
+//		ectx.getSapClient().
 		}catch(Exception w){w.printStackTrace();}
-		Context ctx;
+		try {}catch(Exception e) {e.printStackTrace();}
+		Context ctx=null;
 		try {
 			ctx = new InitialContext();
 			logger.info("contexgt: "+new Gson().toJson(this.toMap(ctx)).toString());
@@ -65,6 +88,11 @@ public class DestinationConnection extends HttpServlet {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
+		try {
+			AuthenticationHeaderProvider auth=(AuthenticationHeaderProvider) ctx.lookup("java:comp/env/AuthenticationHeaderProvider");
+			
+			//https://www.javatips.net/api/cloud-sfsf-benefits-ext-master/com.sap.hana.cloud.samples.benefits/src/com/sap/hana/cloud/samples/benefits/connectivity/http/HTTPConnector.java
+		}catch(Exception e) {e.printStackTrace();}
 		
 		try { Destination destination = DestinationAccessor.getDestination("SCP_DEV");
 	        System.out.println("destination:"+destination.getPropertiesByName().keySet().toString());

@@ -23,10 +23,37 @@ import com.sap.cloud.sdk.odatav2.connectivity.ODataException;
 //import com.sap.cloud.sdk.s4hana.connectivity.ErpHttpDestination;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.BusinessPartner;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.services.DefaultBusinessPartnerService;
+import com.sap.core.connectivity.api.configuration.ConnectivityConfiguration;
 
 public class CxfNonSpringSimpleServlet extends CXFNonSpringServlet {
 	 private static final long serialVersionUID = 1L;
 	 Logger logger = LoggerFactory.getLogger(CxfNonSpringSimpleServlet.class);
+	 public static String destination = "SCP_DEV" ;
+	 public static String host="https://my302314-api.s4hana.ondemand.com";
+	
+
+	 public CxfNonSpringSimpleServlet(){
+	     super();
+	     
+	         try{String dest=System.getProperty("destination");
+	         	logger.info("dest:"+dest);
+	         	System.out.println("dest:"+dest);
+	                 if(null!=dest)
+	                	 CxfNonSpringSimpleServlet.destination=dest;
+	         }catch(Exception e) {e.printStackTrace();}
+	         try{
+	         	Context ctx = new InitialContext();
+	         	ConnectivityConfiguration config = (ConnectivityConfiguration) ctx.lookup("java:comp/env/ConnectivityConfiguration");
+	         	CxfNonSpringSimpleServlet.host=config.getConfiguration(CxfNonSpringSimpleServlet.destination).getProperty("URL");
+	         	logger.info("destination:"+CxfNonSpringSimpleServlet.destination);
+	         	logger.info("URL:"+CxfNonSpringSimpleServlet.host);
+	         }catch(Exception e) {e.printStackTrace();}
+	         logger.info("Const - destination:"+CxfNonSpringSimpleServlet.destination);
+	         logger.info("Const - host:"+CxfNonSpringSimpleServlet.host);
+	         System.out.println("Const - destination:"+CxfNonSpringSimpleServlet.destination);
+	         System.out.println("Const - host:"+CxfNonSpringSimpleServlet.host);
+	 }
+
 	  @Override
 	  public void loadBus(ServletConfig servletConfig) {
 	    super.loadBus(servletConfig);
