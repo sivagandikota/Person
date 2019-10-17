@@ -99,7 +99,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
         BufferedReader br = null;
         InputStreamReader in = null;
         Gson gson = new Gson();
-        String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization&$filter=" + URLEncoder.encode("Customer eq '" + custNo + "'", "UTF-8");
+        String BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization&$filter=" + URLEncoder.encode("Customer eq '" + custNo + "'", "UTF-8");
         System.out.println("---BASE_URL------" + BASE_URL);
         String result = (String) this.getData(BASE_URL, authoriz);
         System.out.println("result : " + result);
@@ -329,7 +329,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
                     o_result = "005";
                 }
             } else {
-                String url_onlyCust = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,SalesOrderType,CreationDate,CreatedByUser,SalesOrderDate,SoldToParty,PurchaseOrderByCustomer,ShippingCondition&$filter=" + URLEncoder.encode("SoldToParty eq '" + customerNumber + "'", "UTF-8");
+                String url_onlyCust = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,SalesOrderType,CreationDate,CreatedByUser,SalesOrderDate,SoldToParty,PurchaseOrderByCustomer,ShippingCondition&$filter=" + URLEncoder.encode("SoldToParty eq '" + customerNumber + "'", "UTF-8");
                 System.out.println("----url_onlyCust---" + url_onlyCust);
                 String result_onlyCust = (String) this.getData(url_onlyCust, authoriz);
                 System.out.println("----result_onlyCust----" + result_onlyCust);
@@ -429,7 +429,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
 
     public Object get_order_header_SalesOrder(String customer, String authoriz, String salesOrder) throws ClientProtocolException, IOException {
 //        System.out.println("235 - " + url + "   -authoriz:" + authoriz);
-        String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,SalesOrderType,CreationDate,CreatedByUser,SalesOrderDate,SoldToParty,PurchaseOrderByCustomer,ShippingCondition&$filter=" + URLEncoder.encode("SoldToParty eq '" + customer + "' and SalesOrder eq '" + salesOrder + "'", "UTF-8");
+        String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,SalesOrderType,CreationDate,CreatedByUser,SalesOrderDate,SoldToParty,PurchaseOrderByCustomer,ShippingCondition&$filter=" + URLEncoder.encode("SoldToParty eq '" + customer + "' and SalesOrder eq '" + salesOrder + "'", "UTF-8");
         HttpGet request = new HttpGet(url);
 
         // add request header
@@ -458,7 +458,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
 
     public Object get_order_header_ShipToParty(String authoriz, String salesOrder) throws ClientProtocolException, IOException {
 //        System.out.println("235 - " + url + "   -authoriz:" + authoriz);
-        String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner?$format=json&$select=SalesOrder,PartnerFunction,Customer&$filter=" + URLEncoder.encode("SalesOrder eq '" + salesOrder + "' and PartnerFunction eq 'SH'", "UTF-8");
+        String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner?$format=json&$select=SalesOrder,PartnerFunction,Customer&$filter=" + URLEncoder.encode("SalesOrder eq '" + salesOrder + "' and PartnerFunction eq 'SH'", "UTF-8");
         HttpGet request = new HttpGet(url);
 
         // add request header
@@ -487,7 +487,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
 
     public Object get_order_header_ShipCondText(String authoriz, String shipCond) throws ClientProtocolException, IOException {
 //        System.out.println("235 - " + url + "   -authoriz:" + authoriz);
-        String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json&$select=ShippingCondition,ShippingConditionName,Language&$filter=" + URLEncoder.encode("ShippingCondition eq '" + shipCond + "' and Language eq 'EN'", "UTF-8");
+        String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPPINGCONDITIONTEXT_CDS/YY1_ShippingConditionText?$format=json&$select=ShippingCondition,ShippingConditionName,Language&$filter=" + URLEncoder.encode("ShippingCondition eq '" + shipCond + "' and Language eq 'EN'", "UTF-8");
         HttpGet request = new HttpGet(url);
 
         // add request header
@@ -516,7 +516,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
 
     public Object get_order_header_po(String customer, String authoriz, String purchaseOrder) throws ClientProtocolException, IOException {
 //        System.out.println("235 - " + url + "   -authoriz:" + authoriz);
-        String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,SalesOrderType,CreationDate,CreatedByUser,SalesOrderDate,SoldToParty,PurchaseOrderByCustomer,ShippingCondition&$filter=" + URLEncoder.encode("SoldToParty eq '" + customer + "' and PurchaseOrderByCustomer eq '" + purchaseOrder + "'", "UTF-8");
+        String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,SalesOrderType,CreationDate,CreatedByUser,SalesOrderDate,SoldToParty,PurchaseOrderByCustomer,ShippingCondition&$filter=" + URLEncoder.encode("SoldToParty eq '" + customer + "' and PurchaseOrderByCustomer eq '" + purchaseOrder + "'", "UTF-8");
         HttpGet request = new HttpGet(url);
         System.out.println("po method-----url---" + url);
         // add request header
@@ -546,7 +546,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
     public Object get_order_header_mat(String customer, String authoriz, String material, String documentDate) throws ClientProtocolException, IOException {
 //        System.out.println("235 - " + url + "   -authoriz:" + authoriz);
         String saleOrderDate = documentDate + "T00:00:00";
-        String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,SalesOrderType,CreationDate,CreatedByUser,SalesOrderDate,SoldToParty,PurchaseOrderByCustomer,ShippingCondition&$filter=" + URLEncoder.encode("SoldToParty eq '" + customer + "' and SalesOrderDate ge datetime'" + saleOrderDate + "'", "UTF-8");
+        String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,SalesOrderType,CreationDate,CreatedByUser,SalesOrderDate,SoldToParty,PurchaseOrderByCustomer,ShippingCondition&$filter=" + URLEncoder.encode("SoldToParty eq '" + customer + "' and SalesOrderDate ge datetime'" + saleOrderDate + "'", "UTF-8");
         System.out.println("----mat_url---" + url);
         com.model.Zb2BOrderListWrapper oWMat = new com.model.Zb2BOrderListWrapper();
         com.model.Zb2BOrderListWrapper oWFinal = new com.model.Zb2BOrderListWrapper();
@@ -584,7 +584,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
             for (int i = 0; i < dAMatSale.length; i++) {
                 dMatSale = dAMatSale[i];
                 String salesOrder = dMatSale.getSalesOrder();
-                String url_SoItemMat = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItem?$format=json&$select=SalesOrder,SalesOrderItem,Material&$filter=" + URLEncoder.encode("Material eq '" + material + "' and SalesOrder eq '" + salesOrder + "'", "UTF-8");
+                String url_SoItemMat = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItem?$format=json&$select=SalesOrder,SalesOrderItem,Material&$filter=" + URLEncoder.encode("Material eq '" + material + "' and SalesOrder eq '" + salesOrder + "'", "UTF-8");
                 System.out.println("----url_SoItemMat---" + url_SoItemMat);
                 String result_SoItemMat = (String) getData(url_SoItemMat, authoriz);
                 System.out.println("---result_SoItemMat----" + result_SoItemMat);
@@ -608,7 +608,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
 
     public Object get_order_header_user_name(String createdBy, String authoriz) throws ClientProtocolException, IOException {
 //        System.out.println("235 - " + url + "   -authoriz:" + authoriz);
-        String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_BUSINESSUSER_CDS/YY1_BUSINESSUSER?$format=json&$select=PersonFullName,UserID&$filter=" + URLEncoder.encode("UserID eq '" + createdBy + "'", "UTF-8");
+        String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_BUSINESSUSER_CDS/YY1_BUSINESSUSER?$format=json&$select=PersonFullName,UserID&$filter=" + URLEncoder.encode("UserID eq '" + createdBy + "'", "UTF-8");
         System.out.println("----user_name---" + url);
         HttpGet request = new HttpGet(url);
         // add request header

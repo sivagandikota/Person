@@ -92,7 +92,7 @@ public class Zb2BStockStatus implements Zb2BStockstatusInterface {
         String sampleMat = "";
         String data_book = "";
         String itemCat = "";
-        String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
+        String BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
         data_saleOrg = (String) this.getData(BASE_URL, authoriz);
         System.out.println("----data_saleOrg----" + data_saleOrg);
         oWStock = gson.fromJson(data_saleOrg, com.model.Zb2BStockStatusWrapper.class);
@@ -108,7 +108,7 @@ public class Zb2BStockStatus implements Zb2BStockstatusInterface {
                 break;
             }
         }
-        url_mat = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_Product?$format=json&$select=Product,ProductGroup,BaseUnit,YY1_Mara_Sample_ind_PRD&$filter=" + URLEncoder.encode("Product eq '" + material + "'", "UTF-8");
+        url_mat = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_SRV/A_Product?$format=json&$select=Product,ProductGroup,BaseUnit,YY1_Mara_Sample_ind_PRD&$filter=" + URLEncoder.encode("Product eq '" + material + "'", "UTF-8");
         data_mat = (String) this.getData(url_mat, authoriz);
         System.out.println("---data_mat---" + data_mat);
         oWMat = gson.fromJson(data_mat, com.model.Zb2BStockStatusWrapper.class);
@@ -152,7 +152,7 @@ public class Zb2BStockStatus implements Zb2BStockstatusInterface {
                                     break;
                                 } else {
 //                                    url_availStock = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_AVAILY_INFO_BASIC/CalculateAvailabilityTimeseries?" + URLEncoder.encode("ATPCheckingRule='A'&Material='" + material + "'&SupplyingPlant='1000'&$format=json", "UTF-8");
-                                    url_availStock = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_AVAILY_INFO_BASIC/CalculateAvailabilityTimeseries?ATPCheckingRule='A'&Material='" + material + "'&SupplyingPlant='1000'&$format=json";
+                                    url_availStock = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_AVAILY_INFO_BASIC/CalculateAvailabilityTimeseries?ATPCheckingRule='A'&Material='" + material + "'&SupplyingPlant='1000'&$format=json";
                                     System.out.println("----url_availStock----" + url_availStock);
                                     data_availStock = (String) this.getData(url_availStock, authoriz);
                                     System.out.println("---data_availStock----" + data_availStock);
@@ -240,7 +240,7 @@ public class Zb2BStockStatus implements Zb2BStockstatusInterface {
         com.model.Zb2BStockStatusWrapper oWBrand = new com.model.Zb2BStockStatusWrapper();
         Gson gson = new Gson();
         try {
-            url_mat = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_Product?$format=json&$select=Product,ProductGroup&$filter=" + URLEncoder.encode("Product eq '" + material + "'", "UTF-8");
+            url_mat = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_SRV/A_Product?$format=json&$select=Product,ProductGroup&$filter=" + URLEncoder.encode("Product eq '" + material + "'", "UTF-8");
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(Zb2BStockStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -265,7 +265,7 @@ public class Zb2BStockStatus implements Zb2BStockstatusInterface {
                 System.out.println("----matGrp====" + matGrp);
 
                 try {
-                    url_bookDesc = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_ZBOOKS_CDS/YY1_ZBOOKS?$format=json&$select=Longtextdescribingthemateria,Brandcode,MaterialGroup&$filter=" + URLEncoder.encode("MaterialGroup eq '" + matGrp + "'", "UTF-8");
+                    url_bookDesc = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_ZBOOKS_CDS/YY1_ZBOOKS?$format=json&$select=Longtextdescribingthemateria,Brandcode,MaterialGroup&$filter=" + URLEncoder.encode("MaterialGroup eq '" + matGrp + "'", "UTF-8");
                 } catch (Exception ex) {
                     java.util.logging.Logger.getLogger(Zb2BStockStatus.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -288,7 +288,7 @@ public class Zb2BStockStatus implements Zb2BStockstatusInterface {
                         dBook = dABook[k];
                         String brand = dBook.getBrandcode();
                         try {
-                            url_Brand = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_ZBRANDS_CDS/YY1_ZBRANDS?$format=json&$select=Brand,SAP_Description&$filter=" + URLEncoder.encode("Brand eq '" + brand + "'", "UTF-8");
+                            url_Brand = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_ZBRANDS_CDS/YY1_ZBRANDS?$format=json&$select=Brand,SAP_Description&$filter=" + URLEncoder.encode("Brand eq '" + brand + "'", "UTF-8");
                         } catch (Exception ex) {
                             java.util.logging.Logger.getLogger(Zb2BStockStatus.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -338,7 +338,7 @@ public class Zb2BStockStatus implements Zb2BStockstatusInterface {
         com.model.Zb2BStockStatusWrapper oWMat = new com.model.Zb2BStockStatusWrapper();
 
         Gson gson = new Gson();
-        url_mat = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductDescription?$format=json&$select=Product,ProductDescription&$filter=" + URLEncoder.encode("Product eq '" + material + "' and Language eq 'EN'", "UTF-8");
+        url_mat = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductDescription?$format=json&$select=Product,ProductDescription&$filter=" + URLEncoder.encode("Product eq '" + material + "' and Language eq 'EN'", "UTF-8");
 
         System.out.println("url_mat" + url_mat);
 
@@ -369,7 +369,7 @@ public class Zb2BStockStatus implements Zb2BStockstatusInterface {
         com.model.Zb2BStockStatusWrapper oWMat = new com.model.Zb2BStockStatusWrapper();
 
         Gson gson = new Gson();
-        url_matSales = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductSalesDelivery?$format=json&$select=Product,ProductSalesOrg,ProductDistributionChnl,DeliveryQuantity,ItemCategoryGroup,ProductHierarchy&$filter=" + URLEncoder.encode("Product eq '" + material + "' and ProductDistributionChnl eq '10' and ProductSalesOrg eq '" + salesOrg + "'", "UTF-8");
+        url_matSales = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductSalesDelivery?$format=json&$select=Product,ProductSalesOrg,ProductDistributionChnl,DeliveryQuantity,ItemCategoryGroup,ProductHierarchy&$filter=" + URLEncoder.encode("Product eq '" + material + "' and ProductDistributionChnl eq '10' and ProductSalesOrg eq '" + salesOrg + "'", "UTF-8");
         data_matSales = (String) this.getData(url_matSales, authoriz);
         System.out.println("----data_matSales----" + data_matSales);
 

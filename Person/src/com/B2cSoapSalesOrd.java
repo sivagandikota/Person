@@ -36,6 +36,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -84,7 +85,8 @@ public class B2cSoapSalesOrd implements B2cSoapSalesOrdInterface {
     public WebServiceContext wsctx;
     Logger logger = LoggerFactory.getLogger(B2cSoapSalesOrd.class);
     public String token = "";
-private static final QName SERVICE_NAME = new QName("http://sap.com/xi/EDI/Supplier", "service");
+    private static final QName SERVICE_NAME = new QName("http://sap.com/xi/EDI/Supplier", "service");
+
     public void salesOrderCreate(
             String shipping, Amount amount, Amount taxAmount,
             Amount discountAmount, Amount totalAmount,
@@ -105,12 +107,12 @@ private static final QName SERVICE_NAME = new QName("http://sap.com/xi/EDI/Suppl
         if (authList == null) {
             throw new AuthenticationException("No Authorization Header ");
         }
-        System.out.println("MessageContext().toString : "+wsctx.getMessageContext().toString());
-        System.out.println("http_headers :"+http_headers.keySet().toString());
-        ArrayList hosts = (ArrayList)http_headers.get("host");
+        System.out.println("MessageContext().toString : " + wsctx.getMessageContext().toString());
+        System.out.println("http_headers :" + http_headers.keySet().toString());
+        ArrayList hosts = (ArrayList) http_headers.get("host");
         String host = hosts.get(0).toString();
-        logger.error("Host:"+host);
-        System.out.println("Host:"+host);
+        logger.error("Host:" + host);
+        System.out.println("Host:" + host);
 //BP-100999999-Sales order-493
 //BP-100131313-Sales order-494
 //BP-100777777-Sales order-496
@@ -134,7 +136,7 @@ private static final QName SERVICE_NAME = new QName("http://sap.com/xi/EDI/Suppl
                 address.setCorrespondenceLanguage("F");
             }
         } catch (Exception e) {
-          //  e.printStackTrace();
+            //  e.printStackTrace();
         }
         try {
             if (address.getCountry().equals("CA") && address.getPostalCode().length() != 6) {
@@ -180,7 +182,7 @@ private static final QName SERVICE_NAME = new QName("http://sap.com/xi/EDI/Suppl
 
         }
 
-        String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&$filter=BusinessPartner+eq+'" + customer + "'";
+        String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&$filter=BusinessPartner+eq+'" + customer + "'";
         String data = (String) new com.Zb2BCustInq().getData(url, authoriz);
         com.sap.apibhub.sdk.api_business_partner.model.Wrapper9 aWrap = new com.sap.apibhub.sdk.api_business_partner.model.Wrapper9();
         Gson gson = new Gson();
@@ -189,12 +191,12 @@ private static final QName SERVICE_NAME = new QName("http://sap.com/xi/EDI/Suppl
         //if customer rep exists
         com.Zb2BCustInqWrapper custSalesRep = null;
         if (custRepComm.length() > 0) {
-            url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,SalesOffice,SalesGroup&$expand=to_SalesAreaTax&$filter=" + URLEncoder.encode("Customer eq '" + custRepComm + "'", "UTF-8");
+            url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,SalesOffice,SalesGroup&$expand=to_SalesAreaTax&$filter=" + URLEncoder.encode("Customer eq '" + custRepComm + "'", "UTF-8");
             data = (String) new com.Zb2BCustInq().getData(url, authoriz);
             custSalesRep = gson.fromJson(data, com.Zb2BCustInqWrapper.class);
         }
 
-        url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,Currency&$expand=to_SalesAreaTax&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
+        url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,Currency&$expand=to_SalesAreaTax&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
         data = (String) new com.Zb2BCustInq().getData(url, authoriz);
         com.Zb2BCustInqWrapper custSales = gson.fromJson(data, com.Zb2BCustInqWrapper.class);
         //getSalesOrder 493
@@ -326,20 +328,29 @@ private static final QName SERVICE_NAME = new QName("http://sap.com/xi/EDI/Suppl
             factory.getInFaultInterceptors().add(loggingInfaultInterceptor);
             factory.setServiceClass(OrderRequestIn.class);
             //factory.setWsdlLocation(Service.class.getResource("../../../../../ORDERREQUEST_IN.wsdl").getFile());
-            factory.setAddress("https://my302314-api.s4hana.ondemand.com/sap/bc/srt/scs_ext/sap/orderrequest_in");
+            factory.setAddress(CxfNonSpringSimpleServlet.host + "/sap/bc/srt/scs_ext/sap/orderrequest_in");
             factory.setBindingId("http://www.w3.org/2003/05/soap/bindings/HTTP/");
             factory.getFeatures().add(new WSAddressingFeature());
-            
+
             OrderRequestIn portl = (OrderRequestIn) factory.create();
 
             org.apache.cxf.endpoint.Client clientl = ClientProxy.getClient(portl);
             HTTPConduit http = (HTTPConduit) clientl.getConduit();
 
-            http.getAuthorization().setUserName("BHF_COMM");
-            http.getAuthorization().setPassword("nBhLsiwWXmfwqmX)FDLRUA6SwdCitAXUswwZwLqX");
+            String base64Credentials = authoriz.substring("Basic".length()).trim();
+            byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
+            String credentials = new String(credDecoded, "UTF-8");
+            // credentials = username:password
+            final String[] values = credentials.split(":", 2);
+            logger.info("----username--pass:" + values[0] + "--" + values[1]);
 
-    org.apache.cxf.endpoint.Endpoint cxfEndpointl = clientl.getEndpoint();
-    org.apache.cxf.service.Service serv=cxfEndpointl.getService();
+//            http.getAuthorization().setUserName("BHF_COMM");
+//            http.getAuthorization().setPassword("nBhLsiwWXmfwqmX)FDLRUA6SwdCitAXUswwZwLqX");
+            http.getAuthorization().setUserName(values[0]);
+            http.getAuthorization().setPassword(values[1]);
+
+            org.apache.cxf.endpoint.Endpoint cxfEndpointl = clientl.getEndpoint();
+            org.apache.cxf.service.Service serv = cxfEndpointl.getService();
 //    Executor exec =serv.getExecutor();
 //    exec.
 //    Map<String,Object> outProps = new HashMap<String,Object>();

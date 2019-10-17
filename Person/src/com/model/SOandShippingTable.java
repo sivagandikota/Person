@@ -14,7 +14,8 @@ import java.util.HashMap;
 public class SOandShippingTable {
     private String salesOrderId;
     private java.util.HashMap shippingConditonTable = new java.util.HashMap();
-
+    private String status;
+    
     public String getSalesOrderId() {
         return salesOrderId;
     }
@@ -31,10 +32,21 @@ public class SOandShippingTable {
         this.shippingConditonTable = shippingConditonTable;
     }
 
-    @Override
-    public String toString() {
-        return "SOandShippingTable{" + "salesOrderId=" + salesOrderId + ", shippingConditonTable=" + shippingConditonTable + '}';
-    }
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "SOandShippingTable [salesOrderId=" + salesOrderId + ", shippingConditonTable=" + shippingConditonTable
+				+ ", status=" + status + "]";
+	}
+
+    
     
     
 }

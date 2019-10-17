@@ -66,7 +66,7 @@ public class ZwPopSkuOrigin implements ZwPopSkuOriginInterface{
 	        //System.out.println("Basic " + Base64.getEncoder().encodeToString((username + ":" +password).getBytes()));
 	        
 		com.ZwPopSkuOriginWrapper z = new ZwPopSkuOriginWrapper();
-		String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductPlant(Product='" + product + "',Plant='1000')?$select=CountryOfOrigin&$format=json";
+		String BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductPlant(Product='" + product + "',Plant='1000')?$select=CountryOfOrigin&$format=json";
 		Response response;
 		Request request = new Request.Builder()
 			      .url(BASE_URL )

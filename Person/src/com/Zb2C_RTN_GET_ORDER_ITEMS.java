@@ -84,7 +84,7 @@ public class Zb2C_RTN_GET_ORDER_ITEMS implements Zb2C_RTN_GET_ORDER_ITEMS_Interf
         String data = "";
         String url = "";
         try {
-            url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization&$filter=" + URLEncoder.encode("Customer eq '" + Customer + "'", "UTF-8");
+            url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization&$filter=" + URLEncoder.encode("Customer eq '" + Customer + "'", "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             java.util.logging.Logger.getLogger(Zb2C_RTN_GET_ORDER_ITEMS.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -115,7 +115,7 @@ public class Zb2C_RTN_GET_ORDER_ITEMS implements Zb2C_RTN_GET_ORDER_ITEMS_Interf
             String url_SO = "";
             String soData = "";
             try {
-                url_SO = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder&$filter=" + URLEncoder.encode("SalesOrganization eq '" + saleOrg + "' and SoldToParty eq '" + Customer + "' and DistributionChannel eq '10' and PurchaseOrderByCustomer eq '" + Customerpurchaseorder + "'", "UTF-8");
+                url_SO = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder&$filter=" + URLEncoder.encode("SalesOrganization eq '" + saleOrg + "' and SoldToParty eq '" + Customer + "' and DistributionChannel eq '10' and PurchaseOrderByCustomer eq '" + Customerpurchaseorder + "'", "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 java.util.logging.Logger.getLogger(Zb2C_RTN_GET_ORDER_ITEMS.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -148,7 +148,7 @@ public class Zb2C_RTN_GET_ORDER_ITEMS implements Zb2C_RTN_GET_ORDER_ITEMS_Interf
             String url_SO_Items = "";
             String so_Items_Data = "";
             try {
-                url_SO_Items = (String) this.getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('" + saleOrder + "')/to_Item?$select=SalesOrder,SalesOrderItem,Material,SalesOrderItemText,RequestedQuantity,RequestedQuantityUnit,ItemGrossWeight,ItemWeightUnit,Batch", authoriz);
+                url_SO_Items = (String) this.getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('" + saleOrder + "')/to_Item?$select=SalesOrder,SalesOrderItem,Material,SalesOrderItemText,RequestedQuantity,RequestedQuantityUnit,ItemGrossWeight,ItemWeightUnit,Batch", authoriz);
             } catch (Exception ex) {
                 java.util.logging.Logger.getLogger(Zb2C_RTN_GET_ORDER_ITEMS.class.getName()).log(Level.SEVERE, null, ex);
             }

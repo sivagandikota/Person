@@ -1,7 +1,6 @@
 package com;
 
 import javax.servlet.ServletConfig;
-import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
@@ -13,16 +12,6 @@ import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationAccessor;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationAccessor;
-import com.sap.cloud.sdk.s4hana.datamodel.odata.helper.Order;
-import com.sap.cloud.sdk.odatav2.connectivity.ODataException;
-
-//import com.sap.cloud.sdk.s4hana.connectivity.DefaultErpHttpDestination;
-//import com.sap.cloud.sdk.s4hana.connectivity.ErpHttpDestination;
-import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.BusinessPartner;
-import com.sap.cloud.sdk.s4hana.datamodel.odata.services.DefaultBusinessPartnerService;
 import com.sap.core.connectivity.api.configuration.ConnectivityConfiguration;
 
 public class CxfNonSpringSimpleServlet extends CXFNonSpringServlet {

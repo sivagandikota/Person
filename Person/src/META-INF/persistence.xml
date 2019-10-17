@@ -6,7 +6,7 @@
       <persistence-unit name="PERSONS" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<non-jta-data-source>jdbc/DefaultDB</non-jta-data-source>
-		<class>model.Person</class>
+		<!-- <class>model.Person</class>
 		<class>model.SalesOrder</class>
 		<class>model.SalesOrderItem</class>
 		<class>model.PricingElement</class>
@@ -14,7 +14,7 @@
 		<class>model.ScheduleLine</class>
 		<class>model.Addresse</class>
 		<class>model.ProductMasterImage</class>
-		<class>model.Product</class>
+		<class>model.Product</class> -->
 		
 				
 		<properties>

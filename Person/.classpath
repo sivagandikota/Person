@@ -42,19 +42,20 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/sivag/git/API_BUSINESS_PARTNER/target/API_BUSINESS_PARTNER-1.0.0.jar"/>
-	<classpathentry kind="src" path="/API_RESERVATION_DOCUMENT_SRV"/>
-	<classpathentry kind="src" path="/API_MATERIAL_STOCK_SRV"/>
-	<classpathentry kind="src" path="/API_SALES_ORDER_SRV"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="/BrewsterWeb"/>
 	<classpathentry kind="lib" path="D:/Download/connectivity-2.21.0.jar"/>
 	<classpathentry kind="lib" path="D:/Download/connectivity-scp-neo-2.21.0.jar"/>
 	<classpathentry kind="lib" path="D:/Download/connectivity-2.7.0.jar"/>
 	<classpathentry kind="lib" path="D:/Download/core-2.7.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.ws.cxf.core.CXF_CLASSPATH_CONTAINER/Apache CXF/3.3.3">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -2,6 +2,7 @@ package com;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.Context;
@@ -25,6 +26,14 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationFacade;
 import com.sap.cloud.sdk.s4hana.connectivity.ErpConfigContext;
 import com.sap.core.connectivity.api.configuration.ConnectivityConfiguration;
 import com.sap.core.connectivity.api.authentication.AuthenticationHeaderProvider;
+import com.sap.cloud.sdk.odatav2.connectivity.ODataException;
+
+import com.sap.cloud.sdk.s4hana.datamodel.odata.helper.Order;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.BusinessPartner;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.BusinessPartnerFluentHelper;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.services.DefaultBusinessPartnerService;
+
+
 
 
 /**
@@ -72,9 +81,12 @@ public class DestinationConnection extends HttpServlet {
 		try {logger.info("Environment Variable destination = " + System.getenv("destination"));}catch(Exception e) {e.printStackTrace();}
 		try {logger.info("Environment Variable destination = " + System.getProperty("destination"));}catch(Exception e) {e.printStackTrace();}
 		try {logger.info("Environment Variable destination = " + System.getProperties().toString());}catch(Exception e) {e.printStackTrace();}
-		try{ErpConfigContext ectx = new ErpConfigContext("SCP_DEV");
+		try{
+                    ErpConfigContext ectx = new ErpConfigContext("SCP_DEV");
 		logger.info("ctx:"+ectx.toString() );
-//		ectx.getSapClient().
+		
+			Map<String,String> map = new HashMap<String,String>();
+
 		}catch(Exception w){w.printStackTrace();}
 		try {}catch(Exception e) {e.printStackTrace();}
 		Context ctx=null;

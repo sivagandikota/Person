@@ -102,7 +102,7 @@ public class Zb2BCustInq implements Zb2BCustInqInterface {
         InputStreamReader in = null;
         Gson gson = new Gson();
         //String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea(Customer='"+customer+"',SalesOrganization='"+salesOrganization+"',DistributionChannel='"+distributionChannel+"',Division='"+division+"')?$format=json&$select=Customer,SalesOrganization,DistributionChannel,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer";
-        String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
+        String BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
         //String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter=Customer eq '" + customer + "'";
         System.out.println(BASE_URL);
         //Response response;
@@ -141,7 +141,7 @@ public class Zb2BCustInq implements Zb2BCustInqInterface {
             if (z.getD().getResults().get(0).getShippingCondition().length() == 0) {
 
 				url = (String) getData(
-						"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+						CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
 								+ URLEncoder.encode(
 										"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
 										"UTF-8"),
@@ -159,7 +159,7 @@ public class Zb2BCustInq implements Zb2BCustInqInterface {
                 if (z.getD().getResults().get(0).getShippingCondition().matches("00")) {
                     z.setStatus("001");
                     //retreive XREFRESULT and set the value in z.getD().getResults().get(0).getShippingCondition()
-                    url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_XREF_CDS/YY1_XREF?$format=json&$select=XREFRESULT&$filter=" + URLEncoder.encode("XREFCODE eq 'DEF_SHIP' and XREFKEY eq 'UPS_FEDEX'","UTF-8"),authoriz);
+                    url=(String)getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_XREF_CDS/YY1_XREF?$format=json&$select=XREFRESULT&$filter=" + URLEncoder.encode("XREFCODE eq 'DEF_SHIP' and XREFKEY eq 'UPS_FEDEX'","UTF-8"),authoriz);
                     com.ShippingConditionsWrapper sh = gson.fromJson(url, com.ShippingConditionsWrapper.class);
 					z.getD().getResults().get(0)
 							.setShippingCondition(sh.getD().getResults().get(0).getShippingCondition());
@@ -169,22 +169,22 @@ public class Zb2BCustInq implements Zb2BCustInqInterface {
                 switch (z.getD().getResults().get(0).getSalesOrganization()) {
                     case "1000":
                         switch(z.getD().getResults().get(0).getCustomerPaymentTerms()){
-                            case "COD": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("VSBED eq '01'","UTF-8"),authoriz);
+                            case "COD": url=(String)getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("VSBED eq '01'","UTF-8"),authoriz);
                                     break;
-                            case "CASH": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("VSBED eq '01'","UTF-8"),authoriz);
+                            case "CASH": url=(String)getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("VSBED eq '01'","UTF-8"),authoriz);
                             default:
                                 switch (z.getD().getResults().get(0).getShippingCondition()) {
-                                    case "WC": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')","UTF-8"),authoriz);
+                                    case "WC": url=(String)getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')","UTF-8"),authoriz);
                                     break;
-                                    case "01": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')","UTF-8"),authoriz);
+                                    case "01": url=(String)getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')","UTF-8"),authoriz);
                                     break;
-                                    case "41": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'FEDEX' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')","UTF-8"),authoriz);
+                                    case "41": url=(String)getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'FEDEX' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')","UTF-8"),authoriz);
                                     break;
                                 }
                         }
                         //if 75 delete all and add 75
                         break;
-                        case "2000": url=(String)getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'CA_SHPCOND' and XREFRESULT eq 'X')","UTF-8"),authoriz);
+                        case "2000": url=(String)getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter=" + URLEncoder.encode("XREFCODE eq 'CA_SHPCOND' and XREFRESULT eq 'X')","UTF-8"),authoriz);
                 }
                 System.out.println("177 - URL - data:"+url);
                 com.ShippingConditionsWrapper sh =gson.fromJson(url, com.ShippingConditionsWrapper.class);
@@ -223,7 +223,7 @@ public class Zb2BCustInq implements Zb2BCustInqInterface {
         logger.debug("---Address----------------------------------------------------------------------------------------------------------------------");
         //https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=BusinessPartner eq 'SIVA G'
 
-        BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=" + URLEncoder.encode("BusinessPartner eq '" + customer + "'", "UTF-8");
+        BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&expand=to_BusinessPartnerAddress&$filter=" + URLEncoder.encode("BusinessPartner eq '" + customer + "'", "UTF-8");
         System.out.println("220 :" + BASE_URL);
         com.sap.apibhub.sdk.api_business_partner.model.Wrapper9 w = new com.sap.apibhub.sdk.api_business_partner.model.Wrapper9();
         responseBody = "";

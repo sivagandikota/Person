@@ -40,8 +40,8 @@ public interface B2BInterface {
 	@WebMethod(operationName="CLOSE_ORDER")
 	public String CloseOrder (@WebParam(name = "SoldToParty")String SoldToParty,
 			                          @WebParam(name = "Order")String Order,
-			                          @WebParam(name = "CustomerReference")String CustRef,
-			                          @WebParam(name = "ShippingConditions")String ShippingCondition) ;
+			                          @WebParam(name = "CustomerReferencePO")String CustRef,
+			                          @WebParam(name = "ShippingConditions")String ShippingCondition)throws Exception ;
 	
 	@WebMethod(operationName="CHECK_PAYER") 
 	public String CheckPayer (@WebParam(name = "SoldToParty")String SoldToParty) throws Exception;

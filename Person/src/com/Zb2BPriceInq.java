@@ -86,7 +86,7 @@ public class Zb2BPriceInq implements Zb2BPriceInqInterface {
         String[] data_book = new String[2];
         try {
 //            url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$filter= + URLEncoder.encode(\"SalesOrganization eq '\" + saleOrg + \"' and SoldToParty eq '\" + Customer + \"' and DistributionChannel eq '10' and PurchaseOrderByCustomer eq '\" + Customerpurchaseorder + \"'\", \"UTF-8\");
-            url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
+            url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(Zb2BPriceInq.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -120,7 +120,7 @@ public class Zb2BPriceInq implements Zb2BPriceInqInterface {
             String url_mat = "";
             String data_mat = "";
             try {
-                url_mat = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductSalesDelivery?$format=json&$select=Product,ProductHierarchy,ProductSalesOrg,ProductDistributionChnl&$filter=" + URLEncoder.encode("Product eq '" + material + "' and ProductSalesOrg eq '" + salesorg + "' and ProductDistributionChnl eq '" + distChan + "'", "UTF-8");
+                url_mat = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductSalesDelivery?$format=json&$select=Product,ProductHierarchy,ProductSalesOrg,ProductDistributionChnl&$filter=" + URLEncoder.encode("Product eq '" + material + "' and ProductSalesOrg eq '" + salesorg + "' and ProductDistributionChnl eq '" + distChan + "'", "UTF-8");
             } catch (Exception ex) {
                 java.util.logging.Logger.getLogger(Zb2BPriceInq.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -207,7 +207,7 @@ public class Zb2BPriceInq implements Zb2BPriceInqInterface {
         com.model.Zb2BPriceInqMatWraper oWMatDesc = new com.model.Zb2BPriceInqMatWraper();
         Gson gson = new Gson();
         try {
-            url_matDesc = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductDescription?$format=json&$select=Product,Language,ProductDescription&$filter=" + URLEncoder.encode("Product eq '" + material + "' and Language eq 'EN'", "UTF-8");
+            url_matDesc = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_SRV/A_ProductDescription?$format=json&$select=Product,Language,ProductDescription&$filter=" + URLEncoder.encode("Product eq '" + material + "' and Language eq 'EN'", "UTF-8");
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(Zb2BPriceInq.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -258,7 +258,7 @@ public class Zb2BPriceInq implements Zb2BPriceInqInterface {
         com.model.Zb2BPriceInqMatWraper oWBrand = new com.model.Zb2BPriceInqMatWraper();
         Gson gson = new Gson();
         try {
-            url_mat = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_Product?$format=json&$select=Product,ProductGroup&$filter=" + URLEncoder.encode("Product eq '" + material + "'", "UTF-8");
+            url_mat = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_SRV/A_Product?$format=json&$select=Product,ProductGroup&$filter=" + URLEncoder.encode("Product eq '" + material + "'", "UTF-8");
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(Zb2BPriceInq.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -283,7 +283,7 @@ public class Zb2BPriceInq implements Zb2BPriceInqInterface {
                 System.out.println("----matGrp====" + matGrp);
 
                 try {
-                    url_bookDesc = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_ZBOOKS_CDS/YY1_ZBOOKS?$format=json&$select=Longtextdescribingthemateria,Brandcode,MaterialGroup&$filter=" + URLEncoder.encode("MaterialGroup eq '" + matGrp + "'", "UTF-8");
+                    url_bookDesc = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_ZBOOKS_CDS/YY1_ZBOOKS?$format=json&$select=Longtextdescribingthemateria,Brandcode,MaterialGroup&$filter=" + URLEncoder.encode("MaterialGroup eq '" + matGrp + "'", "UTF-8");
                 } catch (Exception ex) {
                     java.util.logging.Logger.getLogger(Zb2BPriceInq.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -307,7 +307,7 @@ public class Zb2BPriceInq implements Zb2BPriceInqInterface {
                         o_collection = dBook.getLongtextdescribingthemateria();
                         String brand = dBook.getBrandcode();
                         try {
-                            url_Brand = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_ZBRANDS_CDS/YY1_ZBRANDS?$format=json&$select=Brand,SAP_Description&$filter=" + URLEncoder.encode("Brand eq '" + brand + "'", "UTF-8");
+                            url_Brand = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_ZBRANDS_CDS/YY1_ZBRANDS?$format=json&$select=Brand,SAP_Description&$filter=" + URLEncoder.encode("Brand eq '" + brand + "'", "UTF-8");
                         } catch (Exception ex) {
                             java.util.logging.Logger.getLogger(Zb2BPriceInq.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -367,7 +367,7 @@ public class Zb2BPriceInq implements Zb2BPriceInqInterface {
         com.model.Zb2BPriceInqMatWraper oWSim = new com.model.Zb2BPriceInqMatWraper();
         Gson gson = new Gson();
         String data_YY1_UMREZ_PRD = "";
-        String url_YY1_UMREZ_PRD = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_Product?$format=json&$select=Product,YY1_UMREZ_PRD&$filter=" + URLEncoder.encode("Product eq '" + material + "'", "UTF-8");
+        String url_YY1_UMREZ_PRD = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_SRV/A_Product?$format=json&$select=Product,YY1_UMREZ_PRD&$filter=" + URLEncoder.encode("Product eq '" + material + "'", "UTF-8");
         data_YY1_UMREZ_PRD = (String) this.getData(url_YY1_UMREZ_PRD, authoriz);
         System.out.println("----data_YY1_UMREZ_PRD----" + data_YY1_UMREZ_PRD);
         oWProd = gson.fromJson(data_YY1_UMREZ_PRD, com.model.Zb2BPriceInqMatWraper.class);
@@ -382,7 +382,7 @@ public class Zb2BPriceInq implements Zb2BPriceInqInterface {
             }
         }
 
-        String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PRODUCT_SRV/A_Product?$format=json&$select=Product&$filter=" + URLEncoder.encode("Product eq '" + material + "'", "UTF-8");
+        String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PRODUCT_SRV/A_Product?$format=json&$select=Product&$filter=" + URLEncoder.encode("Product eq '" + material + "'", "UTF-8");
 
         HttpGet request = new HttpGet(url);
 
@@ -411,7 +411,7 @@ public class Zb2BPriceInq implements Zb2BPriceInqInterface {
                 + "{ \"SalesOrderItem\": \"20\", \"RequestedQuantity\": \"" + UMREZ_PRD + "\",\"Material\": \"" + material + "\" }]}";
         System.out.println("----simu_payload---" + data);
         try {
-            url_Prod = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SIMULATION_SRV/A_SalesOrderSimulation";
+            url_Prod = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SIMULATION_SRV/A_SalesOrderSimulation";
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(Zb2BPriceInq.class.getName()).log(Level.SEVERE, null, ex);
         }

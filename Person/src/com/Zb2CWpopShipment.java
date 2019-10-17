@@ -7,6 +7,8 @@ package com;
 
 import com.google.gson.Gson;
 import com.model.Zb2CWpopShipmentWrapper;
+import com.sap.xi.edi.supplier.OrderRequestIn;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -17,8 +19,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.naming.AuthenticationException;
@@ -32,6 +36,20 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import javax.xml.ws.AsyncHandler;
+import javax.xml.ws.Response;
+
+import org.apache.cxf.Bus;
+import org.apache.cxf.BusFactory;
+import org.apache.cxf.annotations.UseAsyncMethod;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.jaxws.ServerAsyncResponse;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduit;
+import org.apache.cxf.ws.addressing.WSAddressingFeature;
 
 /**
  *
@@ -44,15 +62,99 @@ public class Zb2CWpopShipment implements Zb2CWpopShipmentInterface {
     @Resource
     public WebServiceContext wsctx;
     Logger logger = LoggerFactory.getLogger(Zb2CWpopShipment.class);
-
+    
     @Override
+    @UseAsyncMethod
     public Zb2CWpopShipmentWrapper getResendWpopShipments(List<String> salesOrg, List<String> soldToParty, String PlannedGoodsIssueFromDate, String PlannedGoodsIssueToDate) throws AuthenticationException, Exception {
-//     return new    Zb2CWpopShipmentWrapper();
+    	MessageContext mctx = wsctx.getMessageContext();
+    	return getResendWpopShipments(salesOrg,soldToParty,PlannedGoodsIssueFromDate,PlannedGoodsIssueToDate,mctx);
+    }
+    @Override
+	public Response<Zb2CWpopShipmentWrapper> getResendWpopShipmentsAsync(List<String> salesOrg,
+			List<String> soldToParty, String PlannedGoodsIssueFromDate, String PlannedGoodsIssueToDate) throws AuthenticationException, Exception {
+    	MessageContext mctx = wsctx.getMessageContext();
+        Bus bus = BusFactory.getDefaultBus();
+                	// insist on the async connector to use PATCH.
+                	bus.setProperty(AsyncHTTPConduit.USE_ASYNC, Boolean.TRUE);
+                	bus.setProperty(org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduitFactory.SO_KEEPALIVE,Boolean.TRUE);
+    	 final ServerAsyncResponse<Zb2CWpopShipmentWrapper> asyncResponse = new ServerAsyncResponse<Zb2CWpopShipmentWrapper>() ;
+        new Thread() {
+            public void run() {
+                try {
+                	Bus bus = BusFactory.getDefaultBus();
+                	// insist on the async connector to use PATCH.
+                	bus.setProperty(AsyncHTTPConduit.USE_ASYNC, Boolean.TRUE);
+                	bus.setProperty(org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduitFactory.SO_KEEPALIVE,Boolean.TRUE);
+                    Thread.sleep(10000);
+                    //Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+//                Zb2CWpopShipmentWrapper payload = new TestMessage();
+//                payload.setMessage("message: " + message);
+                try {
+					asyncResponse.set(getResendWpopShipments(salesOrg,soldToParty,PlannedGoodsIssueFromDate,PlannedGoodsIssueToDate,mctx));
+				} catch (AuthenticationException e) {
+					// TODO Auto-generated catch block 
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                System.out.println("Responding on another thread\n");
+               // asyncHandler.handleResponse(asyncResponse);
+            }
+        }.start();
+ 
+        return asyncResponse;
+	}
+    
+    @Override
+    public Future<?> getResendWpopShipmentsAsync(final List<String> salesOrg, final List<String> soldToParty, final String PlannedGoodsIssueFromDate,final String PlannedGoodsIssueToDate, final AsyncHandler<Zb2CWpopShipmentWrapper> asyncHandler) {
+        System.out.println("Executing getResendWpopShipmentsAsync asynchronously\n");
         MessageContext mctx = wsctx.getMessageContext();
+        final ServerAsyncResponse<Zb2CWpopShipmentWrapper> asyncResponse = new ServerAsyncResponse<Zb2CWpopShipmentWrapper>() ;
+        new Thread() {
+            public void run() {
+                try {
+                	Bus bus = BusFactory.getDefaultBus();
+                	// insist on the async connector to use PATCH.
+                	bus.setProperty(AsyncHTTPConduit.USE_ASYNC, Boolean.TRUE);
+                	bus.setProperty(org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduitFactory.SO_KEEPALIVE,Boolean.TRUE);
+                    Thread.sleep(10000);
+                    //Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+//                Zb2CWpopShipmentWrapper payload = new TestMessage();
+//                payload.setMessage("message: " + message);
+                try {
+					asyncResponse.set(getResendWpopShipments(salesOrg,soldToParty,PlannedGoodsIssueFromDate,PlannedGoodsIssueToDate,mctx));
+				} catch (AuthenticationException e) {
+					// TODO Auto-generated catch block 
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                System.out.println("Responding on another thread\n");
+                asyncHandler.handleResponse(asyncResponse);
+            }
+        }.start();
+ 
+        return asyncResponse;
+    }
+    
+    public Zb2CWpopShipmentWrapper getResendWpopShipments(List<String> salesOrg, List<String> soldToParty, String PlannedGoodsIssueFromDate, String PlannedGoodsIssueToDate,MessageContext mctx) throws AuthenticationException, Exception {
+//     return new    Zb2CWpopShipmentWrapper();
+        //MessageContext mctx = wsctx.getMessageContext();
         //HttpServletRequest sRequest = (HttpServletRequest)wsctx.getMessageContext().get(MessageContext.SERVLET_REQUEST);
         //logger.error("----Server Name : " + sRequest.getServerName());
         //get detail from request headers
         Map http_headers = (Map) mctx.get(MessageContext.HTTP_REQUEST_HEADERS);
+        Bus bus = BusFactory.getDefaultBus();
+     // insist on the async connector to use PATCH.
+     bus.setProperty(AsyncHTTPConduit.USE_ASYNC, Boolean.TRUE);
         System.out.println(Arrays.toString(http_headers.keySet().toArray()));
         System.out.println(Arrays.toString(http_headers.values().toArray()));
         //System.out.println(http_headers.get("Authorization").getClass().getName());
@@ -99,14 +201,20 @@ public class Zb2CWpopShipment implements Zb2CWpopShipmentInterface {
         System.out.println("---PlannedGoodsIssueToDate----" + PlannedGoodsIssueToDate);
         String planGdIssueToDate = PlannedGoodsIssueToDate + "T23:59:59";
         System.out.println("---planGdIssueToDate----" + planGdIssueToDate);
+        
+        String BASE_URL = "";
 
 //        String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_DELIVERYDOCUMENT_CDS/YY1_DELIVERYDOCUMENT?$format=json&$select=PlannedGoodsIssueDate,OverallGoodsMovementStatus,SoldToParty,DeliveryDocument,SDDocumentCategory,SalesOrganization&$filter=" + URLEncoder.encode("SalesOrganization eq '" + salesOrg + "' and SoldToParty eq '" + soldToParty + "' and SDDocumentCategory eq 'J' and OverallGoodsMovementStatus eq 'C' and PlannedGoodsIssueDate eq datetime'" + PlannedGoodsIssueDate + "'", "UTF-8");
-        String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=0002/A_OutbDeliveryHeader?$format=json&$select=PlannedGoodsIssueDate,OverallGoodsMovementStatus,SoldToParty,DeliveryDocument,SDDocumentCategory,SalesOrganization&$filter=" + URLEncoder.encode("(SalesOrganization eq '" + String.join("' or SalesOrganization eq '", salesOrg) + "') and (SoldToParty eq '" + String.join("' or SoldToParty eq '", soldToParty) + "') and SDDocumentCategory eq 'J' and OverallGoodsMovementStatus eq 'C' and PlannedGoodsIssueDate ge datetime'" + planGdIssueFromDate + "' and PlannedGoodsIssueDate le datetime'" + planGdIssueToDate + "'", "UTF-8");
-
+        BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=0002/A_OutbDeliveryHeader?$format=json&$select=PlannedGoodsIssueDate,OverallGoodsMovementStatus,SoldToParty,DeliveryDocument,SDDocumentCategory,SalesOrganization&$filter=" ;
+        if(String.join(",", salesOrg).length()>0) {BASE_URL=BASE_URL+ URLEncoder.encode("(SalesOrganization eq '" + String.join("' or SalesOrganization eq '", salesOrg) + "') and ", "UTF-8");}
+        if(String.join(",", soldToParty).length()>0) {BASE_URL=BASE_URL+URLEncoder.encode("(SoldToParty eq '" + String.join("' or SoldToParty eq '", soldToParty) + "') and ", "UTF-8");}
+        BASE_URL=BASE_URL+URLEncoder.encode("SDDocumentCategory eq 'J' and OverallGoodsMovementStatus eq 'C' and PlannedGoodsIssueDate ge datetime'" + planGdIssueFromDate + "' and PlannedGoodsIssueDate le datetime'" + planGdIssueToDate + "'", "UTF-8");
         System.out.println("--Line 101-----" + BASE_URL);
+//        logger.info("--Line 101-----" + BASE_URL);
 
         String result = (String) this.getData(BASE_URL, authoriz);
         System.out.println("result : " + result);
+//        logger.info("result : " + result);
         z = gson.fromJson(result.toString(), com.model.Zb2CWpopShipmentWrapper.class);
         String url = "";
         String urlForPO = "";
@@ -120,7 +228,7 @@ public class Zb2CWpopShipment implements Zb2CWpopShipmentInterface {
             dd.setStatus("20");
             String delDoc = dd.getDeliveryDocument();
 //            String delItem_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=0002/A_OutbDeliveryHeader('" + delDoc + "')/to_DeliveryDocumentItem?$format=json&$select=DeliveryDocument,ReferenceSDDocument";
-            url = (String) getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=0002/A_OutbDeliveryHeader('" + delDoc + "')/to_DeliveryDocumentItem?$format=json&$select=DeliveryDocument,ReferenceSDDocument", authoriz);
+            url = (String) getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=0002/A_OutbDeliveryHeader('" + delDoc + "')/to_DeliveryDocumentItem?$format=json&$select=DeliveryDocument,ReferenceSDDocument", authoriz);
             System.out.println("URL----" + url);
             w = gson.fromJson(url, com.model.Zb2CWpopShipmentGetSOWrapper.class);
             System.out.println("---w----" + w);
@@ -131,15 +239,17 @@ public class Zb2CWpopShipment implements Zb2CWpopShipmentInterface {
             for (int j = 0; j < ddSOA.length; j++) {
                 ddSO = ddSOA[j];
                 String soNum = ddSO.getReferenceSDDocument();
-                urlForPO = (String) getData("https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('" + soNum + "')?$format=json&$select=SalesOrder,PurchaseOrderByCustomer", authoriz);
+                if(soNum.length()>0) {
+                urlForPO = (String) getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('" + soNum + "')?$format=json&$select=SalesOrder,PurchaseOrderByCustomer", authoriz);
                 System.out.println("POnum--------" + urlForPO);
                 p = gson.fromJson(urlForPO, com.model.Zb2CWpopShipmentGetPOWrapper.class);
                 System.out.println("---poDetails----" + p);
+                if(null != p)
                 dd.setPoNumber(p.getD().getPurchaseOrderByCustomer());
-
+                }
                 break;
             }
-            String url_trackNum = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPING_UNIT_CUSTOM_CDS/YY1_Shiping_unit_custom?$format=json&$filter=" + URLEncoder.encode("DeliveryNumber  eq '" + delDoc + "'", "UTF-8");
+            String url_trackNum = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPING_UNIT_CUSTOM_CDS/YY1_Shiping_unit_custom?$format=json&$filter=" + URLEncoder.encode("DeliveryNumber  eq '" + delDoc + "'", "UTF-8");
             String data_trackNum = "";
             data_trackNum = (String) getData(url_trackNum, authoriz);
             System.out.println("---url_trackNum--" + url_trackNum);
@@ -165,6 +275,8 @@ public class Zb2CWpopShipment implements Zb2CWpopShipmentInterface {
         }
         return z;
     }
+ 
+ 
 
     public Object getData(String url, String authoriz) throws ClientProtocolException, IOException {
         System.out.println("235 - " + url + "   -authoriz:" + authoriz);
@@ -254,12 +366,19 @@ public class Zb2CWpopShipment implements Zb2CWpopShipmentInterface {
         String data = "";
 
         System.out.println("--Base_URL---" + BASE_URL);
+        System.out.println("--257---"+String.join(",", soldToParty));
+        logger.info("--257---"+String.join(",", soldToParty));
         try {
-            BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,LastChangeDateTime,SoldToParty,DeliveryBlockReason,PurchaseOrderByCustomer&$filter=" + URLEncoder.encode("(SoldToParty eq '" + String.join("' or SoldToParty eq '", soldToParty) + "') and LastChangeDateTime ge datetimeoffset'" + cancelFromDate + "' and LastChangeDateTime le datetimeoffset'" + cancelToDate + "' and DeliveryBlockReason ne '' and SDDocumentReason ne '523'", "UTF-8");
+        	if(String.join(",", soldToParty).length()>0) {
+            BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,LastChangeDateTime,SoldToParty,DeliveryBlockReason,PurchaseOrderByCustomer&$filter=" + URLEncoder.encode("(SoldToParty eq '" + String.join("' or SoldToParty eq '", soldToParty) + "') and LastChangeDateTime ge datetimeoffset'" + cancelFromDate + "' and LastChangeDateTime le datetimeoffset'" + cancelToDate + "' and DeliveryBlockReason ne '' and SDDocumentReason ne '523'", "UTF-8");
+        	}else {
+        		BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,LastChangeDateTime,SoldToParty,DeliveryBlockReason,PurchaseOrderByCustomer&$filter=" + URLEncoder.encode("LastChangeDateTime ge datetimeoffset'" + cancelFromDate + "' and LastChangeDateTime le datetimeoffset'" + cancelToDate + "' and DeliveryBlockReason ne '' and SDDocumentReason ne '523'", "UTF-8");
+        	}
         } catch (UnsupportedEncodingException ex) {
             java.util.logging.Logger.getLogger(Zb2CWpopShipment.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("73" + BASE_URL);
+        logger.info("73" + BASE_URL);
         try {
             data = (String) this.getData(BASE_URL, authoriz);
             System.out.println("77" + BASE_URL);
@@ -284,7 +403,7 @@ public class Zb2CWpopShipment implements Zb2CWpopShipmentInterface {
                 dd.setStatus("40");
                 String saleOrder = dd.getSalesOrder();
                 System.out.println("Sales Order-----" + saleOrder);
-                String url_SoItem = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItem?$format=json&$select=SalesDocumentRjcnReason,SalesOrder,SalesOrderItem&$filter=" + URLEncoder.encode("SalesOrder  eq '" + saleOrder + "' and SalesDocumentRjcnReason eq ''", "UTF-8");
+                String url_SoItem = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderItem?$format=json&$select=SalesDocumentRjcnReason,SalesOrder,SalesOrderItem&$filter=" + URLEncoder.encode("SalesOrder  eq '" + saleOrder + "' and SalesDocumentRjcnReason eq ''", "UTF-8");
                 String data_SoItem = "";
                 data_SoItem = (String) getData(url_SoItem, authoriz);
                 System.out.println("---SoItem Data---" + data_SoItem);
@@ -307,6 +426,11 @@ public class Zb2CWpopShipment implements Zb2CWpopShipmentInterface {
         
         System.out.println("----getCancelOrders----" + x);
         return x;
+    }
+
+    public static void main(String args[]) {
+        
+            
     }
 
 }

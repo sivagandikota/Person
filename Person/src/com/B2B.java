@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.mail.FetchProfile.Item;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -28,7 +30,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.google.gson.Gson;*/
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -39,29 +42,44 @@ import com.model.ListItems;
 import com.model.OrderItems;
 import com.model.PList;
 import com.model.ReturnProductsWrapper;
+import com.sap.cloud.sdk.odatav2.connectivity.ODataException;
+import com.sap.cloud.sdk.s4hana.connectivity.ErpConfigContext;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.helper.Order;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.BusinessPartner;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.services.DefaultBusinessPartnerService;
 
 public class B2B implements B2BInterface {
 
-	@Override
+	//@Override
 	// public String sayHello(String name) {
 	// // TODO Auto-generated method stub
 	// return "Hello " + name;
 	// }
-
-	// @Override
+	Logger logger = LoggerFactory.getLogger(B2B.class);
+	 @Override
 	public com.model.SOandShippingTable createOrder(String SoldToParty) throws Exception {
 		// TODO Auto-generated method stub
 		java.util.HashMap shippingDetail = null;
 		String data = "";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
-		String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder";
+		//String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder";
+		String url = CxfNonSpringSimpleServlet.host+"/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder";
 		String custref = "Shopping Cart/" + SoldToParty;
 		HttpResponse respons = null;
+		String status = "";
 		StringBuffer result = new StringBuffer();
+		String BASE_URL = CxfNonSpringSimpleServlet.host+"/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter="
+				+ URLEncoder.encode("Customer eq '" + SoldToParty + "'", "UTF-8");
+		String dataa = (String)this.getData(BASE_URL, authoriz);
+		Gson gson = new Gson();
+		com.model.SOandShippingTable table = new com.model.SOandShippingTable();
+		Zb2BCustInqWrapper z = gson.fromJson(result.toString(), Zb2BCustInqWrapper.class);
+		if(z.getD().getResults().get(0).getOrderIsBlockedForCustomer().contains("true")) {}
 		try {
 			shippingDetail = this.getShip(SoldToParty);
-
+			table.setStatus("999");
+			return table;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,7 +94,7 @@ public class B2B implements B2BInterface {
 			URL urlObj = new URL(url);
 			HttpClient client = HttpClientBuilder.create().build();
 			HttpGet request = new HttpGet(url);
-
+			
 			// add request header
 			// request.addHeader("User-Agent", "Java");
 			request.addHeader("Content-Type", "application/json");
@@ -117,7 +135,11 @@ public class B2B implements B2BInterface {
 			Ex.printStackTrace();
 		}
 		if (201 != respons.getStatusLine().getStatusCode()) {
-			throw new Exception(result.toString());
+			//throw new Exception(result.toString());
+			status="888";
+		}
+		if (201 == respons.getStatusLine().getStatusCode()) {
+			status="000";
 		}
 
 		// try {
@@ -128,7 +150,7 @@ public class B2B implements B2BInterface {
 		// e.printStackTrace();
 		// }
 		System.out.println("117--:");
-		Gson gson = new Gson();
+		 gson = new Gson();
 		com.sap.apibhub.sdk.api_sales_order_srv.model.ASalesOrderType wrapper = new com.sap.apibhub.sdk.api_sales_order_srv.model.ASalesOrderType();
 		try {
 			wrapper = gson.fromJson(result.toString(),
@@ -136,9 +158,10 @@ public class B2B implements B2BInterface {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		com.model.SOandShippingTable table = new com.model.SOandShippingTable();
+		
 		table.setSalesOrderId(wrapper.getD().getSalesOrder());
 		table.setShippingConditonTable(shippingDetail);
+		table.setStatus(status);
 		System.out.println("121--table:" + table.toString());
 		return table;
 
@@ -151,7 +174,7 @@ public class B2B implements B2BInterface {
 		String data = "";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
-		String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/";
+		String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/";
 		url = url + "A_SalesOrderItem(SalesOrder='" + Order + "'" + ",SalesOrderItem='" + Item + "'" + ")";
 		System.out.println("URL:" + url);
 		StringBuffer result = new StringBuffer();
@@ -206,17 +229,37 @@ public class B2B implements B2BInterface {
 	}
 
 	// @Override
-	public String CloseOrder(String SoldToParty, String Order, String CustRef, String ShippingCondition) {
+	public String CloseOrder(String SoldToParty, String Order, String CustRef, String ShippingCondition) throws Exception {
 		// TODO Auto-generated method stub
-
+		String status="";
 		String data = "";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
-		String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('"
+		String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('"
 				+ Order + "')";
 
 		HttpResponse respons = null;
 		StringBuffer result = new StringBuffer();
+		try {
+			 ErpConfigContext ectx = new ErpConfigContext(CxfNonSpringSimpleServlet.destination);
+	            List<BusinessPartner> businessPartners  =new DefaultBusinessPartnerService()
+	                            .getAllBusinessPartner()
+	                            .select(BusinessPartner.BUSINESS_PARTNER,
+	                                    BusinessPartner.LAST_NAME,
+	                                    BusinessPartner.FIRST_NAME,
+	                                    BusinessPartner.IS_MALE,
+	                                    BusinessPartner.IS_FEMALE,
+	                                    BusinessPartner.CREATION_DATE)
+	                            .filter(BusinessPartner.CUSTOMER.eq(SoldToParty))
+	                            .execute(ectx);
+logger.info("BusinessPartner---------"+businessPartners.get(0).getBusinessPartner());
+//	            response.setContentType("application/json");
+//	            response.getWriter().write(new Gson().toJson(businessPartners));
+logger.error(new Gson().toJson(businessPartners));
+	        } catch (final ODataException e) {
+	            e.printStackTrace();
+	        }
+
 		try {
 
 			URL urlObj = new URL(url);
@@ -257,11 +300,19 @@ public class B2B implements B2BInterface {
 		}
 		if (204 == respons.getStatusLine().getStatusCode()) {
 			// throw new Exception(result.toString());
-			return "Order Closed " + Order;
+			status= "Order Closed " + Order;
 		} else {
-			return result.toString();
+			status= result.toString();
 		}
-
+		
+		try {
+			url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner?$format=json&$expand=to_BusinessPartnerAddress,to_BusinessPartnerAddress/to_EmailAddress&$filter=Customer eq '"+SoldToParty+"'";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		return status;
 	}
 
 	// @Override
@@ -271,7 +322,7 @@ public class B2B implements B2BInterface {
 		String data = "";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
-		String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/";
+		String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/";
 		url = url + "A_SalesOrder(" + "'" + Order + "')" + "/to_Item";
 
 		StringBuffer result = new StringBuffer();
@@ -405,7 +456,7 @@ public class B2B implements B2BInterface {
 		try {
 			// String BASE_URL =
 			// "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea(Customer='"+customer+"',SalesOrganization='"+salesOrganization+"',DistributionChannel='"+distributionChannel+"',Division='"+division+"')?$format=json&$select=Customer,SalesOrganization,DistributionChannel,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer";
-			String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter="
+			String BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter="
 					+ URLEncoder.encode("Customer eq '" + SoldToParty + "'", "UTF-8");
 			// String BASE_URL =
 			// "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter=Customer
@@ -455,7 +506,7 @@ public class B2B implements B2BInterface {
 			if (z.getD().getResults().get(0).getShippingCondition().length() == 0) {
 
 				url = (String) getData(
-						"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+						CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
 								+ URLEncoder.encode(
 										"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
 										"UTF-8"),
@@ -469,7 +520,7 @@ public class B2B implements B2BInterface {
 					// retreive XREFRESULT and set the value in
 					// z.getD().getResults().get(0).getShippingCondition()
 					url = (String) getData(
-							"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_XREF_CDS/YY1_XREF?$format=json&$select=XREFRESULT&$filter="
+							CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_XREF_CDS/YY1_XREF?$format=json&$select=XREFRESULT&$filter="
 									+ URLEncoder.encode("XREFCODE eq 'DEF_SHIP' and XREFKEY eq 'UPS_FEDEX'", "UTF-8"),
 							authoriz);
 					com.ShippingConditionsWrapper sh = gson.fromJson(url, com.ShippingConditionsWrapper.class);
@@ -482,14 +533,14 @@ public class B2B implements B2BInterface {
 					switch (z.getD().getResults().get(0).getCustomerPaymentTerms()) {
 					case "COD":
 						url = (String) getData(
-								"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter="
+								CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter="
 										+ URLEncoder.encode("VSBED eq '01'", "UTF-8"),
 								authoriz);
 						System.out.println("457 cod - URL - data:" + url);
 						break;
 					case "CASH":
 						url = (String) getData(
-								"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter="
+								CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter="
 										+ URLEncoder.encode("VSBED eq '01'", "UTF-8"),
 								authoriz);
 						System.out.println("460 cash - URL - data:" + url);
@@ -498,7 +549,7 @@ public class B2B implements B2BInterface {
 						switch (z.getD().getResults().get(0).getShippingCondition()) {
 						case "WC":
 							url = (String) getData(
-									"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+									CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
 											+ URLEncoder.encode(
 													"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
 													"UTF-8"),
@@ -509,7 +560,7 @@ public class B2B implements B2BInterface {
 
 						case "01":
 							url = (String) getData(
-									"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+									CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
 											+ URLEncoder.encode(
 													"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
 													"UTF-8"),
@@ -518,7 +569,7 @@ public class B2B implements B2BInterface {
 							break;
 						case "41":
 							url = (String) getData(
-									"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+									CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
 											+ URLEncoder.encode(
 													"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'FEDEX' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
 													"UTF-8"),
@@ -531,7 +582,7 @@ public class B2B implements B2BInterface {
 					break;
 				case "2000":
 					url = (String) getData(
-							"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+							CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
 									+ URLEncoder.encode("XREFCODE eq 'CA_SHPCOND' and XREFRESULT eq 'X')", "UTF-8"),
 							authoriz);
 				}
@@ -600,7 +651,7 @@ public class B2B implements B2BInterface {
 		String data = "";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
-		String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/";
+		String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/";
 		try {
 			url = url + "A_SalesOrder(" + "'" + Order + "')"
 					+ "/to_Item?$format=json&$select=SalesOrder,SalesOrderItem,Material,RequestedQuantity,RequestedQuantityUnit,TransactionCurrency,NetAmount&$filter="
@@ -669,7 +720,7 @@ public class B2B implements B2BInterface {
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
 		String url = (String) this.getData(
-				"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization&$filter="
+				CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization&$filter="
 						+ URLEncoder.encode("Customer eq '" + SoldToParty + "'", "UTF-8"),
 				authoriz);
 		System.out.println("610--data" + url);
@@ -678,7 +729,7 @@ public class B2B implements B2BInterface {
 
 		System.out.println("614--" + z.toString());
 		url = (String) this.getData(
-				"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustSalesPartnerFunc?$format=json&$filter="
+				CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustSalesPartnerFunc?$format=json&$filter="
 						+ URLEncoder.encode(
 								"Customer eq '" + SoldToParty + "'  and SalesOrganization eq '"
 										+ z.getD().getResults().get(0).getSalesOrganization()
@@ -703,7 +754,7 @@ public class B2B implements B2BInterface {
 		String url = "";
 		try {
 			url = (String) this.getData(
-					"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_B2B_COLLECTIONS_CDS/YY1_B2B_COLLECTIONS?$format=json&$select=MaterialGroup,MaterialGroupText&$filter="
+					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_B2B_COLLECTIONS_CDS/YY1_B2B_COLLECTIONS?$format=json&$select=MaterialGroup,MaterialGroupText&$filter="
 							+ URLEncoder.encode("CompanyCode eq '" + BUKRS + "'", "UTF-8"),
 					authoriz);
 		} catch (Exception e) {
@@ -733,7 +784,7 @@ public class B2B implements B2BInterface {
 		String conditiontable = "";
 		try {
 			url = (String) this.getData(
-					"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_B2B_COLLECTIONS_INQ_CDS/YY1_B2B_COLLECTIONS_INQ?$format=json&$select=ProductGroupName,SAP_Description&$filter="
+					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_B2B_COLLECTIONS_INQ_CDS/YY1_B2B_COLLECTIONS_INQ?$format=json&$select=ProductGroupName,SAP_Description&$filter="
 							+ URLEncoder.encode("CompanyCode eq '" + BUKRS + "' and MaterialGroup eq'" + BOOK + "'",
 									"UTF-8"),
 					authoriz);
@@ -751,7 +802,7 @@ public class B2B implements B2BInterface {
 
 		try {
 			url = (String) this.getData(
-					"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_PRODUCTS_B2B_WS_CDS/YY1_PRODUCTS_B2B_WS?$format=json&$filter="
+					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_PRODUCTS_B2B_WS_CDS/YY1_PRODUCTS_B2B_WS?$format=json&$filter="
 							+ URLEncoder.encode(
 									"startswith(Product,'010V00') eq false and Plant eq '1000' and YY1_PARENT_SAL ne '' and ProductSalesOrg eq '"
 											+ BUKRS + "' and ProductGroup eq '" + BOOK + "' ",
@@ -780,7 +831,7 @@ public class B2B implements B2BInterface {
 			}
 			try {
 				url = (String) this.getData(
-						"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$format=json&$select=ConditionRecord&$filter="
+						CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$format=json&$select=ConditionRecord&$filter="
 								+ URLEncoder.encode("ConditionType eq 'ZPR1' and MaterialGroup eq '"
 										+ product.getProductGroup()
 										+ "' and PriceListType eq '01' and SalesOrganization eq '" + BUKRS
@@ -805,7 +856,7 @@ public class B2B implements B2BInterface {
 			} else {
 				try {
 					url = (String) this.getData(
-							"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$format=json&$select=ConditionRecord&$filter="
+							CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$format=json&$select=ConditionRecord&$filter="
 									+ URLEncoder.encode("ConditionType eq 'ZPR1' and YY1_MATWA_PCI eq '"
 											+ product.getProduct()
 											+ "' and PriceListType eq '01' and SalesOrganization eq '" + BUKRS
@@ -830,7 +881,7 @@ public class B2B implements B2BInterface {
 			}
 			try {
 				url = (String) this.getData(
-						"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgConditionRecord?$format=json&$select=ConditionRateValue&$filter="
+						CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgConditionRecord?$format=json&$select=ConditionRateValue&$filter="
 								+ URLEncoder.encode(
 										"ConditionTable eq '" + conditiontable + "' and ConditionRecord eq '"
 												+ cond[0].getConditionRecord()
@@ -872,7 +923,7 @@ public class B2B implements B2BInterface {
 		ArrayList<INVOICELIST> Invoice = new ArrayList<INVOICELIST>();
 		try {
 			url = (String) this.getData(
-					"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_Customer?$format=json&$select=Customer&$filter="
+					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_Customer?$format=json&$select=Customer&$filter="
 							+ URLEncoder.encode("Customer eq '" + CUST + "'" + "and DeletionIndicator eq false", "UTF-8"),
 					authoriz);//
 		} catch (Exception e) {
@@ -890,7 +941,7 @@ public class B2B implements B2BInterface {
 
 		try {
 			url = (String) this.getData(
-					"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustSalesPartnerFunc?$format=json&$filter="
+					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustSalesPartnerFunc?$format=json&$filter="
 							+ URLEncoder.encode("Customer eq '" + CUST + "'" + "and PartnerFunction eq 'RE'"
 									+ "and BPCustomerNumber eq '" + CUST + "'", "UTF-8"),
 					authoriz);//
@@ -907,7 +958,7 @@ public class B2B implements B2BInterface {
 		}
 		try {
 			url = (String) this.getData(
-					"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_FISCALYEAR_CDS/YY1_FISCALYEAR?$format=json&$select=FiscalPeriodEndDate,PreviousFiscalPeriodStartDa",
+					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_FISCALYEAR_CDS/YY1_FISCALYEAR?$format=json&$select=FiscalPeriodEndDate,PreviousFiscalPeriodStartDa",
 					authoriz);//
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -920,7 +971,7 @@ public class B2B implements B2BInterface {
 
 		try {
 			url = (String) this.getData(
-					"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_B2B_INVOICE_LIST_CDS/YY1_B2B_INVOICE_LIST?$format=json&$filter="
+					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_B2B_INVOICE_LIST_CDS/YY1_B2B_INVOICE_LIST?$format=json&$filter="
 							+ URLEncoder.encode("SoldToParty eq '" + CUST + "'" + "and BillingDocumentDate gt '//Date("
 									+ Inv[0].getPreviousFiscalPeriodStartDa() + ")//'"
 									+ "and BillingDocumentDate le '//Date(" + Inv[0].getFiscalPeriodEndDate() + ")//'",
@@ -995,7 +1046,7 @@ public class B2B implements B2BInterface {
 		String url = "";
 		try {
 			url = (String) this.getData(
-					"https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_INVOICE_DETAILS_CDS/YY1_INVOICE_DETAILS?$format=json&$filter="
+					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_INVOICE_DETAILS_CDS/YY1_INVOICE_DETAILS?$format=json&$filter="
 							+ URLEncoder.encode("BillingDocument eq '" + INVHEAD.getInvoiceList().get(0).getInvoiceNumber() + "'","UTF-8"),
 					authoriz);//
 		} catch (Exception e) {

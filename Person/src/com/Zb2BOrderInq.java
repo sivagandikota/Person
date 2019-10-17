@@ -121,7 +121,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
         String url_dNum = "";
         Gson gson = new Gson();
         if (!salesOrder.isEmpty()) {
-            String BASE_URL = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SALESORDER_CDS/YY1_SalesOrder?$format=json&$select=SalesOrder,SalesOrganization,SoldToParty,DeliveryBlockReason,CompleteDeliveryIsDefined,ControllingObject,DistributionChannel,TotalCreditCheckStatus,PurchaseOrderByCustomer,OverallDeliveryStatus,OverallSDProcessStatus&$filter=" + URLEncoder.encode("SalesOrder eq '" + salesOrder + "' and SalesOrderType eq 'OR'", "UTF-8");
+            String BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SALESORDER_CDS/YY1_SalesOrder?$format=json&$select=SalesOrder,SalesOrganization,SoldToParty,DeliveryBlockReason,CompleteDeliveryIsDefined,ControllingObject,DistributionChannel,TotalCreditCheckStatus,PurchaseOrderByCustomer,OverallDeliveryStatus,OverallSDProcessStatus&$filter=" + URLEncoder.encode("SalesOrder eq '" + salesOrder + "' and SalesOrderType eq 'OR'", "UTF-8");
             System.out.println("---BASE_URL------" + BASE_URL);
             String result = (String) this.getData(BASE_URL, authoriz);
             System.out.println("result : " + result);
@@ -136,7 +136,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                     String customer = dSo.getSoldToParty();
                     creditStatus = dSo.getTotalCreditCheckStatus();
 //                    String resultSo = (String) this.get_order_header_SalesOrder(customerNumber, authoriz, salesOrder);
-                    String url_soItem = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SALESORDERITEM_CDS/YY1_SalesOrderItem?$format=json&$select=SalesOrder,SalesOrderItem,SalesOrderItemCategory,TotalDeliveryStatus,Material,BaseUnit,OriginallyRequestedMaterial,Plant,StorageLocation,Batch,TargetDelivQtyInOrderQtyUni,ConfdDeliveryQtyInBaseUnit,ConfdDelivQtyInOrderQtyUnit,TargetToBaseQuantityNmrtr,TargetToBaseQuantityDnmntr,OrderQuantityUnit,NetAmount,ShippingPoint,SalesDocumentRjcnReason,ItemIsDeliveryRelevant,ItemIsBillingRelevant,MaterialByCustomer,AdditionalMaterialGroup2,Subtotal3Amount&$filter=" + URLEncoder.encode("SalesOrder eq '" + salesOrder + "'", "UTF-8");
+                    String url_soItem = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SALESORDERITEM_CDS/YY1_SalesOrderItem?$format=json&$select=SalesOrder,SalesOrderItem,SalesOrderItemCategory,TotalDeliveryStatus,Material,BaseUnit,OriginallyRequestedMaterial,Plant,StorageLocation,Batch,TargetDelivQtyInOrderQtyUni,ConfdDeliveryQtyInBaseUnit,ConfdDelivQtyInOrderQtyUnit,TargetToBaseQuantityNmrtr,TargetToBaseQuantityDnmntr,OrderQuantityUnit,NetAmount,ShippingPoint,SalesDocumentRjcnReason,ItemIsDeliveryRelevant,ItemIsBillingRelevant,MaterialByCustomer,AdditionalMaterialGroup2,Subtotal3Amount&$filter=" + URLEncoder.encode("SalesOrder eq '" + salesOrder + "'", "UTF-8");
                     oWShipAddress = (com.model.Zb2BOrderInqGetSOWrapper) this.getShipAddress(salesOrder, authoriz);
 //                    System.out.println("---result_shipAddress----" + result_shipAddress);
 //                    oWShipAddress = gson.fromJson(result_shipAddress, com.model.Zb2BOrderInqGetSOWrapper.class);
@@ -169,7 +169,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                             if (!reasonForRej.isEmpty()) {
                                 ordstat = "99";
                                 dSoItem.setOrdstat(ordstat);
-                                url_rejText = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SALESDOCUMENTRJCNREA_CDS/YY1_SALESDOCUMENTRJCNREA?$format=json&$select=SalesDocumentRjcnReason,SalesDocumentRjcnReasonName&$filter=" + URLEncoder.encode("SalesDocumentRjcnReason eq '" + reasonForRej + "'", "UTF-8");
+                                url_rejText = "CxfNonSpringSimpleServlet.host + /sap/opu/odata/sap/YY1_SALESDOCUMENTRJCNREA_CDS/YY1_SALESDOCUMENTRJCNREA?$format=json&$select=SalesDocumentRjcnReason,SalesDocumentRjcnReasonName&$filter=" + URLEncoder.encode("SalesDocumentRjcnReason eq '" + reasonForRej + "'", "UTF-8");
                                 data_rejText = (String) this.getData(url_rejText, authoriz);
                                 System.out.println("---data_rejText---" + data_rejText);
                                 oWRejText = gson.fromJson(data_rejText, com.model.Zb2BOrderInqGetSoItemWrapper.class);
@@ -196,7 +196,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                                 ordstat_text = "B/O";
                                 dSoItem.setOrdstat(ordstat);
                                 dSoItem.setOrdstat_text(ordstat_text);
-                                url_dNum = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + soItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
+                                url_dNum = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + soItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
                                 data_dNum = (String) this.getData(url_dNum, authoriz);
                                 System.out.println("----data_dNum----" + data_dNum);
                                 oWDelNum = gson.fromJson(data_dNum, com.model.Zb2BOrderInqGetPOWrapper.class);
@@ -391,7 +391,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
         String data_bPartner = "";
         String url_Address = "";
         String data_Address = "";
-        String url_shipToParty = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner?$format=json&$select=SalesOrder,PartnerFunction,Customer&$filter=" + URLEncoder.encode("SalesOrder eq '" + salesOrder + "' and PartnerFunction eq 'SH'", "UTF-8");
+        String url_shipToParty = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrderHeaderPartner?$format=json&$select=SalesOrder,PartnerFunction,Customer&$filter=" + URLEncoder.encode("SalesOrder eq '" + salesOrder + "' and PartnerFunction eq 'SH'", "UTF-8");
         System.out.println("----url_shipToParty-----" + url_shipToParty);
         String data_shipToParty = (String) getData(url_shipToParty, authoriz);
         System.out.println("----data_shipToParty-----" + data_shipToParty);
@@ -405,7 +405,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                 dSp = dASp[i];
                 String customer = dSp.getCustomer();
                 System.out.println("---customer--" + customer);
-                url_bPartner = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner?$format=json&$select=BusinessPartner,Customer&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
+                url_bPartner = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner?$format=json&$select=BusinessPartner,Customer&$filter=" + URLEncoder.encode("Customer eq '" + customer + "'", "UTF-8");
                 data_bPartner = (String) this.getData(url_bPartner, authoriz);
                 System.out.println("---data_bPartner----" + data_bPartner);
                 oWBPartner = gson.fromJson(data_bPartner, com.model.Zb2BOrderInqGetSOWrapper.class);
@@ -418,7 +418,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                         dBp = dABp[j];
                         String businessPartner = dBp.getBusinessPartner();
                         System.out.println("----businessPartner---" + businessPartner);
-                        url_Address = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&$select=BusinessPartner,FullName,CityName,Region,StreetName,PostalCode&$filter=" + URLEncoder.encode("BusinessPartner  eq '" + businessPartner + "'", "UTF-8");
+                        url_Address = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartnerAddress?$format=json&$select=BusinessPartner,FullName,CityName,Region,StreetName,PostalCode&$filter=" + URLEncoder.encode("BusinessPartner  eq '" + businessPartner + "'", "UTF-8");
                         data_Address = (String) this.getData(url_Address, authoriz);
                         System.out.println("---data_Address----" + data_Address);
                         oWAddress = gson.fromJson(data_Address, com.model.Zb2BOrderInqGetSOWrapper.class);
@@ -463,7 +463,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
         com.model.Zb2BOrderInqGetPOWrapper oWReQty = new com.model.Zb2BOrderInqGetPOWrapper();
         String deliveryNum = "";
         String poNum = "";
-        String url_poNum = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurOrdAccountAssignment?$format=json&$select=PurchaseOrder,PurchaseOrderItem,SalesOrder,SalesOrderItem&$filter=" + URLEncoder.encode("SalesOrder  eq '" + salesOrder + "' and SalesOrderItem eq '" + salesOrderItem + "'", "UTF-8");
+        String url_poNum = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurOrdAccountAssignment?$format=json&$select=PurchaseOrder,PurchaseOrderItem,SalesOrder,SalesOrderItem&$filter=" + URLEncoder.encode("SalesOrder  eq '" + salesOrder + "' and SalesOrderItem eq '" + salesOrderItem + "'", "UTF-8");
         String data_PoNum = (String) this.getData(url_poNum, authoriz);
         System.out.println("-----data_PoNum---" + data_PoNum);
         oWPoNum = gson.fromJson(data_PoNum, com.model.Zb2BOrderInqGetPOWrapper.class);
@@ -474,7 +474,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                 dPoNum = dAPoNum[i];
                 poNum = dPoNum.getPurchaseOrder();
                 System.out.println("---poNum---" + poNum);
-                url_PoRelaseStat = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder?$format=json&$select=PurchaseOrder,ReleaseIsNotCompleted&$filter=" + URLEncoder.encode("PurchaseOrder  eq '" + poNum + "'", "UTF-8");
+                url_PoRelaseStat = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder?$format=json&$select=PurchaseOrder,ReleaseIsNotCompleted&$filter=" + URLEncoder.encode("PurchaseOrder  eq '" + poNum + "'", "UTF-8");
                 data_PoRelaseStat = (String) this.getData(url_PoRelaseStat, authoriz);
                 oWPoRelStat = gson.fromJson(data_PoRelaseStat, com.model.Zb2BOrderInqGetPOWrapper.class);
                 System.out.println("-----data_PoRelaseStat---" + data_PoRelaseStat);
@@ -486,7 +486,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                         String relStat = dPoRelStat.getReleaseIsNotCompleted();
                         System.out.println("-----relStat---" + relStat);
                         if (relStat.equals("false")) {
-                            url_recQty = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrderScheduleLine?$format=json&$select=PurchasingDocument,ScheduleLineDeliveryDate,ScheduleLineOrderQuantity&$filter=" + URLEncoder.encode("PurchasingDocument  eq '" + poNum + "'", "UTF-8");
+                            url_recQty = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrderScheduleLine?$format=json&$select=PurchasingDocument,ScheduleLineDeliveryDate,ScheduleLineOrderQuantity&$filter=" + URLEncoder.encode("PurchasingDocument  eq '" + poNum + "'", "UTF-8");
                             data_recQty = (String) this.getData(url_recQty, authoriz);
                             oWReQty = gson.fromJson(data_recQty, com.model.Zb2BOrderInqGetPOWrapper.class);
                             System.out.println("-----oWReQty---" + oWReQty);
@@ -500,7 +500,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                                     if (!recQty.equals("0")) {
                                         ordStat = "13";
                                         ordStat_Text = "Shipped by vendor";
-                                        url_dNum = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + salesOrderItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
+                                        url_dNum = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + salesOrderItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
                                         data_dNum = (String) this.getData(url_dNum, authoriz);
                                         System.out.println("----data_dNum----" + data_dNum);
                                         oWDelNum = gson.fromJson(data_dNum, com.model.Zb2BOrderInqGetPOWrapper.class);
@@ -517,7 +517,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                                     } else {
                                         ordStat = "12";
                                         ordStat_Text = "Factory Direct";
-                                        url_dNum = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + salesOrderItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
+                                        url_dNum = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + salesOrderItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
                                         data_dNum = (String) this.getData(url_dNum, authoriz);
                                         System.out.println("----data_dNum----" + data_dNum);
                                         oWDelNum = gson.fromJson(data_dNum, com.model.Zb2BOrderInqGetPOWrapper.class);
@@ -585,7 +585,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
         com.model.Zb2BOrderInqGetPOWrapper oWReQty = new com.model.Zb2BOrderInqGetPOWrapper();
         String deliveryNum = "";
         String poNum = "";
-        String url_poNum = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurOrdAccountAssignment?$format=json&$select=PurchaseOrder,PurchaseOrderItem,SalesOrder,SalesOrderItem&$filter=" + URLEncoder.encode("SalesOrder  eq '" + salesOrder + "' and SalesOrderItem eq '" + salesOrderItem + "'", "UTF-8");
+        String url_poNum = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurOrdAccountAssignment?$format=json&$select=PurchaseOrder,PurchaseOrderItem,SalesOrder,SalesOrderItem&$filter=" + URLEncoder.encode("SalesOrder  eq '" + salesOrder + "' and SalesOrderItem eq '" + salesOrderItem + "'", "UTF-8");
         String data_PoNum = (String) this.getData(url_poNum, authoriz);
         System.out.println("-----data_PoNum---" + data_PoNum);
         oWPoNum = gson.fromJson(data_PoNum, com.model.Zb2BOrderInqGetPOWrapper.class);
@@ -596,7 +596,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                 dPoNum = dAPoNum[i];
                 poNum = dPoNum.getPurchaseOrder();
                 System.out.println("---poNum---" + poNum);
-                url_PoRelaseStat = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder?$format=json&$select=PurchaseOrder,ReleaseIsNotCompleted&$filter=" + URLEncoder.encode("PurchaseOrder  eq '" + poNum + "'", "UTF-8");
+                url_PoRelaseStat = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder?$format=json&$select=PurchaseOrder,ReleaseIsNotCompleted&$filter=" + URLEncoder.encode("PurchaseOrder  eq '" + poNum + "'", "UTF-8");
                 data_PoRelaseStat = (String) this.getData(url_PoRelaseStat, authoriz);
                 oWPoRelStat = gson.fromJson(data_PoRelaseStat, com.model.Zb2BOrderInqGetPOWrapper.class);
                 System.out.println("-----data_PoRelaseStat---" + data_PoRelaseStat);
@@ -608,7 +608,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                         String relStat = dPoRelStat.getReleaseIsNotCompleted();
                         System.out.println("-----relStat---" + relStat);
                         if (relStat.equals("false")) {
-                            url_recQty = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrderScheduleLine?$format=json&$select=PurchasingDocument,ScheduleLineDeliveryDate,ScheduleLineOrderQuantity&$filter=" + URLEncoder.encode("PurchasingDocument  eq '" + poNum + "'", "UTF-8");
+                            url_recQty = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrderScheduleLine?$format=json&$select=PurchasingDocument,ScheduleLineDeliveryDate,ScheduleLineOrderQuantity&$filter=" + URLEncoder.encode("PurchasingDocument  eq '" + poNum + "'", "UTF-8");
                             data_recQty = (String) this.getData(url_recQty, authoriz);
                             oWReQty = gson.fromJson(data_recQty, com.model.Zb2BOrderInqGetPOWrapper.class);
                             System.out.println("-----oWReQty---" + oWReQty);
@@ -622,7 +622,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                                     if (!recQty.equals("0")) {
                                         ordStat = "13";
                                         ordStat_Text = "Ready to ship";
-                                        url_dNum = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + salesOrderItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
+                                        url_dNum = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + salesOrderItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
                                         data_dNum = (String) this.getData(url_dNum, authoriz);
                                         System.out.println("----data_dNum----" + data_dNum);
                                         oWDelNum = gson.fromJson(data_dNum, com.model.Zb2BOrderInqGetPOWrapper.class);
@@ -639,7 +639,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
                                     } else {
                                         ordStat = "12";
                                         ordStat_Text = "B/O";
-                                        url_dNum = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + salesOrderItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
+                                        url_dNum = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + salesOrderItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
                                         data_dNum = (String) this.getData(url_dNum, authoriz);
                                         System.out.println("----data_dNum----" + data_dNum);
                                         oWDelNum = gson.fromJson(data_dNum, com.model.Zb2BOrderInqGetPOWrapper.class);
@@ -698,7 +698,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
         String data_TrackNum = "";
         String ordStat_Text = "";
         String ordStat = "";
-        url_delNum = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + salesOrderItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
+        url_delNum = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_DELIVERYDOC_CDS/YY1_DeliveryDoc?$format=json&$select=DeliveryDocument,ActualGoodsMovementDate,OverallGoodsMovementStatus,ReferenceSDDocument,ReferenceSDDocumentItem&$filter=" + URLEncoder.encode("ReferenceSDDocumentItem  eq '" + salesOrderItem + "' and ReferenceSDDocument eq '" + salesOrder + "'", "UTF-8");
         System.out.println("----url_delNum-----" + url_delNum);
         data_delNum = (String) getData(url_delNum, authoriz);
         System.out.println("----data_delNum-----" + data_delNum);
@@ -711,7 +711,7 @@ public class Zb2BOrderInq implements Zb2BOrderInqInterface {
             for (int i = 0; i < dADelNum.length; i++) {
                 dDelNum = dADelNum[i];
                 String delNum = dDelNum.getDeliveryDocument();
-                url_TrackNum = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/YY1_SHIPING_UNIT_CUSTOM_CDS/YY1_Shiping_unit_custom?$format=json&$filter=" + URLEncoder.encode("DeliveryNumber  eq '" + delNum + "'", "UTF-8");
+                url_TrackNum = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPING_UNIT_CUSTOM_CDS/YY1_Shiping_unit_custom?$format=json&$filter=" + URLEncoder.encode("DeliveryNumber  eq '" + delNum + "'", "UTF-8");
                 data_TrackNum = (String) this.getData(url_TrackNum, authoriz);
                 oWTrackNum = gson.fromJson(data_TrackNum, com.model.Zb2BOrderInqGetPOWrapper.class);
                 System.out.println("---oWTrackNum----" + oWTrackNum);
