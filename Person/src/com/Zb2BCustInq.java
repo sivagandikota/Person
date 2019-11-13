@@ -55,6 +55,9 @@ public class Zb2BCustInq implements Zb2BCustInqInterface {
     public WebServiceContext wsctx;
     Logger logger = LoggerFactory.getLogger(Zb2BCustInq.class);
 
+    
+    
+    
     @Override
     public Zb2BCustInqWrapper getCustomerValidation(String customer) throws AuthenticationException, Exception {
         MessageContext mctx = wsctx.getMessageContext();
@@ -135,6 +138,7 @@ public class Zb2BCustInq implements Zb2BCustInqInterface {
                 z = gson.fromJson(result.toString(), Zb2BCustInqWrapper.class);
             }
             z.setStatus("000");
+            if(z.getD().getResults().size()==0) {z.setStatus("001");return z;}
             System.out.println("-- Shipping Condition : " + z.getD().getResults().get(0).getShippingCondition());
             System.out.println("-- z : " + z.toString());
             String url = "";
@@ -148,8 +152,8 @@ public class Zb2BCustInq implements Zb2BCustInqInterface {
 						authoriz);
 				System.out.println("440----Url" + url);
 			}
-            if (z.getD().getResults().get(0).getDeliveryIsBlockedForCustomer().length() > 0) {    //|| z.getD().getOrderIsBlockedForCustomer().length()>0
-                if (Integer.parseInt(z.getD().getResults().get(0).getDeliveryIsBlockedForCustomer()) == 54) {
+            if (z.getD().getResults().get(0).getOrderIsBlockedForCustomer().length() > 0) {    //|| z.getD().getOrderIsBlockedForCustomer().length()>0
+                if (z.getD().getResults().get(0).getOrderIsBlockedForCustomer() == "true") {
                     z.setStatus("002");
                 }
             }
@@ -157,7 +161,7 @@ public class Zb2BCustInq implements Zb2BCustInqInterface {
             
             if (z.getD().getResults().get(0).getShippingCondition().length() > 0) {
                 if (z.getD().getResults().get(0).getShippingCondition().matches("00")) {
-                    z.setStatus("001");
+                    //z.setStatus("001");
                     //retreive XREFRESULT and set the value in z.getD().getResults().get(0).getShippingCondition()
                     url=(String)getData(CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_XREF_CDS/YY1_XREF?$format=json&$select=XREFRESULT&$filter=" + URLEncoder.encode("XREFCODE eq 'DEF_SHIP' and XREFKEY eq 'UPS_FEDEX'","UTF-8"),authoriz);
                     com.ShippingConditionsWrapper sh = gson.fromJson(url, com.ShippingConditionsWrapper.class);
@@ -210,7 +214,7 @@ public class Zb2BCustInq implements Zb2BCustInqInterface {
                 lTable=new LinkedHashMap(table);
                 z.setShippingTable(lTable);
             //} else {
-                z.setStatus("001");
+                //z.setStatus("001");
                 System.out.println("---ResponseBody : " + respons.toString());
             
             System.out.println("Message : " + respons.getStatusLine().getReasonPhrase());

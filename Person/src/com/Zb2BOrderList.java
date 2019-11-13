@@ -7,6 +7,8 @@ package com;
 
 import com.google.gson.Gson;
 import com.model.Zb2BOrderListWrapper;
+import com.model.Zb2CWpopShipmentWrapper;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -17,10 +19,19 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
+
 import javax.annotation.Resource;
 import javax.naming.AuthenticationException;
+import javax.xml.ws.AsyncHandler;
+import javax.xml.ws.Response;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
+
+import org.apache.cxf.Bus;
+import org.apache.cxf.BusFactory;
+import org.apache.cxf.jaxws.ServerAsyncResponse;
+import org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduit;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -43,8 +54,92 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
     Logger logger = LoggerFactory.getLogger(Zb2BOrderList.class);
 
     @Override
-    public Zb2BOrderListWrapper getOrderList(String customerNumber, String salesOrder, String customerPurchaseOrder, String materialNumber, String dateFromSelectionByMaterial) throws AuthenticationException, Exception {
+	public Response<Zb2BOrderListWrapper> getOrderListAsync(String customerNumber, String salesOrder, String customerPurchaseOrder, String materialNumber, String dateFromSelectionByMaterial) throws AuthenticationException, Exception {
+    	MessageContext mctx = wsctx.getMessageContext();
+        Bus bus = BusFactory.getDefaultBus();
+                	// insist on the async connector to use PATCH.
+                	bus.setProperty(AsyncHTTPConduit.USE_ASYNC, Boolean.TRUE);
+                	bus.setProperty(org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduitFactory.SO_KEEPALIVE,Boolean.TRUE);
+    	 final ServerAsyncResponse<Zb2BOrderListWrapper> asyncResponse = new ServerAsyncResponse<Zb2BOrderListWrapper>() ;
+        new Thread() {
+            public void run() {
+                try {
+                	Bus bus = BusFactory.getDefaultBus();
+                	// insist on the async connector to use PATCH.
+                	bus.setProperty(AsyncHTTPConduit.USE_ASYNC, Boolean.TRUE);
+                	bus.setProperty(org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduitFactory.SO_KEEPALIVE,Boolean.TRUE);
+                    Thread.sleep(10000);
+                    //Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+//                Zb2CWpopShipmentWrapper payload = new TestMessage();
+//                payload.setMessage("message: " + message);
+                try {
+					asyncResponse.set(getOrderList(customerNumber, salesOrder, customerPurchaseOrder, materialNumber, dateFromSelectionByMaterial,mctx));
+				} catch (AuthenticationException e) {
+					// TODO Auto-generated catch block 
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                System.out.println("Responding on another thread\n");
+               // asyncHandler.handleResponse(asyncResponse);
+            }
+        }.start();
+ 
+        return asyncResponse;
+	}
+    
+    @Override
+    public Future<?> getOrderListAsync(final String customerNumber,final  String salesOrder,final String customerPurchaseOrder,final String materialNumber,final String dateFromSelectionByMaterial, final AsyncHandler<Zb2BOrderListWrapper> asyncHandler) {
+        System.out.println("Executing getResendWpopShipmentsAsync asynchronously\n");
         MessageContext mctx = wsctx.getMessageContext();
+        final ServerAsyncResponse<Zb2BOrderListWrapper> asyncResponse = new ServerAsyncResponse<Zb2BOrderListWrapper>() ;
+        new Thread() {
+            public void run() {
+                try {
+                	Bus bus = BusFactory.getDefaultBus();
+                	// insist on the async connector to use PATCH.
+                	bus.setProperty(AsyncHTTPConduit.USE_ASYNC, Boolean.TRUE);
+                	bus.setProperty(org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduitFactory.SO_KEEPALIVE,Boolean.TRUE);
+                    Thread.sleep(10000);
+                    //Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+//                Zb2CWpopShipmentWrapper payload = new TestMessage();
+//                payload.setMessage("message: " + message);
+                try {
+					asyncResponse.set(getOrderList(customerNumber, salesOrder, customerPurchaseOrder, materialNumber, dateFromSelectionByMaterial,mctx));
+				} catch (AuthenticationException e) {
+					// TODO Auto-generated catch block 
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                System.out.println("Responding on another thread\n");
+                asyncHandler.handleResponse(asyncResponse);
+            }
+        }.start();
+ 
+        return asyncResponse;
+    }
+    
+    
+    @Override
+    public Zb2BOrderListWrapper getOrderList(String customerNumber, String salesOrder, String customerPurchaseOrder, String materialNumber, String dateFromSelectionByMaterial) throws AuthenticationException, Exception {
+    	MessageContext mctx = wsctx.getMessageContext();
+    	return this.getOrderList(customerNumber, salesOrder, customerPurchaseOrder, materialNumber, dateFromSelectionByMaterial,mctx);
+    }
+    
+    
+    
+    
+    public Zb2BOrderListWrapper getOrderList(String customerNumber, String salesOrder, String customerPurchaseOrder, String materialNumber, String dateFromSelectionByMaterial,MessageContext mctx) throws AuthenticationException, Exception {
+        //MessageContext mctx = wsctx.getMessageContext();
         //HttpServletRequest sRequest = (HttpServletRequest)wsctx.getMessageContext().get(MessageContext.SERVLET_REQUEST);
         //logger.error("----Server Name : " + sRequest.getServerName());
         //get detail from request headers
@@ -119,6 +214,8 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
             }
         } else {
             o_result = "001";
+            ifSO.setO_result(o_result);
+            return ifSO;
         }
         if (o_result.equals("000")) {
             com.model.OrderListGetShipCondText dShipCond = new com.model.OrderListGetShipCondText();
@@ -329,13 +426,22 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
                     o_result = "005";
                 }
             } else {
-                String url_onlyCust = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,SalesOrderType,CreationDate,CreatedByUser,SalesOrderDate,SoldToParty,PurchaseOrderByCustomer,ShippingCondition&$filter=" + URLEncoder.encode("SoldToParty eq '" + customerNumber + "'", "UTF-8");
+                String url_onlyCust = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder?$format=json&$select=SalesOrder,SalesOrderType,CreationDate,CreatedByUser,SalesOrderDate,SoldToParty,PurchaseOrderByCustomer,ShippingCondition&$filter=" + URLEncoder.encode("SoldToParty eq '" + customerNumber + "'", "UTF-8")+"&$top=60";
                 System.out.println("----url_onlyCust---" + url_onlyCust);
                 String result_onlyCust = (String) this.getData(url_onlyCust, authoriz);
                 System.out.println("----result_onlyCust----" + result_onlyCust);
                 ifSO = gson.fromJson(result_onlyCust, com.model.Zb2BOrderListWrapper.class);
                 System.out.println("---ifCustSo----" + ifSO);
+//                if(null==ifSO) {
+//                	System.out.println("NULL----ifSO:"+ifSO);
+//                	o_result="006";
+//                	ifSO= new Zb2BOrderListWrapper();
+//                	ifSO.setO_result(o_result);
+//                	return ifSO;
+//                }else {System.out.println("NULL----ifSO:"+ifSO);}
                 com.model.OrderList dCust = new com.model.OrderList();
+                System.out.println("--------------ifSO.getD():"+ifSO.getD());
+                System.out.println("--------------ifSO.getD().getResults():"+ifSO.getD().getResults());
                 com.model.OrderList[] ddACust = ifSO.getD().getResults();
                 System.out.println("----ddACust----length--" + ddACust.length);
                 if (ddACust.length > 0) {
@@ -404,7 +510,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
         HttpGet request = new HttpGet(url);
 
         // add request header
-        request.addHeader("User-Agent", "Java");
+        //request.addHeader("User-Agent", "Java");
         request.addHeader("Content-Type", "application/json");
         request.addHeader("Accept", "application/json");
         //request.addHeader("APIKey", "SzC1d22J7FqnBtcSAcGfbLZj6g1DmbXm");
@@ -415,6 +521,7 @@ public class Zb2BOrderList implements Zb2BOrderListInterface {
         //respons.getEntity().writeTo(System.out);
         String csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
         StringBuffer result = new StringBuffer();
+        System.out.println(respons.getStatusLine().getStatusCode());
         if (200 == respons.getStatusLine().getStatusCode()) {
             InputStreamReader in = new InputStreamReader(respons.getEntity().getContent());
             BufferedReader rd = new BufferedReader(in);

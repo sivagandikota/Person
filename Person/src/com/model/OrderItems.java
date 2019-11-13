@@ -41,6 +41,18 @@ public class OrderItems {
 	@SerializedName("SalesOrganization")
 	@JsonProperty("SalesOrganization")
 	private String salesOrganization=null;
+	
+	@SerializedName("Batch")
+	@JsonProperty("Batch")
+	private String batch=null;
+	
+	@SerializedName("warehouse")
+	@JsonProperty("warehouse")
+	private String warehouse=null;
+	
+	@SerializedName("sampletype")
+	@JsonProperty("sampletype")
+	private String sampleType=null;
 
 
 
@@ -118,12 +130,39 @@ public class OrderItems {
 		this.salesOrganization = salesOrganization;
 	}
 
+	public String getBatch() {
+		return batch;
+	}
+
+	public void setBatch(String batch) {
+		this.batch = batch;
+	}
+
+	public String getWarehouse() {
+		return warehouse;
+	}
+
+	public void setWarehouse(String warehouse) {
+		this.warehouse = warehouse;
+	}
+
+	public String getSampleType() {
+		return sampleType;
+	}
+
+	public void setSampleType(String sampleType) {
+		this.sampleType = sampleType;
+	}
+
 	@Override
 	public String toString() {
-		return "OrderItems [SalesOrder=" + SalesOrder + ", itemNumber=" + itemNumber + ", material=" + material
-				+ ", quantity=" + quantity + ", unit=" + unit + ", currency=" + currency + ", amount=" + amount
-				+ ", salesOrganization=" + salesOrganization + "]";
+		return "OrderItems [__metadata=" + __metadata + ", SalesOrder=" + SalesOrder + ", itemNumber=" + itemNumber
+				+ ", material=" + material + ", quantity=" + quantity + ", unit=" + unit + ", currency=" + currency
+				+ ", amount=" + amount + ", salesOrganization=" + salesOrganization + ", batch=" + batch
+				+ ", warehouse=" + warehouse + ", sampleType=" + sampleType + "]";
 	}
+
+	
 
 	
 	

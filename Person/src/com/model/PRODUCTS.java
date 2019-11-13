@@ -28,6 +28,14 @@ public class PRODUCTS {
 	@SerializedName("YY1_Producthierarchy_SAL")
 	@JsonProperty("YY1_Producthierarchy_SAL")
 	private String YY1_Producthierarchy_SAL = null;
+	
+	@SerializedName("YY1_PARENT_SAL")
+	@JsonProperty("YY1_PARENT_SAL")
+	private String YY1_PARENT_SAL=null;
+
+	@SerializedName("ItemCategoryGroup")
+	@JsonProperty("ItemCategoryGroup")
+	private String ItemCategoryGroup=null;
 
 	public String getProduct() {
 		return Product;
@@ -76,13 +84,37 @@ public class PRODUCTS {
 	public void setYY1_Producthierarchy_SAL(String yY1_Producthierarchy_SAL) {
 		YY1_Producthierarchy_SAL = yY1_Producthierarchy_SAL;
 	}
+	
+	
+
+	public String getYY1_PARENT_SAL() {
+		return YY1_PARENT_SAL;
+	}
+
+	public void setYY1_PARENT_SAL(String yY1_PARENT_SAL) {
+		YY1_PARENT_SAL = yY1_PARENT_SAL;
+	}
+	
+	
+
+	public String getItemCategoryGroup() {
+		return ItemCategoryGroup;
+	}
+
+	public void setItemCategoryGroup(String itemCategoryGroup) {
+		ItemCategoryGroup = itemCategoryGroup;
+	}
 
 	@Override
 	public String toString() {
 		return "PRODUCTS [Product=" + Product + ", ProductGroup=" + ProductGroup + ", BaseUnit=" + BaseUnit
 				+ ", SalesMeasureUnit=" + SalesMeasureUnit + ", ProductName=" + ProductName
-				+ ", YY1_Producthierarchy_SAL=" + YY1_Producthierarchy_SAL + "]";
+				+ ", YY1_Producthierarchy_SAL=" + YY1_Producthierarchy_SAL + ", YY1_PARENT_SAL=" + YY1_PARENT_SAL
+				+ ", ItemCategoryGroup=" + ItemCategoryGroup + "]";
 	}
+
+	
+	
 	
 	
 }

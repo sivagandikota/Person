@@ -4,8 +4,13 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import com.model.B2BAddItemWrapper;
+import com.model.B2BCheckPayerWrapper;
+import com.model.B2BCloseOrderWrapper;
 import com.model.ListItems;
 import com.model.OrderItems;
+import com.model.WrapperListOrders;
+import com.model.Z_B2B_COLLECTION_LISTWrapper;
 
 @WebService(name="B2B")   
 
@@ -21,10 +26,12 @@ public interface B2BInterface {
 			               @WebParam(name = "Item")String Item);
 	
 	@WebMethod(operationName="AddItem")
-	public String AddItem (@WebParam(name = "SoldToParty")String SoldToParty,
+	public B2BAddItemWrapper AddItem (@WebParam(name = "SoldToParty")String SoldToParty,
 			               @WebParam(name = "Order")String Order,
 			               @WebParam(name = "Material")String Material,
-			               @WebParam(name = "Quantity")String Quantity);
+			               @WebParam(name = "Quantity")String Quantity,
+			               @WebParam(name = "Batch")String Batch,
+			               @WebParam(name = "SampleType")String SampleType);
 	
 	@WebMethod(operationName="CancelOrder")
 	public String cancelOrder (@WebParam(name = "SoldToParty")String SoldToParty,
@@ -34,20 +41,20 @@ public interface B2BInterface {
 	public java.util.HashMap getShip (@WebParam(name = "SoldToParty")String SoldToParty) throws Exception;
     
 	@WebMethod(operationName="GET_ORDER_LIST")
-	public OrderItems[] getList (@WebParam(name = "SoldToParty")String SoldToParty,
+	public WrapperListOrders getList (@WebParam(name = "SoldToParty")String SoldToParty,
 			                          @WebParam(name = "Order")String Order) ;
 	
 	@WebMethod(operationName="CLOSE_ORDER")
-	public String CloseOrder (@WebParam(name = "SoldToParty")String SoldToParty,
+	public B2BCloseOrderWrapper CloseOrder (@WebParam(name = "SoldToParty")String SoldToParty,
 			                          @WebParam(name = "Order")String Order,
 			                          @WebParam(name = "CustomerReferencePO")String CustRef,
 			                          @WebParam(name = "ShippingConditions")String ShippingCondition)throws Exception ;
 	
 	@WebMethod(operationName="CHECK_PAYER") 
-	public String CheckPayer (@WebParam(name = "SoldToParty")String SoldToParty) throws Exception;
+	public B2BCheckPayerWrapper CheckPayer (@WebParam(name = "SoldToParty")String SoldToParty) throws Exception;
 	
 	@WebMethod(operationName="Z_B2B_COLLECTION_LIST") 
-	public ListItems[] Z_B2B_COLLECTION_LIST (@WebParam(name = "BUKRS")String BUKRS);
+	public Z_B2B_COLLECTION_LISTWrapper Z_B2B_COLLECTION_LIST (@WebParam(name = "BUKRS")String BUKRS);
 	
 	
 	@WebMethod(operationName="Z_B2B_COLLECTION_INQ") 

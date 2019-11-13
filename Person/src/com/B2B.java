@@ -8,9 +8,12 @@ import java.io.UnsupportedEncodingException;
 //import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,6 +38,9 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.model.B2BAddItemWrapper;
+import com.model.B2BCheckPayerWrapper;
+import com.model.B2BCloseOrderWrapper;
 import com.model.B2B_INVOICE_LIST;
 import com.model.Docs;
 import com.model.INVOICELIST;
@@ -42,51 +48,68 @@ import com.model.ListItems;
 import com.model.OrderItems;
 import com.model.PList;
 import com.model.ReturnProductsWrapper;
+import com.model.WrapperListOrders;
+import com.model.Z_B2B_COLLECTION_LISTWrapper;
 import com.sap.cloud.sdk.odatav2.connectivity.ODataException;
 import com.sap.cloud.sdk.s4hana.connectivity.ErpConfigContext;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.helper.Order;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.AddressEmailAddress;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.BusinessPartner;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.BusinessPartnerAddress;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.salesorder.SalesOrder;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.salesorder.SalesOrderItem;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.services.DefaultBusinessPartnerService;
+import com.sap.cloud.sdk.s4hana.datamodel.odata.services.DefaultSalesOrderService;
 
 public class B2B implements B2BInterface {
 
-	//@Override
+	// @Override
 	// public String sayHello(String name) {
 	// // TODO Auto-generated method stub
 	// return "Hello " + name;
 	// }
 	Logger logger = LoggerFactory.getLogger(B2B.class);
-	 @Override
+
+	@Override
 	public com.model.SOandShippingTable createOrder(String SoldToParty) throws Exception {
 		// TODO Auto-generated method stub
 		java.util.HashMap shippingDetail = null;
 		String data = "";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
-		//String url = "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder";
-		String url = CxfNonSpringSimpleServlet.host+"/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder";
+		// String url =
+		// "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder";
+		String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder";
 		String custref = "Shopping Cart/" + SoldToParty;
 		HttpResponse respons = null;
 		String status = "";
 		StringBuffer result = new StringBuffer();
-		String BASE_URL = CxfNonSpringSimpleServlet.host+"/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter="
+		String BASE_URL = CxfNonSpringSimpleServlet.host
+				+ "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter="
 				+ URLEncoder.encode("Customer eq '" + SoldToParty + "'", "UTF-8");
-		String dataa = (String)this.getData(BASE_URL, authoriz);
+		String dataa = (String) this.getData(BASE_URL, authoriz);
 		Gson gson = new Gson();
 		com.model.SOandShippingTable table = new com.model.SOandShippingTable();
-		Zb2BCustInqWrapper z = gson.fromJson(result.toString(), Zb2BCustInqWrapper.class);
-		if(z.getD().getResults().get(0).getOrderIsBlockedForCustomer().contains("true")) {}
-		try {
-			shippingDetail = this.getShip(SoldToParty);
+		// Zb2BCustInqWrapper z = gson.fromJson(result.toString(),
+		// Zb2BCustInqWrapper.class);
+		Zb2BCustInqWrapper z = gson.fromJson(dataa, Zb2BCustInqWrapper.class);
+		System.out.println("88:" + z.toString());
+		if (z.getD().getResults().get(0).getOrderIsBlockedForCustomer().contains("true")) {
 			table.setStatus("999");
 			return table;
+		}
+		try {
+			shippingDetail = this.getShip(SoldToParty);
+			// table.setStatus("999");
+			// return table;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		if (shippingDetail == null) {
-			throw new Exception("No Shipping details found for the customer " + SoldToParty);
+			// throw new Exception("No Shipping details found for the customer " +
+			// SoldToParty);
 		}
 
 		try {
@@ -94,7 +117,7 @@ public class B2B implements B2BInterface {
 			URL urlObj = new URL(url);
 			HttpClient client = HttpClientBuilder.create().build();
 			HttpGet request = new HttpGet(url);
-			
+
 			// add request header
 			// request.addHeader("User-Agent", "Java");
 			request.addHeader("Content-Type", "application/json");
@@ -135,11 +158,11 @@ public class B2B implements B2BInterface {
 			Ex.printStackTrace();
 		}
 		if (201 != respons.getStatusLine().getStatusCode()) {
-			//throw new Exception(result.toString());
-			status="888";
+			// throw new Exception(result.toString());
+			status = "888";
 		}
 		if (201 == respons.getStatusLine().getStatusCode()) {
-			status="000";
+			status = "000";
 		}
 
 		// try {
@@ -150,7 +173,7 @@ public class B2B implements B2BInterface {
 		// e.printStackTrace();
 		// }
 		System.out.println("117--:");
-		 gson = new Gson();
+		gson = new Gson();
 		com.sap.apibhub.sdk.api_sales_order_srv.model.ASalesOrderType wrapper = new com.sap.apibhub.sdk.api_sales_order_srv.model.ASalesOrderType();
 		try {
 			wrapper = gson.fromJson(result.toString(),
@@ -158,7 +181,7 @@ public class B2B implements B2BInterface {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		table.setSalesOrderId(wrapper.getD().getSalesOrder());
 		table.setShippingConditonTable(shippingDetail);
 		table.setStatus(status);
@@ -221,44 +244,56 @@ public class B2B implements B2BInterface {
 		System.out.println("182---Status" + respons.getStatusLine().getStatusCode());
 		if (204 == respons.getStatusLine().getStatusCode()) {
 			// throw new Exception(result.toString());
-			return "Reason for rejection updated successfully to order " + Order + " item " + Item;
+			return "000";
 		} else {
-			return result.toString();
+			return "999";
 		}
 
 	}
 
 	// @Override
-	public String CloseOrder(String SoldToParty, String Order, String CustRef, String ShippingCondition) throws Exception {
-		// TODO Auto-generated method stub
-		String status="";
+	public B2BCloseOrderWrapper CloseOrder(String SoldToParty, String Order, String CustRef, String ShippingCondition)
+			throws Exception {
+		B2BCloseOrderWrapper wrapper = new B2BCloseOrderWrapper();
+		String status = "";
 		String data = "";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
-		String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('"
-				+ Order + "')";
+		String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/A_SalesOrder('" + Order
+				+ "')";
 
 		HttpResponse respons = null;
 		StringBuffer result = new StringBuffer();
 		try {
-			 ErpConfigContext ectx = new ErpConfigContext(CxfNonSpringSimpleServlet.destination);
-	            List<BusinessPartner> businessPartners  =new DefaultBusinessPartnerService()
-	                            .getAllBusinessPartner()
-	                            .select(BusinessPartner.BUSINESS_PARTNER,
-	                                    BusinessPartner.LAST_NAME,
-	                                    BusinessPartner.FIRST_NAME,
-	                                    BusinessPartner.IS_MALE,
-	                                    BusinessPartner.IS_FEMALE,
-	                                    BusinessPartner.CREATION_DATE)
-	                            .filter(BusinessPartner.CUSTOMER.eq(SoldToParty))
-	                            .execute(ectx);
-logger.info("BusinessPartner---------"+businessPartners.get(0).getBusinessPartner());
-//	            response.setContentType("application/json");
-//	            response.getWriter().write(new Gson().toJson(businessPartners));
-logger.error(new Gson().toJson(businessPartners));
-	        } catch (final ODataException e) {
-	            e.printStackTrace();
-	        }
+
+			List<BusinessPartner> businessPartners = new DefaultBusinessPartnerService().getAllBusinessPartner()
+					.select(BusinessPartner.BUSINESS_PARTNER, BusinessPartner.LAST_NAME, BusinessPartner.FIRST_NAME,
+							BusinessPartner.IS_MALE, BusinessPartner.IS_FEMALE, BusinessPartner.CREATION_DATE,
+							BusinessPartner.TO_BUSINESS_PARTNER_ADDRESS,
+							BusinessPartner.TO_BUSINESS_PARTNER_ADDRESS.select(BusinessPartnerAddress.ADDRESS_ID,
+									BusinessPartnerAddress.ALL_FIELDS, BusinessPartnerAddress.TO_EMAIL_ADDRESS))
+					.filter(BusinessPartner.CUSTOMER.eq(SoldToParty)).execute();
+			System.out.println("BusinessPartner---------" + businessPartners.get(0).getBusinessPartner());
+			System.out.println("BusinessPartner---------"
+					+ businessPartners.get(0).fetchBusinessPartnerAddress().get(0).toString());
+			System.out.println("BusinessPartner---------"
+					+ businessPartners.get(0).fetchBusinessPartnerAddress().get(0).getAddressID());
+			System.out.println("BusinessPartner---------"
+					+ businessPartners.get(0).fetchBusinessPartnerAddress().get(0).getAddressID());
+			System.out.println("BusinessPartner---------" + businessPartners.get(0).fetchBusinessPartnerAddress().get(0)
+					.fetchEmailAddress().get(0).toString());
+			BusinessPartnerAddress address = businessPartners.get(0).fetchBusinessPartnerAddress().get(0);
+			System.out.println(address.toString());
+			AddressEmailAddress email = businessPartners.get(0).fetchBusinessPartnerAddress().get(0).fetchEmailAddress()
+					.get(0);
+			System.out.println("---email---" + email.toString());
+			wrapper.setAddressEmailAddress(email);
+			wrapper.setBusinessPartnerAddress(address);
+
+			//
+		} catch (final ODataException e) {
+			e.printStackTrace();
+		}
 
 		try {
 
@@ -275,8 +310,7 @@ logger.error(new Gson().toJson(businessPartners));
 			System.out.println("csrf:" + csrf);
 			String etag = respons.getLastHeader("etag").getValue();
 			System.out.println("223__" + etag);
-			data = "{ \"PurchaseOrderByCustomer\": \"" + CustRef
-					+ "\", \"DeliveryBlockReason\": \"\",\"ShippingCondition\": \"" + ShippingCondition
+			data = "{ \"PurchaseOrderByCustomer\": \"" + CustRef + "\", \"ShippingCondition\": \"" + ShippingCondition
 					+ "\",\"SDDocumentReason\": \"\"}";
 
 			System.out.println(data);
@@ -300,25 +334,20 @@ logger.error(new Gson().toJson(businessPartners));
 		}
 		if (204 == respons.getStatusLine().getStatusCode()) {
 			// throw new Exception(result.toString());
-			status= "Order Closed " + Order;
+			status = "Order Closed " + Order;
 		} else {
-			status= result.toString();
+			status = result.toString();
 		}
-		
-		try {
-			url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner?$format=json&$expand=to_BusinessPartnerAddress,to_BusinessPartnerAddress/to_EmailAddress&$filter=Customer eq '"+SoldToParty+"'";
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 
-		return status;
+
+		wrapper.setStatus(status);
+		return wrapper;
 	}
 
 	// @Override
-	public String AddItem(String SoldToParty, String Order, String Material, String Quantity) {
+	public B2BAddItemWrapper AddItem(String SoldToParty, String Order, String Material, String Quantity,String Batch,String SampleType) {
 		// TODO Auto-generated method stub
-
+		B2BAddItemWrapper resultWrapper = new B2BAddItemWrapper();
+		String results="000";
 		String data = "";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
@@ -345,8 +374,11 @@ logger.error(new Gson().toJson(businessPartners));
 			System.out.println("csrf:" + csrf);
 			// System.out.println("List all headers:");
 			csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
-
+			if(SampleType.length()==0) {
 			data = "{\"Material\": \"" + Material + "\",\"RequestedQuantity\": \"" + Quantity + "\" }";
+			}else {
+				data = "{\"Material\": \"SAMPLES" + SampleType + "\",\"RequestedQuantity\": \"" + Quantity + "\" }";
+			}
 
 			System.out.println(data);
 			HttpPost pReq = new HttpPost(url);
@@ -363,9 +395,7 @@ logger.error(new Gson().toJson(businessPartners));
 			}
 			System.out.println("result : " + result.toString());
 
-		} catch (Exception Ex) {
-			Ex.printStackTrace();
-		}
+		
 
 		Gson gson = new Gson();
 		com.sap.apibhub.sdk.api_sales_order_srv.model.ASalesOrderItemType wrapper = gson.fromJson(result.toString(),
@@ -374,21 +404,40 @@ logger.error(new Gson().toJson(businessPartners));
 		System.out.println(wrapper.getD().getSalesOrderItem());
 		if (201 == respons.getStatusLine().getStatusCode()) {
 			// throw new Exception(result.toString());
-			return "Item number " + wrapper.getD().getSalesOrderItem() + " added to order " + Order;
+			resultWrapper.setItemNumber(wrapper.getD().getSalesOrderItem());
+			resultWrapper.setBatch(wrapper.getD().getBatch());
+			resultWrapper.setResult(results);
+			return resultWrapper;
 		} else {
-			return result.toString();
+			results="999";
+			resultWrapper.setResult(results);
+			return resultWrapper;
+		}
+		} catch (Exception Ex) {
+			Ex.printStackTrace();
+			results="999";
+			resultWrapper.setResult(results);
+			return resultWrapper;
+			
 		}
 	}
 
 	// @Override
 	public String cancelOrder(String SoldToParty, String rder) {
 		// TODO Auto-generated method stub
-
-		OrderItems[] items = this.getList(SoldToParty, rder);
-
+		String status="";
+		String lStatus="";
+		OrderItems[] items = this.getList(SoldToParty, rder).getD().getResults();
+		if(items.length==0) {return "999";}
 		for (int i = 0; i < items.length; i++) {
 			OrderItems soItem = items[i];
-			this.RejItem(rder, soItem.getItemNumber());
+			status=this.RejItem(rder, soItem.getItemNumber());
+			if(status.contentEquals("000") && !lStatus.contentEquals("999")) {
+				lStatus="000";
+			}else {
+				status="999";
+				lStatus="999";
+			}
 		}
 
 		// String data = "";
@@ -436,7 +485,7 @@ logger.error(new Gson().toJson(businessPartners));
 		//
 		// }
 		// catch (Exception Ex) {Ex.printStackTrace();}
-		return "Order " + rder + " cancelled successfully";
+		return lStatus;
 		//
 
 	}
@@ -456,7 +505,8 @@ logger.error(new Gson().toJson(businessPartners));
 		try {
 			// String BASE_URL =
 			// "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea(Customer='"+customer+"',SalesOrganization='"+salesOrganization+"',DistributionChannel='"+distributionChannel+"',Division='"+division+"')?$format=json&$select=Customer,SalesOrganization,DistributionChannel,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer";
-			String BASE_URL = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter="
+			String BASE_URL = CxfNonSpringSimpleServlet.host
+					+ "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter="
 					+ URLEncoder.encode("Customer eq '" + SoldToParty + "'", "UTF-8");
 			// String BASE_URL =
 			// "https://my302314-api.s4hana.ondemand.com/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization,DistributionChannel,Division,ShippingCondition,CustomerPaymentTerms,DeliveryIsBlockedForCustomer,OrderIsBlockedForCustomer,DeletionIndicator&$filter=Customer
@@ -505,11 +555,11 @@ logger.error(new Gson().toJson(businessPartners));
 			System.out.println("436----length" + z.getD().getResults().get(0).getShippingCondition().length());
 			if (z.getD().getResults().get(0).getShippingCondition().length() == 0) {
 
-				url = (String) getData(
-						CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
-								+ URLEncoder.encode(
-										"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
-										"UTF-8"),
+				url = (String) getData(CxfNonSpringSimpleServlet.host
+						+ "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+						+ URLEncoder.encode(
+								"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
+								"UTF-8"),
 						authoriz);
 				System.out.println("440----Url" + url);
 			}
@@ -519,9 +569,9 @@ logger.error(new Gson().toJson(businessPartners));
 					z.setStatus("001");
 					// retreive XREFRESULT and set the value in
 					// z.getD().getResults().get(0).getShippingCondition()
-					url = (String) getData(
-							CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_XREF_CDS/YY1_XREF?$format=json&$select=XREFRESULT&$filter="
-									+ URLEncoder.encode("XREFCODE eq 'DEF_SHIP' and XREFKEY eq 'UPS_FEDEX'", "UTF-8"),
+					url = (String) getData(CxfNonSpringSimpleServlet.host
+							+ "/sap/opu/odata/sap/YY1_XREF_CDS/YY1_XREF?$format=json&$select=XREFRESULT&$filter="
+							+ URLEncoder.encode("XREFCODE eq 'DEF_SHIP' and XREFKEY eq 'UPS_FEDEX'", "UTF-8"),
 							authoriz);
 					com.ShippingConditionsWrapper sh = gson.fromJson(url, com.ShippingConditionsWrapper.class);
 					z.getD().getResults().get(0)
@@ -532,47 +582,45 @@ logger.error(new Gson().toJson(businessPartners));
 				case "1000":
 					switch (z.getD().getResults().get(0).getCustomerPaymentTerms()) {
 					case "COD":
-						url = (String) getData(
-								CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter="
-										+ URLEncoder.encode("VSBED eq '01'", "UTF-8"),
-								authoriz);
+						url = (String) getData(CxfNonSpringSimpleServlet.host
+								+ "/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter="
+								+ URLEncoder.encode("VSBED eq '01'", "UTF-8"), authoriz);
 						System.out.println("457 cod - URL - data:" + url);
 						break;
 					case "CASH":
-						url = (String) getData(
-								CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter="
-										+ URLEncoder.encode("VSBED eq '01'", "UTF-8"),
-								authoriz);
+						url = (String) getData(CxfNonSpringSimpleServlet.host
+								+ "/sap/opu/odata/sap/YY1_SHIPPING_CONDITIONS_CDS/YY1_SHIPPING_CONDITIONS?$format=json&$select=VSBED,VTEXT&$filter="
+								+ URLEncoder.encode("VSBED eq '01'", "UTF-8"), authoriz);
 						System.out.println("460 cash - URL - data:" + url);
 						break;
 					default:
 						switch (z.getD().getResults().get(0).getShippingCondition()) {
 						case "WC":
-							url = (String) getData(
-									CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
-											+ URLEncoder.encode(
-													"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
-													"UTF-8"),
+							url = (String) getData(CxfNonSpringSimpleServlet.host
+									+ "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+									+ URLEncoder.encode(
+											"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
+											"UTF-8"),
 									authoriz);
 
 							System.out.println("466 WC - URL - data:" + url);
 							break;
 
 						case "01":
-							url = (String) getData(
-									CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
-											+ URLEncoder.encode(
-													"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
-													"UTF-8"),
+							url = (String) getData(CxfNonSpringSimpleServlet.host
+									+ "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+									+ URLEncoder.encode(
+											"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'UPS' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
+											"UTF-8"),
 									authoriz);
 							System.out.println("470 01 - URL - data:" + url);
 							break;
 						case "41":
-							url = (String) getData(
-									CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
-											+ URLEncoder.encode(
-													"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'FEDEX' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
-													"UTF-8"),
+							url = (String) getData(CxfNonSpringSimpleServlet.host
+									+ "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+									+ URLEncoder.encode(
+											"XREFCODE eq 'US_SHPCOND' and XREFRESULT eq 'X' and (XSITD eq 'FEDEX' or XSITD eq 'USPS' or XSITD eq 'WILLCALL')",
+											"UTF-8"),
 									authoriz);
 							System.out.println("473 41 - URL - data:" + url);
 							break;
@@ -581,10 +629,9 @@ logger.error(new Gson().toJson(businessPartners));
 					// if 75 delete all and add 75
 					break;
 				case "2000":
-					url = (String) getData(
-							CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
-									+ URLEncoder.encode("XREFCODE eq 'CA_SHPCOND' and XREFRESULT eq 'X')", "UTF-8"),
-							authoriz);
+					url = (String) getData(CxfNonSpringSimpleServlet.host
+							+ "/sap/opu/odata/sap/YY1_SHIPXREF_CDS/YY1_SHIPXREF?$format=json&$select=VSBED,VTEXT&$filter="
+							+ URLEncoder.encode("XREFCODE eq 'CA_SHPCOND' and XREFRESULT eq 'X')", "UTF-8"), authoriz);
 				}
 			}
 			System.out.println("177 - URL - data:" + url);
@@ -632,6 +679,7 @@ logger.error(new Gson().toJson(businessPartners));
 		// respons.getEntity().writeTo(System.out);
 		String csrf = respons.getFirstHeader("X-CSRF-TOKEN").getValue();
 		StringBuffer result = new StringBuffer();
+		System.out.println("respons.getStatusLine().getStatusCode():" + respons.getStatusLine().getStatusCode());
 		if (200 == respons.getStatusLine().getStatusCode()) {
 			InputStreamReader in = new InputStreamReader(respons.getEntity().getContent());
 			BufferedReader rd = new BufferedReader(in);
@@ -645,17 +693,27 @@ logger.error(new Gson().toJson(businessPartners));
 	}
 
 	@Override
-	public com.model.OrderItems[] getList(String SoldToParty, String Order) {
-		// TODO Auto-generated method stub
+	public WrapperListOrders getList(String SoldToParty, String Order) {
+		com.model.WrapperListOrders wrapper = new com.model.WrapperListOrders();
 		com.model.OrderItems[] orderDetails = null;
 		String data = "";
+		String status="000";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
 		String url = CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SALES_ORDER_SRV/";
+		wrapper.setStatus("000");
 		try {
 			url = url + "A_SalesOrder(" + "'" + Order + "')"
-					+ "/to_Item?$format=json&$select=SalesOrder,SalesOrderItem,Material,RequestedQuantity,RequestedQuantityUnit,TransactionCurrency,NetAmount&$filter="
+					+ "/to_Item?$format=json&$select=SalesOrder,SalesOrderItem,Material,RequestedQuantity,RequestedQuantityUnit,TransactionCurrency,NetAmount,Batch&$filter="
 					+ URLEncoder.encode("SalesDocumentRjcnReason eq '' and Material ne 'INVALIDSKU'", "UTF-8");
+			System.out.println("Order:"+Order+"--length:"+Order.length());
+			if ( Order.length()==0) {
+				status="999";
+				wrapper.setStatus(status);
+				return wrapper;
+				
+			}
+			
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -693,7 +751,7 @@ logger.error(new Gson().toJson(businessPartners));
 			Ex.printStackTrace();
 		}
 		Gson gson = new Gson();
-		com.model.WrapperListOrders wrapper = new com.model.WrapperListOrders();
+
 		// wrapper = gson.fromJson(result.toString(),
 		// com.model.WrapperListOrders.class);
 		// ShippingConditionsWrapper wrapper = new ShippingConditionsWrapper();
@@ -708,44 +766,105 @@ logger.error(new Gson().toJson(businessPartners));
 		}
 		orderDetails = wrapper.getD().getResults();
 		System.out.println("469--" + Arrays.toString(orderDetails) + "--------" + orderDetails.length);
-		return orderDetails;
+		com.model.OrderItems item=null;
+		for(int i=0;i<orderDetails.length;i++) {
+			item= orderDetails[i];
+			if(item.getMaterial().startsWith("SAMPLES")) {
+				item.setSampleType(item.getMaterial().substring(7));
+			}else {
+				item.setSampleType(" ");
+			}
+			try {
+				url = (String) this.getData(CxfNonSpringSimpleServlet.host
+						+ "/sap/opu/odata/sap/YY1_PRODUCTS_B2B_WS_CDS/YY1_PRODUCTS_B2B_WS?$format=json&$select=YY1_PARENT_SAL&$filter="
+						+ URLEncoder.encode("Product eq '"+item.getMaterial()+"'","UTF-8"),
+						authoriz);//
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			com.model.PRODUCTSWRAPPER prod = new com.model.PRODUCTSWRAPPER();
+			prod = gson.fromJson(url, prod.getClass());
+			String YY1_PARENT_SAL="";
+			if(prod.getD().getResults().length==0) {
+				YY1_PARENT_SAL=item.getMaterial();
+			}else {
+				YY1_PARENT_SAL=prod.getD().getResults()[0].getYY1_PARENT_SAL();
+			}
+			try {
+				url = (String) this.getData(CxfNonSpringSimpleServlet.host
+						+ "/sap/opu/odata/sap/YY1_PRODUCTS_B2B_WS_CDS/YY1_PRODUCTS_B2B_WS?$format=json&$select=ItemCategoryGroup&$filter="
+						+ URLEncoder.encode("Product eq '"+YY1_PARENT_SAL+"'  and (ProductSalesOrg eq '1000' or ProductSalesOrg eq '2000') and ProductDistributionChnl eq '0'","UTF-8"),
+						authoriz);//
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			 prod = new com.model.PRODUCTSWRAPPER();
+			prod = gson.fromJson(url, prod.getClass());
+			System.out.println("777----"+prod.getD().getResults().length);
+			
+			String ItemCategoryGroup = "";
+			if(prod.getD().getResults().length>0)
+				prod.getD().getResults()[0].getItemCategoryGroup();
+			if((ItemCategoryGroup.equals("BANS") || ItemCategoryGroup.equals("BANC")) && item.getSampleType()==null) {
+				item.setWarehouse("Factory");
+			}else {
+				item.setWarehouse("Boston/Largo");
+			}
+			
+		}
+		
+		wrapper.setStatus(status);
+		System.out.println("------790------"+wrapper.toString());
+		return wrapper;
 
 	}
 
 	// @Override
-	public String CheckPayer(String SoldToParty) throws Exception {
-		// TODO Auto-generated method stub
-
+	public B2BCheckPayerWrapper CheckPayer(String SoldToParty) throws Exception {
+		B2BCheckPayerWrapper wrapper = new B2BCheckPayerWrapper();
+		String status = "";
 		String data = "";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
-		String url = (String) this.getData(
-				CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization&$filter="
-						+ URLEncoder.encode("Customer eq '" + SoldToParty + "'", "UTF-8"),
-				authoriz);
+		String url = (String) this.getData(CxfNonSpringSimpleServlet.host
+				+ "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustomerSalesArea?$format=json&$select=Customer,SalesOrganization&$filter="
+				+ URLEncoder.encode("Customer eq '" + SoldToParty + "'", "UTF-8"), authoriz);
 		System.out.println("610--data" + url);
 		Gson gson = new Gson();
 		Zb2BCustInqWrapper z = gson.fromJson(url, Zb2BCustInqWrapper.class);
 
 		System.out.println("614--" + z.toString());
-		url = (String) this.getData(
-				CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustSalesPartnerFunc?$format=json&$filter="
-						+ URLEncoder.encode(
-								"Customer eq '" + SoldToParty + "'  and SalesOrganization eq '"
-										+ z.getD().getResults().get(0).getSalesOrganization()
-										+ "' and PartnerFunction eq 'RG' and BPCustomerNumber eq '" + SoldToParty + "'",
-								"UTF-8"),
-				authoriz);
-		System.out.println("616--data" + url);
-		String ret = "";
-		if (url.contains("PY")) {
-			ret = "X";
+		System.out.println("z.getD().getResults():" + z.getD().getResults());
+		if (z.getD().getResults().toString().length() <= 3) {
+			wrapper.setStatus("001");
+		} else {
+			wrapper.setStatus("000");
+			url = (String) this
+					.getData(CxfNonSpringSimpleServlet.host
+							+ "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustSalesPartnerFunc?$format=json&$filter="
+							+ URLEncoder.encode("Customer eq '" + SoldToParty + "'  and SalesOrganization eq '"
+									+ z.getD().getResults().get(0).getSalesOrganization()
+									+ "' and PartnerFunction eq 'RG' and BPCustomerNumber eq '" + SoldToParty + "'",
+									"UTF-8"),
+							authoriz);
+			System.out.println("616--data" + url);
+			String ret = "";
+			if (url.contains("PY")) {
+				ret = "X";
+				wrapper.setPayer(ret);
+			} else {
+				wrapper.setPayer("");
+			}
 		}
-		return ret;
+		return wrapper;
 	}
 
 	// @Override
-	public ListItems[] Z_B2B_COLLECTION_LIST(String BUKRS) {
+	public Z_B2B_COLLECTION_LISTWrapper Z_B2B_COLLECTION_LIST(String BUKRS) {
 		// TODO Auto-generated method stub
 
 		String data = "";
@@ -753,10 +872,9 @@ logger.error(new Gson().toJson(businessPartners));
 		String csrf = "";
 		String url = "";
 		try {
-			url = (String) this.getData(
-					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_B2B_COLLECTIONS_CDS/YY1_B2B_COLLECTIONS?$format=json&$select=MaterialGroup,MaterialGroupText&$filter="
-							+ URLEncoder.encode("CompanyCode eq '" + BUKRS + "'", "UTF-8"),
-					authoriz);
+			url = (String) this.getData(CxfNonSpringSimpleServlet.host
+					+ "/sap/opu/odata/sap/YY1_B2B_COLLECTIONS_CDS/YY1_B2B_COLLECTIONS?$format=json&$select=MaterialGroup,MaterialGroupText&$filter="
+					+ URLEncoder.encode("CompanyCode eq '" + BUKRS + "'", "UTF-8"), authoriz);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -767,7 +885,11 @@ logger.error(new Gson().toJson(businessPartners));
 		com.model.B2BCollectionListWrapper wrap = new com.model.B2BCollectionListWrapper();
 		wrap = gson.fromJson(url, wrap.getClass());
 		System.out.println("641----" + wrap.toString());
-		return wrap.getD().getResults();
+		Z_B2B_COLLECTION_LISTWrapper wrapper = new Z_B2B_COLLECTION_LISTWrapper();
+		if(wrap.getD().getResults().length>0) {wrapper.setStatus("000");
+		wrapper.setItems(wrap.getD().getResults());
+		}else {wrapper.setStatus("999");}
+		return wrapper;
 
 	}
 
@@ -777,16 +899,18 @@ logger.error(new Gson().toJson(businessPartners));
 		com.model.PList plist = new com.model.PList();
 		ArrayList<ReturnProductsWrapper> Products123 = new ArrayList<ReturnProductsWrapper>();
 		String data = "";
+		String bookName = "";
+		String brand = "";
 		String result = "000";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
 		String url = "";
 		String conditiontable = "";
+		SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
 		try {
-			url = (String) this.getData(
-					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_B2B_COLLECTIONS_INQ_CDS/YY1_B2B_COLLECTIONS_INQ?$format=json&$select=ProductGroupName,SAP_Description&$filter="
-							+ URLEncoder.encode("CompanyCode eq '" + BUKRS + "' and MaterialGroup eq'" + BOOK + "'",
-									"UTF-8"),
+			url = (String) this.getData(CxfNonSpringSimpleServlet.host
+					+ "/sap/opu/odata/sap/YY1_B2B_COLLECTIONS_INQ_CDS/YY1_B2B_COLLECTIONS_INQ?$format=json&$select=ProductGroupName,SAP_Description&$filter="
+					+ URLEncoder.encode("CompanyCode eq '" + BUKRS + "' and MaterialGroup eq'" + BOOK + "'", "UTF-8"),
 					authoriz);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -797,16 +921,19 @@ logger.error(new Gson().toJson(businessPartners));
 		wrap = gson.fromJson(url, wrap.getClass());
 		if (wrap.getD().getResults().length == 0) {
 			result = "999";
+		} else {
+			bookName = wrap.getD().getResults()[0].getProductGroupName();
+			brand = wrap.getD().getResults()[0].getSAP_Description();
 		}
 		System.out.println("665----" + wrap.toString());
 
 		try {
-			url = (String) this.getData(
-					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_PRODUCTS_B2B_WS_CDS/YY1_PRODUCTS_B2B_WS?$format=json&$filter="
-							+ URLEncoder.encode(
-									"startswith(Product,'010V00') eq false and Plant eq '1000' and YY1_PARENT_SAL ne '' and ProductSalesOrg eq '"
-											+ BUKRS + "' and ProductGroup eq '" + BOOK + "' ",
-									"UTF-8"),
+			url = (String) this.getData(CxfNonSpringSimpleServlet.host
+					+ "/sap/opu/odata/sap/YY1_PRODUCTS_B2B_WS_CDS/YY1_PRODUCTS_B2B_WS?$format=json&$filter="
+					+ URLEncoder.encode(
+							"startswith(Product,'010V00') eq false and Plant eq '1000' and YY1_PARENT_SAL ne '' and ProductSalesOrg eq '"
+									+ BUKRS + "' and ProductGroup eq '" + BOOK + "' ",
+							"UTF-8"),
 					authoriz);//
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -830,15 +957,15 @@ logger.error(new Gson().toJson(businessPartners));
 				uom = product.getBaseUnit();
 			}
 			try {
-				url = (String) this.getData(
-						CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$format=json&$select=ConditionRecord&$filter="
-								+ URLEncoder.encode("ConditionType eq 'ZPR1' and MaterialGroup eq '"
-										+ product.getProductGroup()
-										+ "' and PriceListType eq '01' and SalesOrganization eq '" + BUKRS
-										+ "' and DistributionChannel eq '01' and ConditionValidityEndDate ge '//Date("
-										+ new Date().getTime() + ")//' and ConditionValidityStartDate lt '//Date("
-										+ new Date().getTime() + ")//' and YY1_Product_Group_PCI = '"
-										+ product.getYY1_Producthierarchy_SAL() + "'", "UTF-8"),
+
+				url = (String) this.getData(CxfNonSpringSimpleServlet.host
+						+ "/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$format=json&$select=ConditionRecord&$filter="
+						+ URLEncoder.encode("ConditionType eq 'ZPR1' and MaterialGroup eq '" + product.getProductGroup()
+								+ "' and PriceListType eq 'S1' and SalesOrganization eq '" + BUKRS
+								+ "' and DistributionChannel eq '01' and ConditionValidityEndDate ge datetime'"
+								+ ft.format(new Date()) + "' and ConditionValidityStartDate le datetime'"
+								+ ft.format(new Date()) + "' and YY1_Product_Group_PCI eq '"
+								+ product.getYY1_Producthierarchy_SAL() + "'", "UTF-8"),
 						authoriz);//
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -848,23 +975,23 @@ logger.error(new Gson().toJson(businessPartners));
 			System.out.println("778-----data" + url);
 
 			com.model.ConditionRecordWrapper condition = new com.model.ConditionRecordWrapper();
-			gson.fromJson(url, condition.getClass());
+			condition = gson.fromJson(url, condition.getClass());
+			System.out.println("condition.getD():" + condition.getD().toString());
 			com.model.Cond cond[] = condition.getD().getResults();
 			System.out.println("785-----data" + cond.length);
 			if (cond.length > 0) {
 				conditiontable = "953";
 			} else {
 				try {
-					url = (String) this.getData(
-							CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$format=json&$select=ConditionRecord&$filter="
-									+ URLEncoder.encode("ConditionType eq 'ZPR1' and YY1_MATWA_PCI eq '"
-											+ product.getProduct()
-											+ "' and PriceListType eq '01' and SalesOrganization eq '" + BUKRS
-											+ "' and DistributionChannel eq '01' and ConditionValidityEndDate ge '//Date("
-											+ new Date().getTime() + ")//' and ConditionValidityStartDate lt '//Date("
-											+ new Date().getTime() + ")//'",
+					url = (String) this.getData(CxfNonSpringSimpleServlet.host
+							+ "/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$format=json&$select=ConditionRecord&$filter="
+							+ URLEncoder.encode("ConditionType eq 'ZPR1' and YY1_MATWA_PCI eq '" + product.getProduct()
+									+ "' and PriceListType eq 'S1' and SalesOrganization eq '" + BUKRS
+									+ "' and DistributionChannel eq '01' and ConditionValidityEndDate ge datetime'"
+									+ ft.format(new Date()) + "' and ConditionValidityStartDate lt datetime'"
+									+ ft.format(new Date()) + "'",
 
-											"UTF-8"),
+									"UTF-8"),
 							authoriz);//
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -872,7 +999,7 @@ logger.error(new Gson().toJson(businessPartners));
 				}
 
 				condition = new com.model.ConditionRecordWrapper();
-				gson.fromJson(url, condition.getClass());
+				condition = gson.fromJson(url, condition.getClass());
 				cond = condition.getD().getResults();
 				System.out.println("809-----data" + cond.length);
 				if (cond.length > 0) {
@@ -880,34 +1007,40 @@ logger.error(new Gson().toJson(businessPartners));
 				}
 			}
 			try {
-				url = (String) this.getData(
-						CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgConditionRecord?$format=json&$select=ConditionRateValue&$filter="
-								+ URLEncoder.encode(
-										"ConditionTable eq '" + conditiontable + "' and ConditionRecord eq '"
-												+ cond[0].getConditionRecord()
-												+ "' and ConditionIsDeleted eq false and ConditionQuantityUnit eq '"
-												+ uom + "'",
+				url = (String) this.getData(CxfNonSpringSimpleServlet.host
+						+ "/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgConditionRecord?$format=json&$select=ConditionRateValue&$filter="
+						+ URLEncoder.encode("ConditionTable eq '" + conditiontable + "' and ConditionRecord eq '"
+								+ cond[0].getConditionRecord()
+								+ "' and ConditionIsDeleted eq false and ConditionQuantityUnit eq '" + uom + "'",
 
-										"UTF-8"),
+								"UTF-8"),
 						authoriz);//
 			} catch (Exception e) {
+				result = "999";
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+
 			}
 
 			condition = new com.model.ConditionRecordWrapper();
-			gson.fromJson(url, condition.getClass());
+			condition = gson.fromJson(url, condition.getClass());
 			cond = condition.getD().getResults();
 
 			com.model.ReturnProductsWrapper P = new com.model.ReturnProductsWrapper();
 			P.setProduct(product.getProduct());
 			P.setProductName(product.getProductName());
-			P.setRate(cond[0].getConditionRateValue());
+			if (cond.length > 0) {
+				P.setRate(cond[0].getConditionRateValue());
+			} else {
+				P.setRate("0");
+			}
 			Products123.add(P);
 		}
 		com.model.PList Plist = new com.model.PList();
 		Plist.setResult(result);
 		Plist.setProducts(Products123);
+		Plist.setBookName(bookName);
+		Plist.setBrand(brand);
 		return Plist;
 	}
 
@@ -922,15 +1055,15 @@ logger.error(new Gson().toJson(businessPartners));
 		com.model.B2B_INVOICE_LIST InvList = new com.model.B2B_INVOICE_LIST();
 		ArrayList<INVOICELIST> Invoice = new ArrayList<INVOICELIST>();
 		try {
-			url = (String) this.getData(
-					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_Customer?$format=json&$select=Customer&$filter="
-							+ URLEncoder.encode("Customer eq '" + CUST + "'" + "and DeletionIndicator eq false", "UTF-8"),
+			url = (String) this.getData(CxfNonSpringSimpleServlet.host
+					+ "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_Customer?$format=json&$select=Customer&$filter="
+					+ URLEncoder.encode("Customer eq '" + CUST + "'" + "and DeletionIndicator eq false", "UTF-8"),
 					authoriz);//
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("881 URL----Data"+url);
+		System.out.println("881 URL----Data" + url);
 		Gson gson = new Gson();
 		com.model.custwrapper cust = new com.model.custwrapper();
 		cust = gson.fromJson(url, cust.getClass());
@@ -940,10 +1073,10 @@ logger.error(new Gson().toJson(businessPartners));
 		}
 
 		try {
-			url = (String) this.getData(
-					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustSalesPartnerFunc?$format=json&$filter="
-							+ URLEncoder.encode("Customer eq '" + CUST + "'" + "and PartnerFunction eq 'RE'"
-									+ "and BPCustomerNumber eq '" + CUST + "'", "UTF-8"),
+			url = (String) this.getData(CxfNonSpringSimpleServlet.host
+					+ "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_CustSalesPartnerFunc?$format=json&$filter="
+					+ URLEncoder.encode("Customer eq '" + CUST + "'" + "and PartnerFunction eq 'RE'"
+							+ "and BPCustomerNumber eq '" + CUST + "'", "UTF-8"),
 					authoriz);//
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -957,8 +1090,8 @@ logger.error(new Gson().toJson(businessPartners));
 
 		}
 		try {
-			url = (String) this.getData(
-					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_FISCALYEAR_CDS/YY1_FISCALYEAR?$format=json&$select=FiscalPeriodEndDate,PreviousFiscalPeriodStartDa",
+			url = (String) this.getData(CxfNonSpringSimpleServlet.host
+					+ "/sap/opu/odata/sap/YY1_FISCALYEAR_CDS/YY1_FISCALYEAR?$format=json&$select=FiscalPeriodEndDate,PreviousFiscalPeriodStartDa",
 					authoriz);//
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -970,13 +1103,14 @@ logger.error(new Gson().toJson(businessPartners));
 		Inv = cust.getD().getResults();
 
 		try {
-			url = (String) this.getData(
-					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_B2B_INVOICE_LIST_CDS/YY1_B2B_INVOICE_LIST?$format=json&$filter="
+			url = (String) this
+					.getData(CxfNonSpringSimpleServlet.host
+							+ "/sap/opu/odata/sap/YY1_B2B_INVOICE_LIST_CDS/YY1_B2B_INVOICE_LIST?$format=json&$filter="
 							+ URLEncoder.encode("SoldToParty eq '" + CUST + "'" + "and BillingDocumentDate gt '//Date("
 									+ Inv[0].getPreviousFiscalPeriodStartDa() + ")//'"
 									+ "and BillingDocumentDate le '//Date(" + Inv[0].getFiscalPeriodEndDate() + ")//'",
 									"UTF-8"),
-					authoriz);//
+							authoriz);//
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1013,20 +1147,20 @@ logger.error(new Gson().toJson(businessPartners));
 					} else if (InvItems.getSDDocumentCategory() == "P") {
 						ILIST.setInvoiceType("CR");
 
-					}else {
-						ILIST.setInvoiceType(null);	
+					} else {
+						ILIST.setInvoiceType(null);
 					}
 
 				}
 			}
-			
+
 			if (InvItems.getSalesDocumentItemCategory() == "TAS" || InvItems.getSDDocumentCategory() == "ZTAS") {
 				ILIST.setVtext("Factory Direct");
-			}else {
+			} else {
 				ILIST.setVtext("Warehouse");
 			}
 			if (ILIST.getInvoiceType() != null) {
-			Invoice.add(ILIST);
+				Invoice.add(ILIST);
 			}
 		}
 
@@ -1039,29 +1173,28 @@ logger.error(new Gson().toJson(businessPartners));
 	@Override
 	public Docs[] Z_B2B_INV_DET(B2B_INVOICE_LIST INVHEAD) {
 		// TODO Auto-generated method stub
-		
+
 		String result = "000";
 		String authoriz = "Basic QkhGX0NPTU06bkJoTHNpd1dYbWZ3cW1YKUZETFJVQTZTd2RDaXRBWFVzd3dad0xxWA==";
 		String csrf = "";
 		String url = "";
 		try {
-			url = (String) this.getData(
-					CxfNonSpringSimpleServlet.host + "/sap/opu/odata/sap/YY1_INVOICE_DETAILS_CDS/YY1_INVOICE_DETAILS?$format=json&$filter="
-							+ URLEncoder.encode("BillingDocument eq '" + INVHEAD.getInvoiceList().get(0).getInvoiceNumber() + "'","UTF-8"),
+			url = (String) this.getData(CxfNonSpringSimpleServlet.host
+					+ "/sap/opu/odata/sap/YY1_INVOICE_DETAILS_CDS/YY1_INVOICE_DETAILS?$format=json&$filter="
+					+ URLEncoder.encode(
+							"BillingDocument eq '" + INVHEAD.getInvoiceList().get(0).getInvoiceNumber() + "'", "UTF-8"),
 					authoriz);//
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		Gson gson = new Gson();
 		com.model.BillingDetailsWrapper wrapper = new com.model.BillingDetailsWrapper();
-		wrapper=gson.fromJson(url, wrapper.getClass());
+		wrapper = gson.fromJson(url, wrapper.getClass());
 		com.model.Docs[] Docs = wrapper.getD().getResults();
-		
+
 		return Docs;
 	}
 
-	
-	
 }

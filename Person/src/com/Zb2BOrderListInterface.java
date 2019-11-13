@@ -6,11 +6,18 @@
 package com;
 
 import java.util.List;
+import java.util.concurrent.Future;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.naming.AuthenticationException;
+import javax.xml.ws.AsyncHandler;
+import javax.xml.ws.Response;
+
+import com.model.Zb2BOrderListWrapper;
+import com.model.Zb2CWpopShipmentWrapper;
 
 /**
  *
@@ -22,4 +29,9 @@ public interface Zb2BOrderListInterface {
 
     @WebMethod(operationName = "getOrderList")
     public com.model.Zb2BOrderListWrapper getOrderList(@WebParam(name = "CustomerNumber") String customerNumber, @WebParam(name = "SalesOrder") String salesOrder, @WebParam(name = "CustomerPurchaseOrder") String customerPurchaseOrder, @WebParam(name = "MaterialNumber") String materialNumber, @WebParam(name = "DateFromForSelectionByMaterial") String dateFromSelectionByMaterial) throws AuthenticationException, Exception;
+    
+    public Response<Zb2BOrderListWrapper> getOrderListAsync(@WebParam(name = "CustomerNumber") String customerNumber, @WebParam(name = "SalesOrder") String salesOrder, @WebParam(name = "CustomerPurchaseOrder") String customerPurchaseOrder, @WebParam(name = "MaterialNumber") String materialNumber, @WebParam(name = "DateFromForSelectionByMaterial") String dateFromSelectionByMaterial) throws AuthenticationException, Exception;
+    
+    
+    public Future<?> getOrderListAsync(@WebParam(name = "CustomerNumber") String customerNumber, @WebParam(name = "SalesOrder") String salesOrder, @WebParam(name = "CustomerPurchaseOrder") String customerPurchaseOrder, @WebParam(name = "MaterialNumber") String materialNumber, @WebParam(name = "DateFromForSelectionByMaterial") String dateFromSelectionByMaterial, final AsyncHandler<Zb2BOrderListWrapper> asyncHandler) ;
 }
