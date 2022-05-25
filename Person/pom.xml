@@ -8,7 +8,7 @@
 		<cxf.version>3.3.3</cxf.version>
 		<httpclient.version>3.1</httpclient.version>
 		<jax.ws.rs>2.1.1</jax.ws.rs>
-		<springmvc>4.3.16.RELEASE</springmvc>
+		<springmvc>5.2.22.RELEASE</springmvc>
 		<jackson.version>2.9.1</jackson.version>
 		<version.olingo>2.0.10</version.olingo>
 		<!-- <project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
