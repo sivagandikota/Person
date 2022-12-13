@@ -5,7 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <properties>
-		<cxf.version>3.3.3</cxf.version>
+		<cxf.version>3.4.10</cxf.version>
 		<httpclient.version>3.1</httpclient.version>
 		<jax.ws.rs>2.1.1</jax.ws.rs>
 		<springmvc>4.3.16.RELEASE</springmvc>
@@ -286,7 +286,7 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-core</artifactId>
-			<version>3.3.3</version>
+			<version>3.4.10</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.apache.cxf</groupId>
